@@ -1,0 +1,8 @@
+Place the files from these folders in the visual studio folders to be able to compile the project on your computer.
+
+C:\Program Files\VisualStudio2012\VC\include\ - Copy contents of the include folder here.
+C:\Program Files\VisualStudio2012\VC\lib\ -Copy contents of the lib folder here.
+
+==========================
+Thomas Linstead
+==========================
