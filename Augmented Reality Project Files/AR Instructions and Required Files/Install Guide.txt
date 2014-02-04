@@ -1,0 +1,28 @@
+-------------------------------------------------------------------------
+The following steps will allow you to use AR applications on your system:
+-------------------------------------------------------------------------
+
+
+1) Extract ARToolKit-2.72.1-bin-win32 to a convenient location.
+
+2) Extract DSVL-0.0.8b into the ARToolKit folder you just created
+
+3) If using 32-bit OS:
+
+>Place glut32.dll in C:\windows\system32
+>Place glut.h in C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include\gl
+>Place glut32.lib in C:\Program Files\Microsoft SDKs\Windows\v7.0A\Lib
+
+
+OR if using 64-bit OS:
+>Place glut32.dll in C:\windows\sysWOW64
+>Place glut.h in C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Include\gl
+>Place glut32.lib in C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Lib
+
+4) Run ..\ARToolKit\Configure.win32.bat
+
+5) Open and build ..\ARToolKit\ARToolKit.sln
+
+6) ???
+
+7) PROFIT!
