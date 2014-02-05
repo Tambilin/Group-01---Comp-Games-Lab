@@ -1,0 +1,14 @@
+﻿Build started 05/02/2014 21:31:08.
+     1>Project "I:\Downloads\diddles\ARToolKit-2.72.1-bin-win32\ARToolKit\lib\SRC\Gl\libARgsubUtil.vcxproj" on node 4 (Build target(s)).
+     1>ClCompile:
+         I:\Program Files\VisualStudio2012\VC\bin\CL.exe /c /I"I:\Downloads\diddles\ARToolKit-2.72.1-bin-win32\ARToolKit\lib\SRC\Gl\../../../include" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /Gm- /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /FR"Debug\\" /Gd /TC /analyze- /errorReport:prompt gsubUtil.c
+         gsubUtil.c
+     1>FileTracker : error FTK1011: could not create the new file tracking log file: I:\Downloads\diddles\ARToolKit-2.72.1-bin-win32\ARToolKit\lib\SRC\Gl\Debug\CL.read.1.tlog. The file exists.
+         
+         
+         
+     1>Done Building Project "I:\Downloads\diddles\ARToolKit-2.72.1-bin-win32\ARToolKit\lib\SRC\Gl\libARgsubUtil.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:00.95
