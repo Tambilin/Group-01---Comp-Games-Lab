@@ -142,6 +142,19 @@ void soundeffect::setLoop(int track, bool status){
 	}
 }
 
+void soundeffect::toggleBackgroundSound(int track, bool enabled){
+	if(enabled != started){
+	if(enabled){
+		setLoop(track, true);
+		play(track);
+		started = enabled;
+	} else {
+		setLoop(track, false);
+		started = enabled;
+	}
+	}
+}
+
 int soundeffect::createDeviceContext(){
 	//Now OpenAL needs to be initialized 
     ALCdevice *device;                                                          //Create an OpenAL Device
@@ -158,6 +171,7 @@ int soundeffect::createDeviceContext(){
 soundeffect::soundeffect(void)
 {
 	createDeviceContext();
+	started = false;
 }
 
 
@@ -168,5 +182,5 @@ soundeffect::~soundeffect(void)
     alcMakeContextCurrent(NULL);                                                //Make no context current
     //alcDestroyContext(context);                                                 //Destroy the OpenAL Context
     //alcCloseDevice(device);                                                     //Close the OpenAL Device
-	delete[] buf;                                                               //Delete the sound data buffer
+	//delete[] buf;                                                               //Delete the sound data buffer
 }
