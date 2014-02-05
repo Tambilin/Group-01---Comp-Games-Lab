@@ -3,6 +3,7 @@
 #include "GLEW/glew.h"
 #include "glut.h"
 #include "md5load.h"
+#include "soundeffect.h"
 
 typedef float vec3_t[3];
 
@@ -16,6 +17,7 @@ using namespace std;
 
 //Global Variables
 //md5load *md5object  = new md5load();
+soundeffect * t = new soundeffect();
 md5load md5object;
 md5load md5object1;
 md5load md5object2;
@@ -41,6 +43,11 @@ int main()
 	md5object.init ("../Assets/Models/pinky.md5mesh" , "../Assets/Animations/idle1.md5anim", "../Assets/Textures/pinky_s.tga");
 	md5object1.init ("../Assets/Models/boblampclean.md5mesh" , "../Assets/Animations/boblampclean.md5anim", "../Assets/Textures/guard1_body.tga");
 	md5object1.useModelShaderTextures("../Assets/Textures/");
+
+	//load sounds
+	t->createSound("../Assets/Sounds/inception.wav", 0);
+	t->createSound("../Assets/Sounds/sound.wav", 1);
+	t->createSound("../Assets/Sounds/lorry.wav", 2);
 
 	atexit(cleanup);
 
@@ -153,5 +160,8 @@ void keyboard (unsigned char key, int x, int y)
 	if(key == 50){ //'2' Key{
 		md5object.cleanup();
 		md5object.init ("../Assets/Models/pinky.md5mesh" , "../Assets/Animations/idle1.md5anim", "../Assets/Textures/pinky_s.tga");
+	}
+	if(key == 32){ //'Space' Key{
+		t->play(0);
 	}
 }

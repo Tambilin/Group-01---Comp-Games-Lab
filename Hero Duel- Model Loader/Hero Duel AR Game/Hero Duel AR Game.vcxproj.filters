@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\main.cpp" />
+    <ClCompile Include="..\md5load.cpp" />
+    <ClCompile Include="..\soundeffect.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\md5load.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\soundeffect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{3cb34dea-51bd-4628-87b6-e3679fa85352}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
