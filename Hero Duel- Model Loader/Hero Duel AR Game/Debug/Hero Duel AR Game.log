@@ -1,4 +1,4 @@
-﻿Build started 05/02/2014 21:10:37.
+﻿Build started 06/02/2014 23:08:37.
      1>Project "I:\Source Repository\Computer Games Lab\Hero Duel- Model Loader\Hero Duel AR Game\Hero Duel AR Game.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          I:\Program Files\VisualStudio2012\VC\bin\CL.exe /c /ZI /nologo /W1 /WX- /Od /Oy- /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt ..\main.cpp
@@ -10,9 +10,10 @@
          Debug\model_obj.obj
          Debug\objload.obj
          Debug\soundeffect.obj
+     1>bitmap.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
          Hero Duel AR Game.vcxproj -> I:\Source Repository\Computer Games Lab\Hero Duel- Model Loader\Debug\Hero Duel AR Game.exe
      1>Done Building Project "I:\Source Repository\Computer Games Lab\Hero Duel- Model Loader\Hero Duel AR Game\Hero Duel AR Game.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:01.75
+Time Elapsed 00:00:02.10

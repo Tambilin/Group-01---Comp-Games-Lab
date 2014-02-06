@@ -1,12 +1,16 @@
 /* Main Class handling the glut OpenGL functions - Thomas Linstead */
 #include <iostream>
+#include <string>		    // String Library
+#include <sstream>		    // String Stream Library
 #include "GLEW/glew.h"
 #include "glut.h"
 #include "md5load.h"
 #include "soundeffect.h"
 #include "objload.h"
+using namespace std;
 
 typedef float vec3_t[3];
+
 
 //function declares
 void keyboard (unsigned char key, int x, int y);
@@ -14,7 +18,11 @@ void reshape (int w, int h);
 void cleanup();
 void display();
 void update();
-using namespace std;
+
+GLvoid buildFont(GLvoid);
+GLvoid KillFont(GLvoid);	
+GLvoid printText(void *font, const char *fmt, int x, int y, float r, float g, float b);
+GLvoid glPrint(string fmt);
 
 //Global Variables
 soundeffect * t = new soundeffect();
@@ -26,12 +34,17 @@ md5load md5object1;
 md5load md5object2;
 
 int movement = 1;
+int fps;
+int width = 640, height = 480;
+
+GLuint	base;		// Base Display List For The Font Set
+HDC		hDC=NULL;   // Device context
 
 
 int main()
 {
 	glutInitDisplayMode (GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
-	glutInitWindowSize (640, 480);
+	glutInitWindowSize (width, height);
 	glutCreateWindow ("3D Model Loader - Thomas Linstead");
 
 	glEnable(GL_TEXTURE_2D);
@@ -93,6 +106,9 @@ int main()
 	glEnable(GL_LIGHT0);
 	glShadeModel(GL_SMOOTH);
 
+	//wglUseFontBitmaps(hDC, 32, 96, base);
+	//buildFont();
+
 	return 0;
 }
 
@@ -115,6 +131,34 @@ void cleanup ()
 void display()
 { 
 	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	////////////////////////////////////////////
+	/* Calculate The Frames-Per-Second (FPS) */
+	time_t seconds;
+	seconds = time (NULL);
+	static int lastTime = time (NULL);
+	static int framesDone = 0; 
+	int currentTime = time (NULL);
+	if(currentTime > lastTime) 
+	{ 
+		fps = framesDone; 
+		framesDone = 0; 
+		lastTime = currentTime; 
+	} 
+	framesDone++; 
+	////////////////////////////////////////////
+
+
+	/*GLUT_BITMAP_8_BY_13
+GLUT_BITMAP_9_BY_15
+GLUT_BITMAP_TIMES_ROMAN_10
+GLUT_BITMAP_TIMES_ROMAN_24
+GLUT_BITMAP_HELVETICA_10
+GLUT_BITMAP_HELVETICA_12
+GLUT_BITMAP_HELVETICA_18*/
+	stringstream t;
+	t << "Current FPS: " << fps;
+	printText(GLUT_BITMAP_HELVETICA_18, t.str().c_str(), 20, height-30, 1, 0, 0);
 
 	glPushMatrix();
 	glTranslatef(0,5,42);
@@ -145,6 +189,7 @@ void display()
 
 	glDisableClientState (GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState (GL_VERTEX_ARRAY);
+
 
 	glutSwapBuffers ();
 	glutPostRedisplay ();
@@ -194,6 +239,9 @@ void reshape (int w, int h)
 	glMatrixMode (GL_MODELVIEW);
 	glLoadIdentity ();
 
+	width = w;
+	height = h;
+
 }
 
 void keyboard (unsigned char key, int x, int y)
@@ -224,4 +272,26 @@ void keyboard (unsigned char key, int x, int y)
 		t->play(1);
 	}
 
+}
+
+GLvoid printText(void *font, const char *fmt, int x, int y, float r, float g, float b) {
+ glPushMatrix();
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  gluOrtho2D(0,width,0,height);
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+  glColor3f(r,g,b);
+  glRasterPos2f(x, y);
+  const char *c;
+  for (c=fmt; *c != '\0'; c++) {
+    glutBitmapCharacter(font, *c);
+  }
+  glColor3f(1,1,1) ;
+  glMatrixMode (GL_PROJECTION);
+	glLoadIdentity ();
+	gluPerspective (45.0, width/(GLdouble)height, 0.1, 1000.0);
+	glMatrixMode (GL_MODELVIEW);
+	glLoadIdentity ();
+ glPopMatrix();
 }
