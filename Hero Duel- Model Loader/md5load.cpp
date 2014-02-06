@@ -661,6 +661,7 @@ void md5load::draw (float x, float y, float z, float scale)
 
   if (drawTexture == true)
   {
+	glEnable(GL_TEXTURE_2D);
 	glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
   }
   else

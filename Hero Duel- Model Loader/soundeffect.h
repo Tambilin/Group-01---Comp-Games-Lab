@@ -32,12 +32,14 @@ ALfloat SourcesVel[NUM_SOURCES][3];
 
 	int endWithError(char* msg);
 	int createDeviceContext();
+	void setLoop(int track, bool status);
+	bool started;
 
 public:
 	int createSound(char * filename, int track);
 	soundeffect(void);
 	soundeffect(char * filePath);
-	void setLoop(int track, bool status);
+	void toggleBackgroundSound(int track, bool enabled);
 	int play(int track);
 	~soundeffect(void);
 };

@@ -1,0 +1,34 @@
+﻿Build started 05/02/2014 21:31:07.
+     1>Project "I:\Downloads\diddles\ARToolKit-2.72.1-bin-win32\ARToolKit\lib\SRC\ARMulti\libARMulti.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         I:\Program Files\VisualStudio2012\VC\bin\CL.exe /c /I"I:\Downloads\diddles\ARToolKit-2.72.1-bin-win32\ARToolKit\lib\SRC\ARMulti\../../../include" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /Gm- /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /FR"Debug\\" /Gd /TC /analyze- /errorReport:prompt arMultiActivate.c arMultiGetTransMat.c arMultiReadConfigFile.c
+         arMultiActivate.c
+         arMultiGetTransMat.c
+         arMultiReadConfigFile.c
+     1>i:\downloads\diddles\artoolkit-2.72.1-bin-win32\artoolkit\lib\src\armulti\armultireadconfigfile.c(30): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 i:\program files\visualstudio2012\vc\include\stdio.h(218) : see declaration of 'fopen'
+     1>i:\downloads\diddles\artoolkit-2.72.1-bin-win32\artoolkit\lib\src\armulti\armultireadconfigfile.c(33): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 i:\program files\visualstudio2012\vc\include\stdio.h(311) : see declaration of 'sscanf'
+     1>i:\downloads\diddles\artoolkit-2.72.1-bin-win32\artoolkit\lib\src\armulti\armultireadconfigfile.c(39): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 i:\program files\visualstudio2012\vc\include\stdio.h(311) : see declaration of 'sscanf'
+     1>i:\downloads\diddles\artoolkit-2.72.1-bin-win32\artoolkit\lib\src\armulti\armultireadconfigfile.c(47): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 i:\program files\visualstudio2012\vc\include\stdio.h(311) : see declaration of 'sscanf'
+     1>i:\downloads\diddles\artoolkit-2.72.1-bin-win32\artoolkit\lib\src\armulti\armultireadconfigfile.c(52): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 i:\program files\visualstudio2012\vc\include\stdio.h(311) : see declaration of 'sscanf'
+     1>i:\downloads\diddles\artoolkit-2.72.1-bin-win32\artoolkit\lib\src\armulti\armultireadconfigfile.c(60): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 i:\program files\visualstudio2012\vc\include\stdio.h(311) : see declaration of 'sscanf'
+         Generating Code...
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V110\Microsoft.CppBuild.targets(1299,5): warning MSB8012: TargetPath(I:\Downloads\diddles\ARToolKit-2.72.1-bin-win32\ARToolKit\lib\SRC\ARMulti\Debug\libARMulti.lib) does not match the Library's OutputFile property value (I:\Downloads\diddles\ARToolKit-2.72.1-bin-win32\ARToolKit\lib\libARMultid.lib). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Lib.OutputFile).
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V110\Microsoft.CppBuild.targets(1301,5): warning MSB8012: TargetName(libARMulti) does not match the Library's OutputFile property value (libARMultid). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Lib.OutputFile).
+       Lib:
+         I:\Program Files\VisualStudio2012\VC\bin\Lib.exe /OUT:"I:\Downloads\diddles\ARToolKit-2.72.1-bin-win32\ARToolKit\lib\SRC\ARMulti\..\..\libARMultid.lib" /NOLOGO Debug\arMultiActivate.obj
+         Debug\arMultiGetTransMat.obj
+         Debug\arMultiReadConfigFile.obj
+         libARMulti.vcxproj -> I:\Downloads\diddles\ARToolKit-2.72.1-bin-win32\ARToolKit\lib\SRC\ARMulti\Debug\libARMulti.lib
+       BscMake:
+         I:\Program Files\VisualStudio2012\VC\bin\bscmake.exe /nologo /o"Debug\libARMulti.bsc" Debug\arMultiActivate.sbr Debug\arMultiGetTransMat.sbr Debug\arMultiReadConfigFile.sbr
+     1>Done Building Project "I:\Downloads\diddles\ARToolKit-2.72.1-bin-win32\ARToolKit\lib\SRC\ARMulti\libARMulti.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.88
