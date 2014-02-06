@@ -21,7 +21,7 @@ OR if using 64-bit OS:
 
 4) Run ..\ARToolKit\Configure.win32.bat
 
-5) Open and build ..\ARToolKit\ARToolKit.sln
+5) Open and then build the solution file ..\ARToolKit\ARToolKit.sln
 
 6) ???
 
@@ -29,4 +29,4 @@ OR if using 64-bit OS:
 
 
 
--Adam Aldridge
+--Adam Aldridge
