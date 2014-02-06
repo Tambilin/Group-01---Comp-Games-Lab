@@ -1,0 +1,19 @@
+﻿Build started 05/02/2014 21:31:08.
+     1>Project "I:\Downloads\diddles\ARToolKit-2.72.1-bin-win32\ARToolKit\lib\SRC\Gl\libARgsub_lite.vcxproj" on node 5 (Build target(s)).
+     1>ClCompile:
+         I:\Program Files\VisualStudio2012\VC\bin\CL.exe /c /I"I:\Downloads\diddles\ARToolKit-2.72.1-bin-win32\ARToolKit\lib\SRC\Gl\../../../include" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _LIB /Gm- /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /FR"Debug\\" /Gd /TC /analyze- /errorReport:prompt gsub_lite.c
+         gsub_lite.c
+     1>i:\downloads\diddles\artoolkit-2.72.1-bin-win32\artoolkit\lib\src\gl\gsub_lite.c(678): warning C4090: 'function' : different 'const' qualifiers
+     1>i:\downloads\diddles\artoolkit-2.72.1-bin-win32\artoolkit\lib\src\gl\gsub_lite.c(737): warning C4090: 'function' : different 'const' qualifiers
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V110\Microsoft.CppBuild.targets(1299,5): warning MSB8012: TargetPath(I:\Downloads\diddles\ARToolKit-2.72.1-bin-win32\ARToolKit\lib\SRC\Gl\Debug\libARgsub_lite.lib) does not match the Library's OutputFile property value (I:\Downloads\diddles\ARToolKit-2.72.1-bin-win32\ARToolKit\lib\libARgsub_lited.lib). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Lib.OutputFile).
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V110\Microsoft.CppBuild.targets(1301,5): warning MSB8012: TargetName(libARgsub_lite) does not match the Library's OutputFile property value (libARgsub_lited). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Lib.OutputFile).
+       Lib:
+         I:\Program Files\VisualStudio2012\VC\bin\Lib.exe /OUT:"I:\Downloads\diddles\ARToolKit-2.72.1-bin-win32\ARToolKit\lib\SRC\Gl\..\..\libARgsub_lited.lib" /NOLOGO Debug\gsub_lite.obj
+         libARgsub_lite.vcxproj -> I:\Downloads\diddles\ARToolKit-2.72.1-bin-win32\ARToolKit\lib\SRC\Gl\Debug\libARgsub_lite.lib
+       BscMake:
+         I:\Program Files\VisualStudio2012\VC\bin\bscmake.exe /nologo /o"Debug\libARgsub_lite.bsc" Debug\gsub_lite.sbr
+     1>Done Building Project "I:\Downloads\diddles\ARToolKit-2.72.1-bin-win32\ARToolKit\lib\SRC\Gl\libARgsub_lite.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:05.44

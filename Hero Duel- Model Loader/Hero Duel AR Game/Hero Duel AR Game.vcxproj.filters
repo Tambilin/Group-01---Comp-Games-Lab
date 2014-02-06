@@ -4,12 +4,24 @@
     <ClCompile Include="..\main.cpp" />
     <ClCompile Include="..\md5load.cpp" />
     <ClCompile Include="..\soundeffect.cpp" />
+    <ClCompile Include="..\bitmap.cpp" />
+    <ClCompile Include="..\model_obj.cpp" />
+    <ClCompile Include="..\objload.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\md5load.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\soundeffect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\bitmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\model_obj.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\objload.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

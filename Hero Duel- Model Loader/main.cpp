@@ -4,6 +4,7 @@
 #include "glut.h"
 #include "md5load.h"
 #include "soundeffect.h"
+#include "objload.h"
 
 typedef float vec3_t[3];
 
@@ -16,12 +17,15 @@ void update();
 using namespace std;
 
 //Global Variables
-//md5load *md5object  = new md5load();
 soundeffect * t = new soundeffect();
+objload * Wings = new objload();
+objload * Pallet = new objload();
+
 md5load md5object;
 md5load md5object1;
 md5load md5object2;
-int movement = 0;
+
+int movement = 1;
 
 
 int main()
@@ -39,10 +43,15 @@ int main()
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 	cout << "Texture loaded correctly" << endl;
 
-	//load the models
+	//load the animated models
 	md5object.init ("../Assets/Models/pinky.md5mesh" , "../Assets/Animations/idle1.md5anim", "../Assets/Textures/pinky_s.tga");
 	md5object1.init ("../Assets/Models/boblampclean.md5mesh" , "../Assets/Animations/boblampclean.md5anim", "../Assets/Textures/guard1_body.tga");
 	md5object1.useModelShaderTextures("../Assets/Textures/");
+
+	//Object loader
+	Wings->InitGL();
+	Wings->LoadModel("../Assets/Models/WingsOBJ.obj");
+	Pallet->LoadModel("../Assets/Models/Pallet.obj");
 
 	//load sounds
 	t->createSound("../Assets/Sounds/inception.wav", 0);
@@ -57,14 +66,43 @@ int main()
 
 	glutMainLoop ();
 
+	// OpenGL init
+	glShadeModel(GL_SMOOTH);
+	glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
+	glClearDepth(1.0f);
+	glDepthFunc(GL_LEQUAL);
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
+	
+	// Face culling (for textures)
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK); 
+	glEnable(GL_DEPTH_TEST);
+	
+	// Lighting
+	GLfloat light_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
+	GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
+
+	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+	
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glShadeModel(GL_SMOOTH);
+
 	return 0;
 }
 
 void update(void){
-	if(movement < 100)
-		movement = movement + 0.01;
+	if(movement < 90000)
+		movement = movement + 1;
 	else 
-		movement = 0;
+		movement = 1;
+
+	t->toggleBackgroundSound(2, true);
 }
 
 void cleanup ()
@@ -78,18 +116,31 @@ void display()
 { 
 	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	glPushMatrix();
+	glTranslatef(0,5,42);
+	glRotatef(180,0,1,0);
+	glScalef(64,64,64);
+	Wings->DrawModelUsingFixedFuncPipeline();
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(55,0,30);
+	glRotatef(((int)(movement))+55,0,1,1);
+	glScalef(32,32,32);
+	Pallet->DrawModelUsingFixedFuncPipeline();
+	glPopMatrix();
+
 	//enable client states for glDrawElements
-	glTranslatef(0,1500,0);
 	glEnableClientState (GL_VERTEX_ARRAY);
 	glEnableClientState (GL_TEXTURE_COORD_ARRAY);
 
 	md5object.enableTextured(true);
-	md5object.enableSkeleton(true);
+	md5object.enableSkeleton(false);
 	md5object.enableRotate(false);
-	md5object.draw(0.0+movement, -35.0, -150.0, 0.5);
+	md5object.draw(0.0, -35.0, -150.0, 0.5);
 
 	md5object1.enableTextured(true);
-	md5object1.enableSkeleton(true);
+	md5object1.enableSkeleton(false);
 	md5object1.draw(-25.0, 0.0, -150.0, 1.0);
 
 	glDisableClientState (GL_TEXTURE_COORD_ARRAY);
@@ -142,6 +193,7 @@ void reshape (int w, int h)
 
 	glMatrixMode (GL_MODELVIEW);
 	glLoadIdentity ();
+
 }
 
 void keyboard (unsigned char key, int x, int y)
@@ -161,7 +213,15 @@ void keyboard (unsigned char key, int x, int y)
 		md5object.cleanup();
 		md5object.init ("../Assets/Models/pinky.md5mesh" , "../Assets/Animations/idle1.md5anim", "../Assets/Textures/pinky_s.tga");
 	}
+	if(key == 51){ //'2' Key{
+		md5object.cleanup();
+		md5object.init ("../Assets/Models/pinky.md5mesh" , "../Assets/Animations/attack.md5anim", "../Assets/Textures/pinky_d.tga");
+	}
 	if(key == 32){ //'Space' Key{
 		t->play(0);
 	}
+	if(key == 46){ //'.' Key{
+		t->play(1);
+	}
+
 }
