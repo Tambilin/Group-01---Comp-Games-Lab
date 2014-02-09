@@ -57,6 +57,7 @@
     <ClCompile Include="..\bitmap.cpp" />
     <ClCompile Include="..\main.cpp" />
     <ClCompile Include="..\md5load.cpp" />
+    <ClCompile Include="..\menutextures.cpp" />
     <ClCompile Include="..\model_obj.cpp" />
     <ClCompile Include="..\objload.cpp" />
     <ClCompile Include="..\soundeffect.cpp" />
@@ -64,6 +65,7 @@
   <ItemGroup>
     <ClInclude Include="..\bitmap.h" />
     <ClInclude Include="..\md5load.h" />
+    <ClInclude Include="..\menutextures.h" />
     <ClInclude Include="..\model_obj.h" />
     <ClInclude Include="..\objload.h" />
     <ClInclude Include="..\soundeffect.h" />
