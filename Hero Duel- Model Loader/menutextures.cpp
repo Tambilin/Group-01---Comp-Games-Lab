@@ -1,11 +1,11 @@
 #include "menutextures.h"
 
+int menutextures::resolutionX = 640;
+int menutextures::resolutionY = 480; 
 
 menutextures::menutextures(void)
 {
-	//resolutionX = 640;
-	//resolutionY = 480;
-	//widescreen = false;
+	widescreen = false;
 }
 
 
@@ -112,34 +112,49 @@ void menutextures::render(int width, int height){
 }
 
 // Menu handling function definition
-void screenSizeMenu(int item)
+void menutextures::screenSizeMenu(int item)
 {
         switch (item)
         {
         case 0:
-			glutReshapeWindow(640, 480);       
+			glutReshapeWindow(640, 480);
+			resolutionX = 640;
+			resolutionY = 480;
 			break;
         case 1:
-			glutReshapeWindow(800, 600);       
+			glutReshapeWindow(800, 600);     
+			resolutionX = 800;
+			resolutionY = 600;
 			break;
         case 2:
-			glutReshapeWindow(1280, 720);       
+			glutReshapeWindow(1280, 720);  
+			resolutionX = 1280;
+			resolutionY = 720;
 			break;
         case 3:
-			glutReshapeWindow(1600, 1200);        
+			glutReshapeWindow(1600, 1200); 
+			resolutionX = 1600;
+			resolutionY = 1200;
 			break;
         case 4:
-			glutReshapeWindow(1920, 1080);        
+			glutReshapeWindow(1920, 1080);   
+			resolutionX = 1920;
+			resolutionY = 1080;
 			break;
         default:
-            glutReshapeWindow(640, 480);      
+            glutReshapeWindow(640, 480); 
+			resolutionX = 640;
+			resolutionY = 480;
 			break;
         }
 		glutPositionWindow(100,100);
 
+
         glutPostRedisplay();
         return;
 }
+
+
 
 void menutextures::checkButtonClick(int x, int y){
 		
@@ -147,14 +162,10 @@ void menutextures::checkButtonClick(int x, int y){
 
 bool menutextures::checkScreenSize(int w, int h){
 	if((w == 640 && h == 480) || (w == 800 && h == 600) || (w == 1600 && h == 1200)){
-			resolutionX = w;
-			resolutionY = h;
 			widescreen = false;
 		return true;
 	}
 	if((w == 1280 && h == 720) || (w == 1920 && h == 1080)){
-		    resolutionX = w;
-			resolutionY = h;
 			widescreen = true;
 		return true;
 	}
@@ -167,7 +178,7 @@ void menutextures::load(void){
 	menuTex[1] = loadTexture("../Assets/Textures/Border_16-9.png");
 
 	// Create a menu
-	glutCreateMenu(screenSizeMenu);
+	glutCreateMenu(&menutextures::screenSizeMenu);
 
         // Add menu items
         glutAddMenuEntry("640 × 480 (VGA) 4:3", 0);
@@ -186,4 +197,12 @@ int menutextures::getResolutionX(){
 
 int menutextures::getResolutionY(){
 	return resolutionY;
+}
+
+void menutextures::setResolutionX(int x){
+	resolutionX = x;
+}
+
+void menutextures::setResolutionY(int y){
+	resolutionY = y;
 }

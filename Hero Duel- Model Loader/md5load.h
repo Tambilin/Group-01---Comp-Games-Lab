@@ -148,6 +148,7 @@ class md5load
         void Run(ifstream &theCardFile);
 
 		void draw(float x, float y, float z, float scale);
+		void draw (float x, float y, float z, float scale, float a, float rot1, float rot2, float rot3);
 		void init (const char *filename, const char *animfile, char *texturefile);
 
 		void enableSkeleton(bool skeleton);

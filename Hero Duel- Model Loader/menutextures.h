@@ -18,8 +18,8 @@ class menutextures
 private:
 	GLuint loadTexture(char *fileName);
 	GLuint menuTex[256];//Max 256 Textures
-	int resolutionX; 
-	int resolutionY; 
+	static int resolutionX; 
+	static int resolutionY; 
 	bool widescreen; 
 public:
 	menutextures(void);
@@ -29,6 +29,9 @@ public:
 	bool checkScreenSize(int x, int y);
 	int getResolutionX();
 	int getResolutionY();
+	void setResolutionX(int x);
+	void setResolutionY(int y);
+	static void _cdecl screenSizeMenu(int item);
 	menutextures(char * filePath);
 	~menutextures(void);
 };

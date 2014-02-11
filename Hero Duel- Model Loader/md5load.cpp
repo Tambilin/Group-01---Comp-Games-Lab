@@ -646,8 +646,12 @@ void md5load::Quat_multVec (const quat4_t q, const vec3_t v, quat4_t out)
   out[Z] =   (q[W] * v[Z]) + (q[X] * v[Y]) - (q[Y] * v[X]);
 }
 
-void md5load::draw (float x, float y, float z, float scale)
-//void md5load::draw ()
+void md5load::draw (float x, float y, float z, float scale){
+	draw (x,y,z,scale, -90.0f, 1.0f, 0.0f, 0.0f);
+}
+
+
+void md5load::draw (float x, float y, float z, float scale, float a, float rot1, float rot2, float rot3)
 {
   int i;
   static float angle = 0;
@@ -670,9 +674,8 @@ void md5load::draw (float x, float y, float z, float scale)
   }
 
   glTranslatef (x, y, z);
-  //glTranslatef(0.0f, -35.0f, -150.0f);
 
-  glRotatef (-90.0f, 1.0, 0.0, 0.0);
+  glRotatef (a, rot1, rot2, rot3);
 
   glScalef(scale, scale, scale);
 

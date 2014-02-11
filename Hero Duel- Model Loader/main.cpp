@@ -65,8 +65,9 @@ int main()
 
 	//load the animated models
 	md5object.init ("../Assets/Models/pinky.md5mesh" , "../Assets/Animations/idle1.md5anim", "../Assets/Textures/pinky_s.tga");
-	md5object1.init ("../Assets/Models/boblampclean.md5mesh" , "../Assets/Animations/boblampclean.md5anim", "../Assets/Textures/guard1_body.tga");
-	md5object1.useModelShaderTextures("../Assets/Textures/");
+	//md5object1.init ("../Assets/Models/boblampclean.md5mesh" , "../Assets/Animations/boblampclean.md5anim", "../Assets/Textures/guard1_body.tga");
+	//md5object1.useModelShaderTextures("../Assets/Textures/");
+	md5object1.init ("../Assets/Models/sdgs.md5mesh" , "../Assets/Animations/sdgs.md5anim", "");
 
 	//Object loader
 	Wings->InitGL();
@@ -186,7 +187,8 @@ void display()
 	md5object.draw(0.0, -35.0, -150.0, 0.5);
 
 	md5object1.enableTextured(true);
-	md5object1.enableSkeleton(false);
+	md5object1.enableSkeleton(true);
+	md5object1.enableRotate(true);
 	md5object1.draw(-25.0, 0.0, -150.0, 1.0);
 
 	glDisableClientState (GL_TEXTURE_COORD_ARRAY);
@@ -294,9 +296,12 @@ void keyboard (unsigned char key, int x, int y)
 	if(key == 47 && keypressed == false){ //'/' Key{
 		fullscreen = (!fullscreen) ? TRUE : FALSE;
 		if(fullscreen){
+			int tempX = width; int tempY = height;
 			glutFullScreen(); 
+			Menu->setResolutionX(tempX);
+			Menu->setResolutionY(tempY);
 		} else {
-			glutReshapeWindow(640, 480);        /* Restore us */
+			glutReshapeWindow(Menu->getResolutionX(), Menu->getResolutionY());        /* Restore us */
 			glutPositionWindow(100,100);
 		}
 
