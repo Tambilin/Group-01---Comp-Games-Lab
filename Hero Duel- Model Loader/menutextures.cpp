@@ -6,6 +6,7 @@ int menutextures::resolutionY = 480;
 menutextures::menutextures(void)
 {
 	widescreen = false;
+	mode = 1;
 }
 
 
@@ -64,41 +65,23 @@ void menutextures::render(int width, int height){
   glEnable( GL_BLEND );
   glDisable( GL_DEPTH_TEST );
   glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+  int offset = 0;
+  int res = resolutionX/640;
+
   if(widescreen == false)
-	glBindTexture(GL_TEXTURE_2D, menuTex[0]);
+	offset = 0;
   else 
-    glBindTexture(GL_TEXTURE_2D, menuTex[1]);
+    offset = 1;
 
-  glBegin(GL_QUADS);
-  glTexCoord2f(0, 1);
-  glVertex2f(0, 0);
+  if(mode == 1){
+  drawQuad(3+offset, 0, 0, width, height); //Menu
+  drawQuad(5, width- (128*res), height-(64*res), width-10, height-10); //Start
+  drawQuad(6, width- (128*res), height-(64*res*2), width-10, height-10-(64*res)); //Options
+  } else {
+  drawQuad(0+offset, 0, 0, width, height); //Border
+  drawQuad(2, 0, 0, width, height); //Glow
+  }
 
-  glTexCoord2f(1, 1);
-  glVertex2f(width, 0);
-
-  glTexCoord2f(1, 0);
-  glVertex2f(width, height);
-
-  glTexCoord2f(0, 0);
-  glVertex2f(0, height);
-  glEnd();
-
-
-  glBindTexture(GL_TEXTURE_2D, menuTex[2]);
-
-  glBegin(GL_QUADS);
-  glTexCoord2f(0, 1);
-  glVertex2f(0, 0);
-
-  glTexCoord2f(1, 1);
-  glVertex2f(width, 0);
-
-  glTexCoord2f(1, 0);
-  glVertex2f(width, height);
-
-  glTexCoord2f(0, 0);
-  glVertex2f(0, height);
-  glEnd();
 
   glDisable(GL_BLEND);
 
@@ -109,6 +92,26 @@ void menutextures::render(int width, int height){
 	glLoadIdentity ();
  glPopMatrix();
  glEnable( GL_DEPTH_TEST );
+}
+
+
+void menutextures::drawQuad(int textureID, int minX, int minY, int maxX, int maxY){
+  glBindTexture(GL_TEXTURE_2D, menuTex[textureID]);
+
+  glBegin(GL_QUADS);
+  glTexCoord2f(0, 1);
+  glVertex2f(minX, minY);
+
+  glTexCoord2f(1, 1);
+  glVertex2f(maxX, minY);
+
+  glTexCoord2f(1, 0);
+  glVertex2f(maxX, maxY);
+
+  glTexCoord2f(0, 0);
+  glVertex2f(minX, maxY);
+  glEnd();
+
 }
 
 // Menu handling function definition
@@ -157,7 +160,21 @@ void menutextures::screenSizeMenu(int item)
 
 
 void menutextures::checkButtonClick(int x, int y){
-		
+	  int res = resolutionX/640;
+	  int width = resolutionX, height = resolutionY;
+
+	  if(x > width-(128*res) && 
+		 y > 10 &&
+		 x < width-10 &&
+		 y < (64*res)){ //Start Box
+			 this->mode = 2;
+			 cout << "2";
+	  } else if(x > width- (128*res) &&
+		 y > 10+(64*res) &&
+		 x < width-10 &&
+		 y < (64*res*2)){ //Options)
+
+	  }
 }
 
 bool menutextures::checkScreenSize(int w, int h){
@@ -173,9 +190,15 @@ bool menutextures::checkScreenSize(int w, int h){
 }
 
 void menutextures::load(void){
-	menuTex[2] = loadTexture("../Assets/Textures/Transparent.png");
 	menuTex[0] = loadTexture("../Assets/Textures/Border_4-3.png");
 	menuTex[1] = loadTexture("../Assets/Textures/Border_16-9.png");
+	menuTex[2] = loadTexture("../Assets/Textures/Transparent.png");
+	menuTex[3] = loadTexture("../Assets/Textures/Menu_4-3.png");
+	menuTex[4] = loadTexture("../Assets/Textures/Menu_16-9.png");
+	menuTex[5] = loadTexture("../Assets/Textures/Start.png");
+	menuTex[6] = loadTexture("../Assets/Textures/Options.png");
+	menuTex[7] = loadTexture("../Assets/Textures/NextTurn.png");
+	menuTex[8] = loadTexture("../Assets/Textures/Roll.png");
 
 	// Create a menu
 	glutCreateMenu(&menutextures::screenSizeMenu);
@@ -188,7 +211,7 @@ void menutextures::load(void){
         glutAddMenuEntry("1920 x 1080 (1080p) 16:9", 4);
 
         // Associate a mouse button with menu
-        glutAttachMenu(GLUT_LEFT_BUTTON);
+        glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 
 int menutextures::getResolutionX(){

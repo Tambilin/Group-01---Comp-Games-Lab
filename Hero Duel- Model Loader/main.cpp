@@ -67,7 +67,8 @@ int main()
 	md5object.init ("../Assets/Models/pinky.md5mesh" , "../Assets/Animations/idle1.md5anim", "../Assets/Textures/pinky_s.tga");
 	//md5object1.init ("../Assets/Models/boblampclean.md5mesh" , "../Assets/Animations/boblampclean.md5anim", "../Assets/Textures/guard1_body.tga");
 	//md5object1.useModelShaderTextures("../Assets/Textures/");
-	md5object1.init ("../Assets/Models/sdgs.md5mesh" , "../Assets/Animations/sdgs.md5anim", "");
+	md5object1.init ("../Assets/Models/RobotNoHands.md5mesh" , NULL, "../Assets/Textures/Bodygrass.tga");
+	md5object1.useModelShaderTextures("../Assets/Textures/");
 
 	//Object loader
 	Wings->InitGL();
@@ -164,23 +165,26 @@ void display()
 	////////////////////////////////////////////
 
 	glPushMatrix();
-	glTranslatef(0,5,42);
-	glRotatef(180,0,1,0);
-	glScalef(64,64,64);
+	glTranslatef(-0.8,1,-3);//5,42);
+	glRotatef(90,1,0,0);
+	//glScalef(64,64,64);
+	//glScalef(0.5,0.5,0.5);
 	Wings->DrawModelUsingFixedFuncPipeline();
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslatef(55,0,30);
+	glTranslatef(0.5,1.5,-5);
 	glRotatef(((int)(movement))+55,0,1,1);
-	glScalef(32,32,32);
+	//glScalef(0.3,0.3,0.3);
 	Pallet->DrawModelUsingFixedFuncPipeline();
 	glPopMatrix();
 
 	//enable client states for glDrawElements
 	glEnableClientState (GL_VERTEX_ARRAY);
+	glEnableClientState (GL_NORMAL_ARRAY);
 	glEnableClientState (GL_TEXTURE_COORD_ARRAY);
 
+	glPushMatrix();
 	md5object.enableTextured(true);
 	md5object.enableSkeleton(false);
 	md5object.enableRotate(false);
@@ -189,9 +193,11 @@ void display()
 	md5object1.enableTextured(true);
 	md5object1.enableSkeleton(true);
 	md5object1.enableRotate(true);
-	md5object1.draw(-25.0, 0.0, -150.0, 1.0);
+	md5object1.draw(-25.0, 0.0, -250.0, 0.2);
+	glPopMatrix();
 
 	glDisableClientState (GL_TEXTURE_COORD_ARRAY);
+	glDisableClientState (GL_NORMAL_ARRAY);
 	glDisableClientState (GL_VERTEX_ARRAY);
 
 	Menu->render(width, height);
@@ -319,6 +325,7 @@ void mouse(int button, int state, int x, int y)
     {
       leftButtonDown = (state == GLUT_DOWN) ? TRUE : FALSE;
 	  if(leftButtonDown == true){
+		  cout << "Hi";
 		Menu->checkButtonClick(x,y);
 	  }
     }

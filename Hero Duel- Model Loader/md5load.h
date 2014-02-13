@@ -170,8 +170,10 @@ class md5load
 		void BuildFrameSkeleton (const struct joint_info_t *jointInfos, const baseframe_joint_t *baseFrame, const float *animFrameData, struct md5_joint_t *skelFrame, int num_joints);
 		void InterpolateSkeletons (const struct md5_joint_t *skelA, const struct md5_joint_t *skelB, int num_joints, float interp, struct md5_joint_t *out);
 		void PrepareMesh (const struct md5_mesh_t *mesh, const struct md5_joint_t *skeleton);
+		bool PrepareNormals(const struct md5_mesh_t *mesh);
 		void Animate (const struct md5_anim_t *anim, struct anim_info_t *animInfo, double dt);
 		void DrawSkeleton (const struct md5_joint_t *skeleton, int num_joints);
+		void RenderNormals();
 		void FreeVertexArrays ();
 		void FreeModel (struct md5_model_t *mdl);
 
@@ -203,6 +205,7 @@ class md5load
 		int max_tris;// = 0;
 
 		vec5_t *vertexArray;// = NULL;
+		vec3_t *normalArray;
 		GLuint *vertexIndices;// = NULL;
 
 		bool drawTexture;

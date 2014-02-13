@@ -20,6 +20,7 @@ private:
 	GLuint menuTex[256];//Max 256 Textures
 	static int resolutionX; 
 	static int resolutionY; 
+	int mode;
 	bool widescreen; 
 public:
 	menutextures(void);
@@ -32,6 +33,7 @@ public:
 	void setResolutionX(int x);
 	void setResolutionY(int y);
 	static void _cdecl screenSizeMenu(int item);
+	void drawQuad(int textureID, int minX, int minY, int maxX, int maxY);
 	menutextures(char * filePath);
 	~menutextures(void);
 };
