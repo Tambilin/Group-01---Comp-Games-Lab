@@ -127,6 +127,12 @@ void md5load::init (const char *filename, const char *animfile, char *texturefil
   if (!animated)
     printf ("init: no animation loaded.\n");
 
+  for (int i = 0; i < md5file.num_meshes; ++i)
+  {
+	  PrepareMesh(&md5file.meshes[i], md5file.baseSkel);
+	  PrepareNormals(&md5file.meshes[i]);
+  }
+
 }
 
 void md5load::AllocVertexArrays ()
@@ -339,7 +345,8 @@ int md5load::ReadMD5Model (const char *filename, struct md5_model_t *mdl)
 		  mesh->weights[weight_index].pos[2] = fdata[2];
 		}
 	    }
-
+	  //PrepareMesh(mesh, skeleton);
+	  //PrepareNormals(mesh);
 	  curr_mesh++;
 	}
     }
@@ -749,10 +756,10 @@ void md5load::draw (float x, float y, float z, float scale, float a, float rot1,
 
       PrepareMesh (&md5file.meshes[i], skeleton);
 
-	  if (this->normals == false){
-		  PrepareNormals(&md5file.meshes[i]);
-		  this->normals = true;
-	  }
+	 // if (this->normals == false){
+		//  PrepareNormals(&md5file.meshes[i]);
+		//  this->normals = true;
+	 // }
 
       glVertexPointer (3,GL_FLOAT,sizeof(GL_FLOAT)*5,vertexArray);
 
@@ -791,7 +798,7 @@ void md5load::PrepareMesh (const struct md5_mesh_t *mesh, const struct md5_joint
   for (i = 0; i < mesh->num_verts; ++i)
     {
       vec3_t finalVertex = { 0.0f, 0.0f, 0.0f };
-
+	  float n1 = 0, n2 = 0, n3 = 0;
       /* Calculate final vertex to draw with weights */
       for (j = 0; j < mesh->vertices[i].count; ++j)
 	{
@@ -801,13 +808,20 @@ void md5load::PrepareMesh (const struct md5_mesh_t *mesh, const struct md5_joint
 	    = &skeleton[weight->joint];
 
 	  /* Calculate transformed vertex for this weight */
-	  vec3_t wv;
+	  vec3_t wv, nm;
 	  Quat_rotatePoint (joint->orient, weight->pos, wv);
 
 	  /* The sum of all weight->bias should be 1.0 */
 	  finalVertex[0] += (joint->pos[0] + wv[0]) * weight->bias;
 	  finalVertex[1] += (joint->pos[1] + wv[1]) * weight->bias;
 	  finalVertex[2] += (joint->pos[2] + wv[2]) * weight->bias;
+
+	  //Quat_multVec(joint->orient, mesh->vertices[i].normal, nm);
+	  //normalArray[i];
+
+	  n1 = (mesh->vertices[i].normal[0]);//*joint->orient[0])*weight->bias;
+	  n2 = (mesh->vertices[i].normal[1]);// * joint->orient[1])*weight->bias;
+	  n3 = (mesh->vertices[i].normal[2]);// * joint->orient[2])*weight->bias;
 	}
 
       vertexArray[i][0] = finalVertex[0];
@@ -815,13 +829,17 @@ void md5load::PrepareMesh (const struct md5_mesh_t *mesh, const struct md5_joint
       vertexArray[i][2] = finalVertex[2];
 	  vertexArray[i][3] = mesh->vertices[i].st[0];
 	  vertexArray[i][4] = 1.0f - mesh->vertices[i].st[1];
+
+	  normalArray[i][0] = n1;
+	  normalArray[i][1] = n2;
+	  normalArray[i][2] = n3;
     }
 
   
 }
 
 
-bool md5load::PrepareNormals(const struct md5_mesh_t *mesh)
+bool md5load::PrepareNormals(md5_mesh_t *mesh)
 {
 
     // Loop through all triangles and calculate the normal of each triangle
@@ -893,10 +911,11 @@ bool md5load::PrepareNormals(const struct md5_mesh_t *mesh)
 		//subset.vertices[i].normal.x = -XMVectorGetX(normalSum);
 		//subset.vertices[i].normal.y = -XMVectorGetY(normalSum);
 		//subset.vertices[i].normal.z = -XMVectorGetZ(normalSum);
+		//mesh->vertices//->normal[0] = 5;
 
-		normalArray[i][0] = normalSum[0];
-		normalArray[i][1] = normalSum[1];
-		normalArray[i][2] = normalSum[2];
+		mesh->vertices[i].normal[0] = normalSum[0];
+		mesh->vertices[i].normal[1] = normalSum[1];
+		mesh->vertices[i].normal[2] = normalSum[2];
 
 		//Clear normalSum, facesUsing for next vertex
 		tX = 0.0f, tY = 0.0f, tZ = 0.0f;

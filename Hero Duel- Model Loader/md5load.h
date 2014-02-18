@@ -44,6 +44,7 @@
 		struct md5_vertex_t
 		{
 		  vec2_t st;
+		  vec3_t normal;
 
 		  int start; /* start weight */
 		  int count; /* weight count */
@@ -159,7 +160,7 @@ class md5load
 		void cleanup();
 		
 		float getSkeletonPosition(int joint, int xyz);
-		bool PrepareNormals(const struct md5_mesh_t *mesh);
+		bool PrepareNormals(md5_mesh_t *mesh);
 
 
      private:

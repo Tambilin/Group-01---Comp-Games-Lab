@@ -55,6 +55,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\bitmap.cpp" />
+    <ClCompile Include="..\card.cpp" />
+    <ClCompile Include="..\gamestate.cpp" />
     <ClCompile Include="..\main.cpp" />
     <ClCompile Include="..\md5load.cpp" />
     <ClCompile Include="..\menutextures.cpp" />
@@ -64,6 +66,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\bitmap.h" />
+    <ClInclude Include="..\card.h" />
+    <ClInclude Include="..\gamestate.h" />
     <ClInclude Include="..\md5load.h" />
     <ClInclude Include="..\menutextures.h" />
     <ClInclude Include="..\model_obj.h" />
