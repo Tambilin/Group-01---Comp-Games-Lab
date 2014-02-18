@@ -17,11 +17,13 @@ md5load::md5load()
 
 		vertexArray = NULL;
 		normalArray = NULL;
+		tempNormal = NULL;
 		vertexIndices = NULL;
 
 		//set up texture loading
 		ilInit(); // initialize IL
 
+		normals = false;
 		drawTexture = true;
 		multiTexture = false;
 		drawSkeleton = false;
@@ -78,6 +80,7 @@ void md5load::useModelShaderTextures(char *filepath){
 void md5load::init (const char *filename, const char *animfile, char *texturefile)
 {
 
+  normals = false;
   modeltexture = loadTexture(texturefile);
 
   //modeltexture = loadTexture(md5file.meshes[0].shader);
@@ -123,13 +126,15 @@ void md5load::init (const char *filename, const char *animfile, char *texturefil
 
   if (!animated)
     printf ("init: no animation loaded.\n");
+
 }
 
 void md5load::AllocVertexArrays ()
 {
   vertexArray = (vec5_t *)malloc (sizeof (vec5_t) * max_verts);
   vertexIndices = (GLuint *)malloc (sizeof (GLuint) * max_tris * 3);
-  normalArray = (vec3_t *)malloc (sizeof (vec3_t) * max_tris);
+  normalArray = (vec3_t *)malloc (sizeof (vec3_t) * max_verts);
+  tempNormal = (vec3_t *)malloc(sizeof (vec3_t)* max_tris);
 }
 
 /**
@@ -721,6 +726,7 @@ void md5load::draw (float x, float y, float z, float scale, float a, float rot1,
  //// /* Draw each mesh of the model */
   for (i = 0; i < md5file.num_meshes; ++i)
     {
+	  /*
 	  // Lighting
 	GLfloat light_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
 	GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
@@ -734,7 +740,7 @@ void md5load::draw (float x, float y, float z, float scale, float a, float rot1,
 	
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
-	glShadeModel(GL_SMOOTH);
+	glShadeModel(GL_SMOOTH);*/
 
 	  if(multiTexture == false)
 		  glBindTexture(GL_TEXTURE_2D, modeltexture);
@@ -742,7 +748,11 @@ void md5load::draw (float x, float y, float z, float scale, float a, float rot1,
 		  glBindTexture(GL_TEXTURE_2D, menuTex[i]);
 
       PrepareMesh (&md5file.meshes[i], skeleton);
-	  PrepareNormals(&md5file.meshes[i]);
+
+	  if (this->normals == false){
+		  PrepareNormals(&md5file.meshes[i]);
+		  this->normals = true;
+	  }
 
       glVertexPointer (3,GL_FLOAT,sizeof(GL_FLOAT)*5,vertexArray);
 
@@ -755,8 +765,8 @@ void md5load::draw (float x, float y, float z, float scale, float a, float rot1,
       glDrawElements (GL_TRIANGLES, md5file.meshes[i].num_tris * 3, GL_UNSIGNED_INT, vertexIndices);
 
 	  RenderNormals();
-	  glDisable(GL_LIGHT0);
-	  glDisable(GL_LIGHTING);
+	  //glDisable(GL_LIGHT0);
+	  //glDisable(GL_LIGHTING);
     }
 
 }
@@ -813,7 +823,7 @@ void md5load::PrepareMesh (const struct md5_mesh_t *mesh, const struct md5_joint
 
 bool md5load::PrepareNormals(const struct md5_mesh_t *mesh)
 {
- 
+
     // Loop through all triangles and calculate the normal of each triangle
     for ( unsigned int i = 0; i < mesh->num_tris; ++i )
     {
@@ -838,16 +848,61 @@ bool md5load::PrepareNormals(const struct md5_mesh_t *mesh)
             x[2] * y[0] - y[2] * x[0],
 			x[0] * y[1] - y[0] * x[1]};
 
-		float factor = sqrt(normal[0]*normal[0]+normal[1]*normal[1]+normal[2]*normal[2]);
-		if (factor != 0)
+		tempNormal[i][0] = normal[0];
+		tempNormal[i][1] = normal[1];
+		tempNormal[i][2] = normal[2];
+	}
+
+	//Compute vertex normals (normal Averaging)
+	//XMVECTOR normalSum = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+	vec3_t normalSum;
+	int facesUsing = 0;
+	float tX = 0.0f, tY = 0.0f, tZ = 0.0f;	//temp axis variables
+
+	//Go through each vertex
+	for (int i = 0; i < mesh->num_verts; ++i)
+	{
+		//Check which triangles use this vertex
+		for (int j = 0; j < mesh->num_tris; ++j)
 		{
-		normal[0] /= factor; normal[1]/= factor; normal[2] /=factor;
+			if (vertexIndices[j * 3] == i ||
+				vertexIndices[(j * 3) + 1] == i ||
+				vertexIndices[(j * 3) + 2] == i)
+			{
+				tX += tempNormal[j][0];
+				tY += tempNormal[j][1];
+				tZ += tempNormal[j][2];
+
+				facesUsing++;
+			}
 		}
 
-		normalArray[i][0] = normal[0];
-		normalArray[i][1] = normal[1];
-		normalArray[i][2] = normal[2];
-    }
+		normalSum[0] = tX/facesUsing;
+		normalSum[1] = tY/facesUsing;
+		normalSum[2] = tZ/facesUsing;
+
+
+		//Normalize the normalSum vector
+		float factor = sqrt(normalSum[0] * normalSum[0] + normalSum[1] * normalSum[1] + normalSum[2] * normalSum[2]);
+		if (factor != 0)
+		{
+			normalSum[0] /= factor; normalSum[1] /= factor; normalSum[2] /= factor;
+		}
+
+		//Store the normal and tangent in our current vertex
+		//subset.vertices[i].normal.x = -XMVectorGetX(normalSum);
+		//subset.vertices[i].normal.y = -XMVectorGetY(normalSum);
+		//subset.vertices[i].normal.z = -XMVectorGetZ(normalSum);
+
+		normalArray[i][0] = normalSum[0];
+		normalArray[i][1] = normalSum[1];
+		normalArray[i][2] = normalSum[2];
+
+		//Clear normalSum, facesUsing for next vertex
+		tX = 0.0f, tY = 0.0f, tZ = 0.0f;
+		facesUsing = 0;
+	}
+    //}
  
     // Now normalize all the normals
     /*for ( unsigned int i = 0; i < max_verts; ++i )

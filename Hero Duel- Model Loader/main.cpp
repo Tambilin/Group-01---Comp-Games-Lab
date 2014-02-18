@@ -67,12 +67,13 @@ int main()
 	md5object.init ("../Assets/Models/pinky.md5mesh" , "../Assets/Animations/idle1.md5anim", "../Assets/Textures/pinky_s.tga");
 	//md5object1.init ("../Assets/Models/boblampclean.md5mesh" , "../Assets/Animations/boblampclean.md5anim", "../Assets/Textures/guard1_body.tga");
 	//md5object1.useModelShaderTextures("../Assets/Textures/");
-	md5object1.init ("../Assets/Models/RobotNoHands.md5mesh" , NULL, "../Assets/Textures/Bodygrass.tga");
+	md5object1.init ("../Assets/Models/RobotNoHands.md5mesh" , NULL, "../Assets/Textures/grass.tga");
 	md5object1.useModelShaderTextures("../Assets/Textures/");
+
 
 	//Object loader
 	Wings->InitGL();
-	Wings->LoadModel("../Assets/Models/WingsOBJ.obj");
+	Wings->LoadModel("../Assets/Models/Pallet.obj");
 	Pallet->LoadModel("../Assets/Models/Pallet.obj");
 
 	//load sounds
@@ -184,10 +185,25 @@ void display()
 	glEnableClientState (GL_NORMAL_ARRAY);
 	glEnableClientState (GL_TEXTURE_COORD_ARRAY);
 
+	// Lighting
+	GLfloat light_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
+	GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
+
+	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glShadeModel(GL_SMOOTH);
+
 	glPushMatrix();
 	md5object.enableTextured(true);
 	md5object.enableSkeleton(false);
-	md5object.enableRotate(false);
+	md5object.enableRotate(true);
 	md5object.draw(0.0, -35.0, -150.0, 0.5);
 
 	md5object1.enableTextured(true);
@@ -195,6 +211,9 @@ void display()
 	md5object1.enableRotate(true);
 	md5object1.draw(-25.0, 0.0, -250.0, 0.2);
 	glPopMatrix();
+
+	glDisable(GL_LIGHT0);
+	glDisable(GL_LIGHTING);
 
 	glDisableClientState (GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState (GL_NORMAL_ARRAY);

@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iostream>
 #include <assert.h>
+#include <vector>
 
 #include "GLEW/glew.h"
 #include "glut.h"
@@ -158,6 +159,7 @@ class md5load
 		void cleanup();
 		
 		float getSkeletonPosition(int joint, int xyz);
+		bool PrepareNormals(const struct md5_mesh_t *mesh);
 
 
      private:
@@ -170,7 +172,6 @@ class md5load
 		void BuildFrameSkeleton (const struct joint_info_t *jointInfos, const baseframe_joint_t *baseFrame, const float *animFrameData, struct md5_joint_t *skelFrame, int num_joints);
 		void InterpolateSkeletons (const struct md5_joint_t *skelA, const struct md5_joint_t *skelB, int num_joints, float interp, struct md5_joint_t *out);
 		void PrepareMesh (const struct md5_mesh_t *mesh, const struct md5_joint_t *skeleton);
-		bool PrepareNormals(const struct md5_mesh_t *mesh);
 		void Animate (const struct md5_anim_t *anim, struct anim_info_t *animInfo, double dt);
 		void DrawSkeleton (const struct md5_joint_t *skeleton, int num_joints);
 		void RenderNormals();
@@ -196,6 +197,7 @@ class md5load
 		struct md5_anim_t md5anim;
 
 		int animated;// = 0;
+		bool normals;
 
 		struct md5_joint_t *skeleton;// = NULL;
 		struct anim_info_t animInfo;
@@ -206,6 +208,7 @@ class md5load
 
 		vec5_t *vertexArray;// = NULL;
 		vec3_t *normalArray;
+		vec3_t *tempNormal;
 		GLuint *vertexIndices;// = NULL;
 
 		bool drawTexture;
