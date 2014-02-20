@@ -1,5 +1,12 @@
 #include "gamestate.h"
 
+int gamestate::turnID = 0;
+bool gamestate::firstSecond = false;
+std::pair<int, int> gamestate::manaPoints = std::make_pair(0, 0);
+std::pair<int, int> gamestate::deckSize = std::make_pair(30, 30);
+std::pair<int, int> gamestate::handSize = std::make_pair(0, 0);
+std::pair<card, card> gamestate::heroStats;
+int gamestate::phase = 0;
 
 gamestate::gamestate()
 {
@@ -11,15 +18,7 @@ gamestate::~gamestate()
 }
 
 void gamestate::init(){
-	turnID = 0;
-	firstSecond = false;
-	manaPoints.first = 0;
-	manaPoints.second = 0;
-	deckSize.first = 30;
-	deckSize.second = 30;
-	handSize.first = 0;
-	handSize.second = 0;
-	phase = 0; 
+
 }
 
 void gamestate::updateState(void){

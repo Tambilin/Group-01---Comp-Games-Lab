@@ -5,7 +5,7 @@ using namespace std;
 
 class gamestate
 {
-private:
+public:
 	static int turnID;
 	static bool firstSecond;
 	static std::pair<int, int> manaPoints;
@@ -14,7 +14,7 @@ private:
 	static std::pair<card, card> heroStats;
 	static int phase;
 
-public:
+
 	static void init();
 	static void updateState(void);
 	static int currentState();

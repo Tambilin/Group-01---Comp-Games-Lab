@@ -26,7 +26,8 @@ public:
 	menutextures(void);
 	void load(void);
 	void render(int width, int height);
-	void checkButtonClick(int x, int y);
+	void checkButtonClick(int x, int y, int width, int height);
+	void text(void *font, const char *fmt, int x, int y, float r, float g, float b);
 	bool checkScreenSize(int x, int y);
 	int getResolutionX();
 	int getResolutionY();

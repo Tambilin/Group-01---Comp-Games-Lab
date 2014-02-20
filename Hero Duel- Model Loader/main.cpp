@@ -344,8 +344,7 @@ void mouse(int button, int state, int x, int y)
     {
       leftButtonDown = (state == GLUT_DOWN) ? TRUE : FALSE;
 	  if(leftButtonDown == true){
-		  cout << "Hi";
-		Menu->checkButtonClick(x,y);
+		Menu->checkButtonClick(x,y,width,height);
 	  }
     }
 }

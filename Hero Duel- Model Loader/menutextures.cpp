@@ -6,7 +6,7 @@ int menutextures::resolutionY = 480;
 menutextures::menutextures(void)
 {
 	widescreen = false;
-	mode = 1;
+	mode = 0;
 }
 
 
@@ -73,15 +73,27 @@ void menutextures::render(int width, int height){
   else 
     offset = 1;
 
-  if(mode == 1){
-  drawQuad(3+offset, 0, 0, width, height); //Menu
-  drawQuad(5, width- (128*res), height-(64*res), width-10, height-10); //Start
-  drawQuad(6, width- (128*res), height-(64*res*2), width-10, height-10-(64*res)); //Options
-  } else {
-  drawQuad(0+offset, 0, 0, width, height); //Border
-  drawQuad(2, 0, 0, width, height); //Glow
+  switch (mode)
+  {
+  case 0:
+	  drawQuad(3 + offset, 0, 0, width, height); //Menu background
+	  drawQuad(5, width - (128 * res), height - (64 * res), width - 10, height - 10); //Start
+	  drawQuad(6, width - (128 * res), height - (64 * res * 2), width - 10, height - 10 - (64 * res)); //Options
+	  break;
+  case 1:
+	  drawQuad(0 + offset, 0, 0, width, height); //Border
+	  drawQuad(8, width - (128 * res), height - (64 * res), width - 10, height - 10); //Roll
+	  break;
+  case 2:
+	  //drawQuad(0 + offset, 0, 0, width, height); //Border
+	  text(GLUT_BITMAP_HELVETICA_18, "P1:", 10, 10, 1, 1, 0);
+	  text(GLUT_BITMAP_HELVETICA_18, "P2:", width - 35, 10, 1, 1, 0);
+	  drawQuad(7, width - (128 * res), height - (64 * res), width - 10, height - 10); //Next turn
+	  break;
+  default:
+	  drawQuad(3 + offset, 0, 0, width, height); //Menu background
+	  break;
   }
-
 
   glDisable(GL_BLEND);
 
@@ -159,16 +171,17 @@ void menutextures::screenSizeMenu(int item)
 
 
 
-void menutextures::checkButtonClick(int x, int y){
+void menutextures::checkButtonClick(int x, int y, int width, int height){
 	  int res = resolutionX/640;
-	  int width = resolutionX, height = resolutionY;
 
 	  if(x > width-(128*res) && 
 		 y > 10 &&
 		 x < width-10 &&
-		 y < (64*res)){ //Start Box
-			 this->mode = 2;
-			 cout << "2";
+		 y < (64*res)){ //Start Bo
+		  this->mode++;
+		  if (this->mode > 2){
+			  this->mode = 1;
+		  }
 	  } else if(x > width- (128*res) &&
 		 y > 10+(64*res) &&
 		 x < width-10 &&
@@ -212,6 +225,16 @@ void menutextures::load(void){
 
         // Associate a mouse button with menu
         glutAttachMenu(GLUT_RIGHT_BUTTON);
+}
+
+void menutextures::text(void *font, const char *fmt, int x, int y, float r, float g, float b){
+	glColor3f(r, g, b);
+	glRasterPos2f(x, y);
+	const char *c;
+	for (c = fmt; *c != '\0'; c++) {
+		glutBitmapCharacter(font, *c);
+	}
+	glColor3f(1, 1, 1);
 }
 
 int menutextures::getResolutionX(){
