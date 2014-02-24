@@ -11,7 +11,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="simpleTest.c" />
+    <ClCompile Include="loadMultiple.c" />
+    <ClCompile Include="object.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="object.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{BCCCBAC0-11DF-4879-96CA-0B8B5B546752}</ProjectGuid>

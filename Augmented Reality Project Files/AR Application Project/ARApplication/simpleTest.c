@@ -3,6 +3,8 @@
 #endif
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <math.h>
 #ifndef __APPLE__
 #include <GL/gl.h>
 #include <GL/glut.h>
@@ -15,33 +17,36 @@
 #include <AR/param.h>
 #include <AR/ar.h>
 
-//
-// Camera configuration.
-//
+#include "object.h"
+
+#define COLLIDE_DIST 30000.0
+
+/* Object Data */
+char            *model_name = "Data/object_data2";
+ObjectData_T    *object;
+int             objectnum;
+
+int             xsize, ysize;
+int				thresh = 100;
+int             count = 0;
+
+/* set up the video format globals */
+
 #ifdef _WIN32
 char			*vconf = "Data\\WDM_camera_flipV.xml";
 #else
 char			*vconf = "";
 #endif
 
-int             xsize, ysize;
-int             thresh = 100;
-int             count = 0;
-
-char           *cparam_name    = "Data/camera_para.dat";
+char           *cparam_name = "Data/camera_para.dat";
 ARParam         cparam;
-
-char           *patt_name      = "Data/patt.hiro";
-int             patt_id;
-double          patt_width     = 80.0;
-double          patt_center[2] = {0.0, 0.0};
-double          patt_trans[3][4];
 
 static void   init(void);
 static void   cleanup(void);
-static void   keyEvent( unsigned char key, int x, int y);
+static void   keyEvent(unsigned char key, int x, int y);
 static void   mainLoop(void);
-static void   draw( void );
+static int draw(ObjectData_T *object, int objectnum);
+static int  draw_object(int obj_id, double gl_para[16]);
 
 int main(int argc, char **argv)
 {
@@ -66,13 +71,12 @@ static void   keyEvent( unsigned char key, int x, int y)
 /* main loop */
 static void mainLoop(void)
 {
-
     ARUint8         *dataPtr;
     ARMarkerInfo    *marker_info;
     int             marker_num;
-    int             j, k;
+    int             i, j, k;
 
-    /* grab a vide frame */
+    /* grab a video frame */
     if( (dataPtr = (ARUint8 *)arVideoGetImage()) == NULL ) {
         arUtilSleep(2);
         return;
@@ -82,6 +86,9 @@ static void mainLoop(void)
 
     argDrawMode2D();
     argDispImage( dataPtr, 0,0 );
+
+	glColor3f(1.0, 0.0, 0.0);
+	glLineWidth(6.0);
 
     /* detect the markers in the video frame */
     if( arDetectMarker(dataPtr, thresh, &marker_info, &marker_num) < 0 ) {

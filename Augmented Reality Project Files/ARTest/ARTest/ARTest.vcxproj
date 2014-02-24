@@ -10,6 +10,15 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ARTest.cpp" />
+    <ClCompile Include="lib\SRC\Gl\gsub.c" />
+    <ClCompile Include="lib\SRC\VideoWin32DirectShow\videoWin32DirectShow.cpp" />
+    <ClCompile Include="object.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="object.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{43D3B50D-656B-4B1E-BE3D-E35F743FD25C}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -41,6 +50,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Users\Adam\Documents\UNI\Year 4\Games Development\Git Shared\Augmented Reality Project Files\ARTest\ARTest\lib;</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -52,8 +62,8 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\Adam\Documents\UNI\Year 4\Games Development\Git Shared\Augmented Reality Project Files\ARTest\include</AdditionalIncludeDirectories>
+      <SDLCheck>false</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Users\Adam\Documents\UNI\Year 4\Games Development\Git Shared\Augmented Reality Project Files\ARTest\ARTest\include; C:\Users\Adam\Documents\UNI\Year 4\Games Development\Git Shared\Augmented Reality Project Files\ARTest\ARTest\DSVL\src;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -78,9 +88,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="..\ARTest.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

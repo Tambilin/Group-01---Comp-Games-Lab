@@ -15,8 +15,22 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\ARTest.cpp">
+    <ClCompile Include="ARTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="object.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\SRC\Gl\gsub.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\SRC\VideoWin32DirectShow\videoWin32DirectShow.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
