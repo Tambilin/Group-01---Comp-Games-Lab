@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -17,11 +17,11 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -55,15 +55,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\bitmap.cpp" />
+    <ClCompile Include="..\card.cpp" />
+    <ClCompile Include="..\gamestate.cpp" />
     <ClCompile Include="..\main.cpp" />
     <ClCompile Include="..\md5load.cpp" />
+    <ClCompile Include="..\menutextures.cpp" />
     <ClCompile Include="..\model_obj.cpp" />
     <ClCompile Include="..\objload.cpp" />
     <ClCompile Include="..\soundeffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\bitmap.h" />
+    <ClInclude Include="..\card.h" />
+    <ClInclude Include="..\gamestate.h" />
     <ClInclude Include="..\md5load.h" />
+    <ClInclude Include="..\menutextures.h" />
     <ClInclude Include="..\model_obj.h" />
     <ClInclude Include="..\objload.h" />
     <ClInclude Include="..\soundeffect.h" />

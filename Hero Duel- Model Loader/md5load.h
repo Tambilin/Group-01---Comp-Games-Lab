@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iostream>
 #include <assert.h>
+#include <vector>
 
 #include "GLEW/glew.h"
 #include "glut.h"
@@ -43,6 +44,7 @@
 		struct md5_vertex_t
 		{
 		  vec2_t st;
+		  vec3_t normal;
 
 		  int start; /* start weight */
 		  int count; /* weight count */
@@ -148,6 +150,7 @@ class md5load
         void Run(ifstream &theCardFile);
 
 		void draw(float x, float y, float z, float scale);
+		void draw (float x, float y, float z, float scale, float a, float rot1, float rot2, float rot3);
 		void init (const char *filename, const char *animfile, char *texturefile);
 
 		void enableSkeleton(bool skeleton);
@@ -157,6 +160,7 @@ class md5load
 		void cleanup();
 		
 		float getSkeletonPosition(int joint, int xyz);
+		bool PrepareNormals(md5_mesh_t *mesh);
 
 
      private:
@@ -171,6 +175,7 @@ class md5load
 		void PrepareMesh (const struct md5_mesh_t *mesh, const struct md5_joint_t *skeleton);
 		void Animate (const struct md5_anim_t *anim, struct anim_info_t *animInfo, double dt);
 		void DrawSkeleton (const struct md5_joint_t *skeleton, int num_joints);
+		void RenderNormals();
 		void FreeVertexArrays ();
 		void FreeModel (struct md5_model_t *mdl);
 
@@ -193,6 +198,7 @@ class md5load
 		struct md5_anim_t md5anim;
 
 		int animated;// = 0;
+		bool normals;
 
 		struct md5_joint_t *skeleton;// = NULL;
 		struct anim_info_t animInfo;
@@ -202,6 +208,8 @@ class md5load
 		int max_tris;// = 0;
 
 		vec5_t *vertexArray;// = NULL;
+		vec3_t *normalArray;
+		vec3_t *tempNormal;
 		GLuint *vertexIndices;// = NULL;
 
 		bool drawTexture;

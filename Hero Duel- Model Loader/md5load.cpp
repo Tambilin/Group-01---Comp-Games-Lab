@@ -16,11 +16,14 @@ md5load::md5load()
 		max_tris = 0;
 
 		vertexArray = NULL;
+		normalArray = NULL;
+		tempNormal = NULL;
 		vertexIndices = NULL;
 
 		//set up texture loading
 		ilInit(); // initialize IL
 
+		normals = false;
 		drawTexture = true;
 		multiTexture = false;
 		drawSkeleton = false;
@@ -77,6 +80,7 @@ void md5load::useModelShaderTextures(char *filepath){
 void md5load::init (const char *filename, const char *animfile, char *texturefile)
 {
 
+  normals = false;
   modeltexture = loadTexture(texturefile);
 
   //modeltexture = loadTexture(md5file.meshes[0].shader);
@@ -122,12 +126,21 @@ void md5load::init (const char *filename, const char *animfile, char *texturefil
 
   if (!animated)
     printf ("init: no animation loaded.\n");
+
+  for (int i = 0; i < md5file.num_meshes; ++i)
+  {
+	  PrepareMesh(&md5file.meshes[i], md5file.baseSkel);
+	  PrepareNormals(&md5file.meshes[i]);
+  }
+
 }
 
 void md5load::AllocVertexArrays ()
 {
   vertexArray = (vec5_t *)malloc (sizeof (vec5_t) * max_verts);
   vertexIndices = (GLuint *)malloc (sizeof (GLuint) * max_tris * 3);
+  normalArray = (vec3_t *)malloc (sizeof (vec3_t) * max_verts);
+  tempNormal = (vec3_t *)malloc(sizeof (vec3_t)* max_tris);
 }
 
 /**
@@ -332,7 +345,8 @@ int md5load::ReadMD5Model (const char *filename, struct md5_model_t *mdl)
 		  mesh->weights[weight_index].pos[2] = fdata[2];
 		}
 	    }
-
+	  //PrepareMesh(mesh, skeleton);
+	  //PrepareNormals(mesh);
 	  curr_mesh++;
 	}
     }
@@ -646,8 +660,12 @@ void md5load::Quat_multVec (const quat4_t q, const vec3_t v, quat4_t out)
   out[Z] =   (q[W] * v[Z]) + (q[X] * v[Y]) - (q[Y] * v[X]);
 }
 
-void md5load::draw (float x, float y, float z, float scale)
-//void md5load::draw ()
+void md5load::draw (float x, float y, float z, float scale){
+	this->draw (x,y,z,scale, -90.0f, 1.0f, 0.0f, 0.0f);
+}
+
+
+void md5load::draw (float x, float y, float z, float scale, float a, float rot1, float rot2, float rot3)
 {
   int i;
   static float angle = 0;
@@ -669,10 +687,11 @@ void md5load::draw (float x, float y, float z, float scale)
 	glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
   }
 
-  glTranslatef (x, y, z);
-  //glTranslatef(0.0f, -35.0f, -150.0f);
+  //glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 
-  glRotatef (-90.0f, 1.0, 0.0, 0.0);
+  glTranslatef (x, y, z);
+
+  glRotatef (a, rot1, rot2, rot3);
 
   glScalef(scale, scale, scale);
 
@@ -711,10 +730,25 @@ void md5load::draw (float x, float y, float z, float scale)
 	DrawSkeleton (skeleton, md5file.num_joints);
   }
 
-
  //// /* Draw each mesh of the model */
   for (i = 0; i < md5file.num_meshes; ++i)
     {
+	  /*
+	  // Lighting
+	GLfloat light_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
+	GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
+
+	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+	
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glShadeModel(GL_SMOOTH);*/
+
 	  if(multiTexture == false)
 		  glBindTexture(GL_TEXTURE_2D, modeltexture);
 	  else
@@ -722,13 +756,24 @@ void md5load::draw (float x, float y, float z, float scale)
 
       PrepareMesh (&md5file.meshes[i], skeleton);
 
+	 // if (this->normals == false){
+		//  PrepareNormals(&md5file.meshes[i]);
+		//  this->normals = true;
+	 // }
+
       glVertexPointer (3,GL_FLOAT,sizeof(GL_FLOAT)*5,vertexArray);
+
+	  glNormalPointer( GL_FLOAT, sizeof(GL_FLOAT)*3, normalArray );
 
 	  char *evilPointer = (char *)vertexArray;
 	  evilPointer+=sizeof(GL_FLOAT)*3;
 	  glTexCoordPointer(2,GL_FLOAT,sizeof(GL_FLOAT)*5,evilPointer);
 
       glDrawElements (GL_TRIANGLES, md5file.meshes[i].num_tris * 3, GL_UNSIGNED_INT, vertexIndices);
+
+	  RenderNormals();
+	  //glDisable(GL_LIGHT0);
+	  //glDisable(GL_LIGHTING);
     }
 
 }
@@ -753,7 +798,7 @@ void md5load::PrepareMesh (const struct md5_mesh_t *mesh, const struct md5_joint
   for (i = 0; i < mesh->num_verts; ++i)
     {
       vec3_t finalVertex = { 0.0f, 0.0f, 0.0f };
-
+	  float n1 = 0, n2 = 0, n3 = 0;
       /* Calculate final vertex to draw with weights */
       for (j = 0; j < mesh->vertices[i].count; ++j)
 	{
@@ -763,13 +808,20 @@ void md5load::PrepareMesh (const struct md5_mesh_t *mesh, const struct md5_joint
 	    = &skeleton[weight->joint];
 
 	  /* Calculate transformed vertex for this weight */
-	  vec3_t wv;
+	  vec3_t wv, nm;
 	  Quat_rotatePoint (joint->orient, weight->pos, wv);
 
 	  /* The sum of all weight->bias should be 1.0 */
 	  finalVertex[0] += (joint->pos[0] + wv[0]) * weight->bias;
 	  finalVertex[1] += (joint->pos[1] + wv[1]) * weight->bias;
 	  finalVertex[2] += (joint->pos[2] + wv[2]) * weight->bias;
+
+	  //Quat_multVec(joint->orient, mesh->vertices[i].normal, nm);
+	  //normalArray[i];
+
+	  n1 = (mesh->vertices[i].normal[0]);//*joint->orient[0])*weight->bias;
+	  n2 = (mesh->vertices[i].normal[1]);// * joint->orient[1])*weight->bias;
+	  n3 = (mesh->vertices[i].normal[2]);// * joint->orient[2])*weight->bias;
 	}
 
       vertexArray[i][0] = finalVertex[0];
@@ -777,10 +829,131 @@ void md5load::PrepareMesh (const struct md5_mesh_t *mesh, const struct md5_joint
       vertexArray[i][2] = finalVertex[2];
 	  vertexArray[i][3] = mesh->vertices[i].st[0];
 	  vertexArray[i][4] = 1.0f - mesh->vertices[i].st[1];
+
+	  normalArray[i][0] = n1;
+	  normalArray[i][1] = n2;
+	  normalArray[i][2] = n3;
     }
 
   
 }
+
+
+bool md5load::PrepareNormals(md5_mesh_t *mesh)
+{
+
+    // Loop through all triangles and calculate the normal of each triangle
+    for ( unsigned int i = 0; i < mesh->num_tris; ++i )
+    {
+		vec3_t v0, v1, v2;
+		v0[0] = vertexArray[mesh->triangles[i].index[0]][0];
+		v0[1] = vertexArray[mesh->triangles[i].index[0]][1];
+		v0[2] = vertexArray[mesh->triangles[i].index[0]][2];
+
+		v1[0] = vertexArray[mesh->triangles[i].index[1]][0];
+		v1[1] = vertexArray[mesh->triangles[i].index[1]][1];
+		v1[2] = vertexArray[mesh->triangles[i].index[1]][2];
+
+		v2[0] = vertexArray[mesh->triangles[i].index[2]][0];
+		v2[1] = vertexArray[mesh->triangles[i].index[2]][1];
+		v2[2] = vertexArray[mesh->triangles[i].index[2]][2];
+
+		vec3_t x = {v2[0]-v0[0],v2[1]-v0[1],v2[2]-v0[2]};
+		vec3_t y = {v1[0]-v0[0],v1[1]-v0[1],v1[2]-v0[2]};
+
+		vec3_t normal = {
+            x[1] * y[2] - y[1] * x[2],
+            x[2] * y[0] - y[2] * x[0],
+			x[0] * y[1] - y[0] * x[1]};
+
+		tempNormal[i][0] = normal[0];
+		tempNormal[i][1] = normal[1];
+		tempNormal[i][2] = normal[2];
+	}
+
+	//Compute vertex normals (normal Averaging)
+	//XMVECTOR normalSum = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+	vec3_t normalSum;
+	int facesUsing = 0;
+	float tX = 0.0f, tY = 0.0f, tZ = 0.0f;	//temp axis variables
+
+	//Go through each vertex
+	for (int i = 0; i < mesh->num_verts; ++i)
+	{
+		//Check which triangles use this vertex
+		for (int j = 0; j < mesh->num_tris; ++j)
+		{
+			if (vertexIndices[j * 3] == i ||
+				vertexIndices[(j * 3) + 1] == i ||
+				vertexIndices[(j * 3) + 2] == i)
+			{
+				tX += tempNormal[j][0];
+				tY += tempNormal[j][1];
+				tZ += tempNormal[j][2];
+
+				facesUsing++;
+			}
+		}
+
+		normalSum[0] = tX/facesUsing;
+		normalSum[1] = tY/facesUsing;
+		normalSum[2] = tZ/facesUsing;
+
+
+		//Normalize the normalSum vector
+		float factor = sqrt(normalSum[0] * normalSum[0] + normalSum[1] * normalSum[1] + normalSum[2] * normalSum[2]);
+		if (factor != 0)
+		{
+			normalSum[0] /= factor; normalSum[1] /= factor; normalSum[2] /= factor;
+		}
+
+		//Store the normal and tangent in our current vertex
+		//subset.vertices[i].normal.x = -XMVectorGetX(normalSum);
+		//subset.vertices[i].normal.y = -XMVectorGetY(normalSum);
+		//subset.vertices[i].normal.z = -XMVectorGetZ(normalSum);
+		//mesh->vertices//->normal[0] = 5;
+
+		mesh->vertices[i].normal[0] = normalSum[0];
+		mesh->vertices[i].normal[1] = normalSum[1];
+		mesh->vertices[i].normal[2] = normalSum[2];
+
+		//Clear normalSum, facesUsing for next vertex
+		tX = 0.0f, tY = 0.0f, tZ = 0.0f;
+		facesUsing = 0;
+	}
+    //}
+ 
+    // Now normalize all the normals
+    /*for ( unsigned int i = 0; i < max_verts; ++i )
+    {
+        
+
+	float factor = sqrt(normal[0]*normal[0]+normal[1]*normal[1]+normal[2]*normal[2]);
+	if (factor != 0)
+	{
+		normal[0] /= factor; normal[1]/= factor; normal[2] /=factor;
+	}
+	/*
+ 
+        glm::vec3 normal = glm::normalize( vert.m_Normal );
+        mesh.m_NormalBuffer.push_back( normal );
+ 
+        // Reset the normal to calculate the bind-pose normal in joint space
+        vert.m_Normal = glm::vec3(0);
+ 
+        // Put the bind-pose normal into joint-local space
+        // so the animated normal can be computed faster later
+        for ( int j = 0; j < vert.m_WeightCount; ++j )
+        {
+            const Weight& weight = mesh.m_Weights[vert.m_StartWeight + j];
+            const Joint& joint = m_Joints[weight.m_JointID];
+            vert.m_Normal += ( normal * joint.m_Orient ) * weight.m_Bias;
+        }
+    }
+ */
+    return true;
+}
+
 
 /**
  * Perform animation related computations.  Calculate the current and
@@ -835,6 +1008,12 @@ void md5load::FreeVertexArrays ()
     {
       free (vertexArray);
       vertexArray = NULL;
+    }
+
+  if (normalArray)
+    {
+      free (normalArray);
+      normalArray = NULL;
     }
 
   if (vertexIndices)
@@ -955,6 +1134,29 @@ void md5load::DrawSkeleton (const struct md5_joint_t *skeleton, int num_joints)
   glEnd();
 
   glColor3f(1.0f,1.0f,1.0f);
+}
+
+void md5load::RenderNormals()
+{
+	glPushMatrix();
+    glPushAttrib( GL_ENABLE_BIT );
+    //glDisable( GL_LIGHTING );
+
+    //glColor3f( 1.0f, 1.0f, 0.0f );// Yellow
+
+    glBegin( GL_LINES );
+    {
+          /* Setup vertices */   
+		for (int i = 0; i < max_verts; ++i){
+			float t = vertexArray[i][0];
+            glVertex3f( vertexArray[i][0], vertexArray[i][1], vertexArray[i][2] );
+            glVertex3f( vertexArray[i][0]+normalArray[i][0],vertexArray[i][1]+normalArray[i][1],vertexArray[i][2]+normalArray[i][2] );
+        }
+    }
+    glEnd();
+
+    glPopAttrib();
+	glPopMatrix();
 }
 
 
