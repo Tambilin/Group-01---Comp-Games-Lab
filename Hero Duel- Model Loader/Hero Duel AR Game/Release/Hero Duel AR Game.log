@@ -1,0 +1,23 @@
+﻿Build started 26/02/2014 21:52:23.
+     1>Project "I:\Source Repository\Computer Games Lab\Hero Duel- Model Loader\Hero Duel AR Game\Hero Duel AR Game.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         I:\Program Files\VisualStudio2013\VC\bin\CL.exe /c /Zi /nologo /W1 /WX- /O2 /Oy- /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\main.cpp
+         main.cpp
+       Link:
+         I:\Program Files\VisualStudio2013\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"I:\Source Repository\Computer Games Lab\Hero Duel- Model Loader\Release\Hero Duel AR Game.exe" /NOLOGO freetype.lib OpenAL32.lib alut.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:"I:\Source Repository\Computer Games Lab\Hero Duel- Model Loader\Release\Hero Duel AR Game.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"I:\Source Repository\Computer Games Lab\Hero Duel- Model Loader\Release\Hero Duel AR Game.lib" /MACHINE:X86 /SAFESEH Release\bitmap.obj
+         Release\card.obj
+         Release\freetype.obj
+         Release\gamestate.obj
+         Release\main.obj
+         Release\md5load.obj
+         Release\menutextures.obj
+         Release\model_obj.obj
+         Release\objload.obj
+         Release\soundeffect.obj
+     1>LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
+         Hero Duel AR Game.vcxproj -> I:\Source Repository\Computer Games Lab\Hero Duel- Model Loader\Release\Hero Duel AR Game.exe
+     1>Done Building Project "I:\Source Repository\Computer Games Lab\Hero Duel- Model Loader\Hero Duel AR Game\Hero Duel AR Game.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.39

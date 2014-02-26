@@ -9412,7 +9412,7 @@ mesh {
 
 mesh {
 	// meshes: Body
-	shader "Body.tga"
+	shader "grass.tga"
 
 	numverts 1274
 	vert 0 ( 0.75 1.0 ) 0 1

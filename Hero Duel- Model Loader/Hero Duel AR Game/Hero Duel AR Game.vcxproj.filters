@@ -10,6 +10,7 @@
     <ClCompile Include="..\menutextures.cpp" />
     <ClCompile Include="..\gamestate.cpp" />
     <ClCompile Include="..\card.cpp" />
+    <ClCompile Include="..\freetype.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\soundeffect.h">
@@ -34,6 +35,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\card.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\freetype.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

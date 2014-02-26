@@ -6,6 +6,7 @@
 #include "glut.h"
 #include "md5load.h"
 #include "soundeffect.h"
+#include "gamestate.h"
 #include "objload.h"
 #include "menutextures.h"
 using namespace std;
@@ -31,6 +32,7 @@ soundeffect * t = new soundeffect();
 objload * Wings = new objload();
 objload * Pallet = new objload();
 menutextures * Menu = new menutextures();
+
 
 md5load md5object;
 md5load md5object1;
@@ -63,6 +65,8 @@ int main()
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 	cout << "Texture loaded correctly" << endl;
 
+	gamestate::init();
+
 	//load the animated models
 	md5object.init ("../Assets/Models/pinky.md5mesh" , "../Assets/Animations/idle1.md5anim", "../Assets/Textures/pinky_s.tga");
 	//md5object1.init ("../Assets/Models/boblampclean.md5mesh" , "../Assets/Animations/boblampclean.md5anim", "../Assets/Textures/guard1_body.tga");
@@ -74,7 +78,7 @@ int main()
 	//Object loader
 	Wings->InitGL();
 	Wings->LoadModel("../Assets/Models/Pallet.obj");
-	Pallet->LoadModel("../Assets/Models/Pallet.obj");
+	Pallet->LoadModel("../Assets/Models/dice.obj");
 
 	//load sounds
 	t->createSound("../Assets/Sounds/inception.wav", 0);
@@ -174,9 +178,9 @@ void display()
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslatef(0.5,1.5,-5);
+	glTranslatef(0.0,0.5,-3);
 	glRotatef(((int)(movement))+55,0,1,1);
-	//glScalef(0.3,0.3,0.3);
+	glScalef(0.3,0.3,0.3);
 	Pallet->DrawModelUsingFixedFuncPipeline();
 	glPopMatrix();
 

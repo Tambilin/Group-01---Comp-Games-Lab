@@ -217,7 +217,9 @@ class md5load
 		bool drawSkeleton;
 		bool rotate;
 		
-
+		float angle = 0;
+		double curent_time = 0;
+		double last_time = 0;
 
 		
 }; 

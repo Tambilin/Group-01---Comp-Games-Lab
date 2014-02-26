@@ -3,10 +3,20 @@
 int menutextures::resolutionX = 640;
 int menutextures::resolutionY = 480; 
 
+// This holds all the information for the font that we are going to create.
+freetype_mod::font_data * our_font;
+freetype_mod::font_data * our_subfont;
+freetype_mod::font_data our_font16;
+freetype_mod::font_data our_font32;
+freetype_mod::font_data our_font64;
+
 menutextures::menutextures(void)
 {
 	widescreen = false;
 	mode = 0;
+	our_font16.init("../Assets/Fonts/BuxtonSketch.TTF", 16);					    //Build the freetype font
+	our_font32.init("../Assets/Fonts/BuxtonSketch.TTF", 32);					    //Build the freetype font
+	our_font64.init("../Assets/Fonts/BuxtonSketch.TTF", 64);					    //Build the freetype font
 }
 
 
@@ -66,7 +76,7 @@ void menutextures::render(int width, int height){
   glDisable( GL_DEPTH_TEST );
   glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
   int offset = 0;
-  int res = resolutionX/640;
+  int res = 1+resolutionX/1280;
 
   if(widescreen == false)
 	offset = 0;
@@ -86,13 +96,60 @@ void menutextures::render(int width, int height){
 	  break;
   case 2:
 	  //drawQuad(0 + offset, 0, 0, width, height); //Border
-	  text(GLUT_BITMAP_HELVETICA_18, "P1:", 10, 10, 1, 1, 0);
-	  text(GLUT_BITMAP_HELVETICA_18, "P2:", width - 35, 10, 1, 1, 0);
 	  drawQuad(7, width - (128 * res), height - (64 * res), width - 10, height - 10); //Next turn
+	  //text(GLUT_BITMAP_HELVETICA_18, "P1", 20, 20, 0, 0, 0);
+	  //text(GLUT_BITMAP_HELVETICA_18, "P2", width - 45, 20, 0, 0, 0);
 	  break;
   default:
 	  drawQuad(3 + offset, 0, 0, width, height); //Menu background
 	  break;
+  }
+
+  if (res > 1){
+	  our_font = &our_font64;
+	  our_subfont = &our_font32;
+  } else {
+	  our_font = &our_font32;
+	  our_subfont = &our_font16;
+  }
+
+  if (mode != 0){
+	  drawQuad(10, width / 4, height - 64, width - width / 4, height); //Menu background
+	  drawQuad(9, 0, 0, (128 * res), (256 * res));
+	  drawQuad(9, width - (128 * res), 0, width, (256 * res));
+
+	  glPushMatrix();//P1
+	  glColor3f(0.0, 0.0, 0.0);
+	  glRasterPos2f(54 * res, 46 * res);
+	  freetype_mod::print(*our_font, "%3.0f", (float)gamestate::heroStats.first.evasion);	// Print GL Text To The Screen
+	  glRasterPos2f(54 * res, 86 * res);
+	  freetype_mod::print(*our_font, "%3.0f", (float)gamestate::heroStats.first.defence);	// Print GL Text To The Screen
+	  glRasterPos2f(54 * res, 126 * res);
+	  freetype_mod::print(*our_font, "%3.0f", (float)gamestate::heroStats.first.attack);	// Print GL Text To The Screen
+	  glRasterPos2f(54 * res, 166 * res);
+	  freetype_mod::print(*our_font, "%3.0f", (float)gamestate::heroStats.first.hp);	// Print GL Text To The Screen
+	  glRasterPos2f(54 * res, 206 * res);
+	  freetype_mod::print(*our_font, "%3.0f", (float)gamestate::manaPoints.first);	// Print GL Text To The Screen
+	  glRasterPos2f(52 * res, 15 * res);
+	  freetype_mod::print(*our_subfont, "P1");	// Print GL Text To The Screen
+	  glPopMatrix();
+
+
+	  glPushMatrix();//P2
+	  glColor3f(0.0, 0.0, 0.0);
+	  glRasterPos2f(width - 70 * res, 46 * res);
+	  freetype_mod::print(*our_font, "%3.0f", (float)gamestate::heroStats.second.evasion);	// Print GL Text To The Screen
+	  glRasterPos2f(width - 70 * res, 86 * res);
+	  freetype_mod::print(*our_font, "%3.0f", (float)gamestate::heroStats.second.defence);	// Print GL Text To The Screen
+	  glRasterPos2f(width - 70 * res, 126 * res);
+	  freetype_mod::print(*our_font, "%3.0f", (float)gamestate::heroStats.second.attack);	// Print GL Text To The Screen
+	  glRasterPos2f(width - 70 * res, 166 * res);
+	  freetype_mod::print(*our_font, "%3.0f", (float)gamestate::heroStats.second.hp);	// Print GL Text To The Screen
+	  glRasterPos2f(width - 70 * res, 206 * res);
+	  freetype_mod::print(*our_font, "%3.0f", (float)gamestate::manaPoints.second);	// Print GL Text To The Screen
+	  glRasterPos2f(width - 72 * res, 15 * res);
+	  freetype_mod::print(*our_subfont, "P2");	// Print GL Text To The Screen
+	  glPopMatrix();
   }
 
   glDisable(GL_BLEND);
@@ -172,7 +229,7 @@ void menutextures::screenSizeMenu(int item)
 
 
 void menutextures::checkButtonClick(int x, int y, int width, int height){
-	  int res = resolutionX/640;
+	  int res = 1 + resolutionX / 1280;
 
 	  if(x > width-(128*res) && 
 		 y > 10 &&
@@ -212,6 +269,8 @@ void menutextures::load(void){
 	menuTex[6] = loadTexture("../Assets/Textures/Options.png");
 	menuTex[7] = loadTexture("../Assets/Textures/NextTurn.png");
 	menuTex[8] = loadTexture("../Assets/Textures/Roll.png");
+	menuTex[9] = loadTexture("../Assets/Textures/Stats2.png");
+	menuTex[10] = loadTexture("../Assets/Textures/Titlebar.png");
 
 	// Create a menu
 	glutCreateMenu(&menutextures::screenSizeMenu);

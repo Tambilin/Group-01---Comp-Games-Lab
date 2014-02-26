@@ -50,12 +50,18 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>OpenAL32.lib;alut.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype.lib;OpenAL32.lib;alut.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Link>
+      <AdditionalDependencies>freetype.lib;OpenAL32.lib;alut.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\bitmap.cpp" />
     <ClCompile Include="..\card.cpp" />
+    <ClCompile Include="..\freetype.cpp" />
     <ClCompile Include="..\gamestate.cpp" />
     <ClCompile Include="..\main.cpp" />
     <ClCompile Include="..\md5load.cpp" />
@@ -67,6 +73,7 @@
   <ItemGroup>
     <ClInclude Include="..\bitmap.h" />
     <ClInclude Include="..\card.h" />
+    <ClInclude Include="..\freetype.h" />
     <ClInclude Include="..\gamestate.h" />
     <ClInclude Include="..\md5load.h" />
     <ClInclude Include="..\menutextures.h" />

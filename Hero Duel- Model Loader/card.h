@@ -5,6 +5,11 @@ using namespace std;
 class card
 {
 private:
+
+public:
+	int id;
+	std::string cardname;
+	int cost;
 	int type;
 	int hp;
 	int attack;
@@ -12,10 +17,8 @@ private:
 	int evasion;
 	int element;
 	int draw;
-	int mana;
 	std::string description;
 
-public:
 	card();
 	~card();
 };

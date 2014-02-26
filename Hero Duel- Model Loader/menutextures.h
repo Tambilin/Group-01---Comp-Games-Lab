@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include "gamestate.h"
 using namespace std;
 
 #include "GLEW/glew.h"
@@ -12,6 +13,8 @@ using namespace std;
 #pragma comment(lib, "DevIL.lib")
 #pragma comment(lib, "ILU.lib")
 #pragma comment(lib, "ILUT.lib")
+
+#include "freetype.h"		// Header for our little font library.
 
 class menutextures
 {
@@ -31,8 +34,8 @@ public:
 	bool checkScreenSize(int x, int y);
 	int getResolutionX();
 	int getResolutionY();
-	void setResolutionX(int x);
-	void setResolutionY(int y);
+	static void setResolutionX(int x);
+	static void setResolutionY(int y);
 	static void _cdecl screenSizeMenu(int item);
 	void drawQuad(int textureID, int minX, int minY, int maxX, int maxY);
 	menutextures(char * filePath);

@@ -668,12 +668,12 @@ void md5load::draw (float x, float y, float z, float scale){
 void md5load::draw (float x, float y, float z, float scale, float a, float rot1, float rot2, float rot3)
 {
   int i;
-  static float angle = 0;
-  static double curent_time = 0;
-  static double last_time = 0;
+  //this->angle = 0;
+  //this->curent_time = 0;
+  //this->last_time = 0;
 
   last_time = curent_time;
-  curent_time = (double)glutGet (GLUT_ELAPSED_TIME) / 1000.0;
+  curent_time = (double)glutGet(GLUT_ELAPSED_TIME) / 1000; // 2000000.0; //#Change Number to alter speed
 
   glLoadIdentity ();
 
@@ -693,14 +693,14 @@ void md5load::draw (float x, float y, float z, float scale, float a, float rot1,
 
   glRotatef (a, rot1, rot2, rot3);
 
-  glScalef(scale, scale, scale);
-
   if (rotate == true)
   {
-	glRotatef (angle, 0.0, 0.0, 1.0);
+	  glRotatef(angle, 0.0, 0.0, 1.0);
   }
 
-  angle += 25 * (curent_time - last_time);
+  glScalef(scale, scale, scale);
+
+  angle = angle + 0.1;
 
   if (angle > 360.0f)
     angle -= 360.0f;
