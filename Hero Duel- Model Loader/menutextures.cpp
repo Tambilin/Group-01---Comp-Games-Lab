@@ -95,7 +95,7 @@ void menutextures::render(int width, int height){
 	  drawQuad(8, width - (128 * res), height - (64 * res), width - 10, height - 10); //Roll
 	  break;
   case 2:
-	  //drawQuad(0 + offset, 0, 0, width, height); //Border
+	  drawQuad(0 + offset, 0, 0, width, height); //Border
 	  drawQuad(7, width - (128 * res), height - (64 * res), width - 10, height - 10); //Next turn
 	  //text(GLUT_BITMAP_HELVETICA_18, "P1", 20, 20, 0, 0, 0);
 	  //text(GLUT_BITMAP_HELVETICA_18, "P2", width - 45, 20, 0, 0, 0);
@@ -114,7 +114,7 @@ void menutextures::render(int width, int height){
   }
 
   if (mode != 0){
-	  drawQuad(10, width / 4, height - 64, width - width / 4, height); //Menu background
+	  drawQuad(10, 2, height - 64, 256, height-2); //Menu background
 	  drawQuad(9, 0, 0, (128 * res), (256 * res));
 	  drawQuad(9, width - (128 * res), 0, width, (256 * res));
 
@@ -163,6 +163,9 @@ void menutextures::render(int width, int height){
  glEnable( GL_DEPTH_TEST );
 }
 
+int menutextures::getMode(void){
+	return mode;
+}
 
 void menutextures::drawQuad(int textureID, int minX, int minY, int maxX, int maxY){
   glBindTexture(GL_TEXTURE_2D, menuTex[textureID]);

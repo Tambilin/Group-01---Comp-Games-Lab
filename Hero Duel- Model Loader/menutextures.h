@@ -28,6 +28,7 @@ private:
 public:
 	menutextures(void);
 	void load(void);
+	int getMode(void);
 	void render(int width, int height);
 	void checkButtonClick(int x, int y, int width, int height);
 	void text(void *font, const char *fmt, int x, int y, float r, float g, float b);

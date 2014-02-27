@@ -77,7 +77,7 @@ int main()
 
 	//Object loader
 	Wings->InitGL();
-	Wings->LoadModel("../Assets/Models/Pallet.obj");
+	Wings->LoadModel("../Assets/Models/coin.obj");
 	Pallet->LoadModel("../Assets/Models/dice.obj");
 
 	//load sounds
@@ -169,20 +169,14 @@ void display()
 	framesDone++; 
 	////////////////////////////////////////////
 
-	glPushMatrix();
-	glTranslatef(-0.8,1,-3);//5,42);
-	glRotatef(90,1,0,0);
-	//glScalef(64,64,64);
-	//glScalef(0.5,0.5,0.5);
-	Wings->DrawModelUsingFixedFuncPipeline();
-	glPopMatrix();
-
-	glPushMatrix();
-	glTranslatef(0.0,0.5,-3);
-	glRotatef(((int)(movement))+55,0,1,1);
-	glScalef(0.3,0.3,0.3);
-	Pallet->DrawModelUsingFixedFuncPipeline();
-	glPopMatrix();
+	if (Menu->getMode() == 1){
+		glPushMatrix();
+		glTranslatef(0.0, 0.5, -3);
+		glRotatef(((int)(movement)) + 55, 0, 1, 1);
+		glScalef(0.3, 0.3, 0.3);
+		Pallet->DrawModelUsingFixedFuncPipeline();
+		glPopMatrix();
+	}
 
 	// Lighting
 	GLfloat light_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
@@ -224,6 +218,17 @@ void display()
 	glDisable(GL_LIGHTING);
 
 	Menu->render(width, height);
+
+	if (Menu->getMode() == 0){
+		glPushMatrix();
+		glTranslatef(1.3, -0.8, -3);//5,42);
+		glRotatef(90, 1, 0, 0);
+		glRotatef(movement, 0, 0, 1);
+		glScalef(0.5, 0.5, 0.5);
+		Wings->DrawModelUsingFixedFuncPipeline();
+		glPopMatrix(); 
+	}
+
 
 	/* Other Fonts:
 	GLUT_BITMAP_8_BY_13
