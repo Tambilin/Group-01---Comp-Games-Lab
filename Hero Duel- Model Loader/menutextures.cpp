@@ -14,6 +14,8 @@ menutextures::menutextures(void)
 {
 	widescreen = false;
 	mode = 0;
+	alpha = 5;
+	rollSize = 1;
 	our_font16.init("../Assets/Fonts/BuxtonSketch.TTF", 16);					    //Build the freetype font
 	our_font32.init("../Assets/Fonts/BuxtonSketch.TTF", 32);					    //Build the freetype font
 	our_font64.init("../Assets/Fonts/BuxtonSketch.TTF", 64);					    //Build the freetype font
@@ -75,8 +77,22 @@ void menutextures::render(int width, int height){
   glEnable( GL_BLEND );
   glDisable( GL_DEPTH_TEST );
   glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+
+  //Useful variables
   int offset = 0;
   int res = 1+resolutionX/1280;
+  int total = 0;
+  int size = rolls.size();
+
+  //Sort out font sizes for different resolutions
+  if (res > 1){
+	  our_font = &our_font64;
+	  our_subfont = &our_font32;
+  }
+  else {
+	  our_font = &our_font32;
+	  our_subfont = &our_font16;
+  }
 
   if(widescreen == false)
 	offset = 0;
@@ -97,21 +113,35 @@ void menutextures::render(int width, int height){
   case 2:
 	  drawQuad(0 + offset, 0, 0, width, height); //Border
 	  drawQuad(7, width - (128 * res), height - (64 * res), width - 10, height - 10); //Next turn
-	  //text(GLUT_BITMAP_HELVETICA_18, "P1", 20, 20, 0, 0, 0);
-	  //text(GLUT_BITMAP_HELVETICA_18, "P2", width - 45, 20, 0, 0, 0);
+	  ///////////DICE ROLLS RESULTS///////////////////
+	  if (size > 12){
+		  size = 12;
+	  }
+
+	  for (int i = 0; i < size; i++){
+		  int c = i / 4;
+		  int r = i % 4;
+		  total += rolls.at(i);
+		  glColor4f(1.0, 1.0, 1.0, alpha);
+		  drawQuad(11 + rolls.at(i), width / 4 + (r*width / 8) + 4, height - width / 4 / res - (width / 8) - (width / 8 * c), width / 4 + (width / 8) + (width / 8 * r), height - width / 4 / res - (width / 8 * c) - 4); //Dice Image
+	  }
+
+	  if (alpha > 0){
+		  alpha = alpha - 0.01;
+	  }
+	  glPushMatrix();//Draw Dice Roll
+	  glRasterPos2f(width / 2 - 30*res, height - width / 4 / res);
+	  freetype_mod::print(*our_font, "+%3.0f", (float)total);	// Print GL Text To The Screen
+	  glColor4f(1.0, 1.0, 1.0, 1.0);
+	  glPopMatrix();
+	  ////////////////////////////////////////
 	  break;
   default:
 	  drawQuad(3 + offset, 0, 0, width, height); //Menu background
-	  break;
+	  break; 
   }
 
-  if (res > 1){
-	  our_font = &our_font64;
-	  our_subfont = &our_font32;
-  } else {
-	  our_font = &our_font32;
-	  our_subfont = &our_font16;
-  }
+
 
   if (mode != 0){
 	  drawQuad(10, 2, height - 64, 256, height-2); //Menu background
@@ -238,8 +268,31 @@ void menutextures::checkButtonClick(int x, int y, int width, int height){
 		 y > 10 &&
 		 x < width-10 &&
 		 y < (64*res)){ //Start Bo
+		  if (this->mode == 1){
+			  srand(time(NULL));
+			  int a = rand() % 2;
+			  rolls.push_back(a);
+			  for (int i = 0; i < (int)gamestate::turnID / 2; i++){
+				  if (i < 11){
+				  int temp = rand() % 2;
+				  rolls.push_back(temp);
+				  a += temp;
+				  }
+			  }
+			  if (gamestate::turnID % 2 == 0){
+				  gamestate::manaPoints.first += a;
+			  }
+			  else {
+				  gamestate::manaPoints.second += a;
+				  rollSize ++;
+			  }
+		  }
+
 		  this->mode++;
 		  if (this->mode > 2){
+			  gamestate::turnID++;
+			  rolls.clear();
+			  alpha = 5;
 			  this->mode = 1;
 		  }
 	  } else if(x > width- (128*res) &&
@@ -274,6 +327,8 @@ void menutextures::load(void){
 	menuTex[8] = loadTexture("../Assets/Textures/Roll.png");
 	menuTex[9] = loadTexture("../Assets/Textures/Stats2.png");
 	menuTex[10] = loadTexture("../Assets/Textures/Titlebar.png");
+	menuTex[11] = loadTexture("../Assets/Textures/0.jpg");
+	menuTex[12] = loadTexture("../Assets/Textures/1.jpg");
 
 	// Create a menu
 	glutCreateMenu(&menutextures::screenSizeMenu);
@@ -297,6 +352,10 @@ void menutextures::text(void *font, const char *fmt, int x, int y, float r, floa
 		glutBitmapCharacter(font, *c);
 	}
 	glColor3f(1, 1, 1);
+}
+
+int menutextures::getRollSize(){
+	return rollSize;
 }
 
 int menutextures::getResolutionX(){

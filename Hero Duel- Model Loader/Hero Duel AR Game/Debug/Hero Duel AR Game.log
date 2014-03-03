@@ -1,4 +1,4 @@
-﻿Build started 27/02/2014 01:23:59.
+﻿Build started 03/03/2014 00:56:06.
      1>Project "I:\Source Repository\Computer Games Lab\Hero Duel- Model Loader\Hero Duel AR Game\Hero Duel AR Game.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          I:\Program Files\VisualStudio2013\VC\bin\CL.exe /c /ZI /nologo /W1 /WX- /Od /Oy- /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\menutextures.cpp
@@ -19,4 +19,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:02.07
+Time Elapsed 00:00:01.43

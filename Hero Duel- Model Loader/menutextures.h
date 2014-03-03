@@ -1,5 +1,7 @@
 #pragma once
 #include <iostream>
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
 #include "gamestate.h"
 using namespace std;
 
@@ -25,6 +27,9 @@ private:
 	static int resolutionY; 
 	int mode;
 	bool widescreen; 
+	vector<int> rolls;
+	float alpha;
+	int rollSize;
 public:
 	menutextures(void);
 	void load(void);
@@ -35,6 +40,7 @@ public:
 	bool checkScreenSize(int x, int y);
 	int getResolutionX();
 	int getResolutionY();
+	int getRollSize();
 	static void setResolutionX(int x);
 	static void setResolutionY(int y);
 	static void _cdecl screenSizeMenu(int item);

@@ -37,6 +37,7 @@ menutextures * Menu = new menutextures();
 md5load md5object;
 md5load md5object1;
 md5load md5object2;
+md5load md5object3;
 
 int movement = 1;
 int fps;
@@ -71,8 +72,9 @@ int main()
 	md5object.init ("../Assets/Models/pinky.md5mesh" , "../Assets/Animations/idle1.md5anim", "../Assets/Textures/pinky_s.tga");
 	//md5object1.init ("../Assets/Models/boblampclean.md5mesh" , "../Assets/Animations/boblampclean.md5anim", "../Assets/Textures/guard1_body.tga");
 	//md5object1.useModelShaderTextures("../Assets/Textures/");
-	md5object1.init ("../Assets/Models/RobotNoHands.md5mesh" , NULL, "../Assets/Textures/grass.tga");
-	md5object1.useModelShaderTextures("../Assets/Textures/");
+	//md5object1.init("../Assets/Models/anim3.md5mesh", "../Assets/Animations/anim3.md5anim", "../Assets/Textures/grass.tga");
+	md5object2.init("../Assets/Models/anim4.md5mesh", "../Assets/Animations/anim4.md5anim", "../Assets/Textures/grass.tga");
+	//md5object1.useModelShaderTextures("../Assets/Textures/");
 
 
 	//Object loader
@@ -169,13 +171,18 @@ void display()
 	framesDone++; 
 	////////////////////////////////////////////
 
-	if (Menu->getMode() == 1){
-		glPushMatrix();
-		glTranslatef(0.0, 0.5, -3);
-		glRotatef(((int)(movement)) + 55, 0, 1, 1);
-		glScalef(0.3, 0.3, 0.3);
-		Pallet->DrawModelUsingFixedFuncPipeline();
-		glPopMatrix();
+	if (Menu->getMode() == 1){ //Spinning Dice
+		for (int m = 0; m < Menu->getRollSize(); m++){
+			int c = m / 4;
+			int r = m % 4;
+			glPushMatrix();
+			glTranslatef(-1.5+r, 0.8-c, -5);
+			//glTranslatef(m, 0.0f, 0.0f);
+			glRotatef(((int)(movement)) + 55, 0, 1, 1);
+			glScalef(0.3, 0.3, 0.3);
+			Pallet->DrawModelUsingFixedFuncPipeline();
+			glPopMatrix();
+		}
 	}
 
 	// Lighting
@@ -207,7 +214,9 @@ void display()
 	md5object1.enableTextured(true);
 	md5object1.enableSkeleton(true);
 	md5object1.enableRotate(true);
+	md5object2.enableRotate(true);
 	md5object1.draw(-25.0, 0.0, -250.0, 0.2);
+	md5object2.draw(-25.0, 0.0, -250.0, 0.2);
 	glPopMatrix();
 
 	glDisableClientState (GL_TEXTURE_COORD_ARRAY);
@@ -219,7 +228,7 @@ void display()
 
 	Menu->render(width, height);
 
-	if (Menu->getMode() == 0){
+	if (Menu->getMode() == 0){ //Render the spinning coin
 		glPushMatrix();
 		glTranslatef(1.3, -0.8, -3);//5,42);
 		glRotatef(90, 1, 0, 0);
@@ -239,7 +248,7 @@ void display()
 	GLUT_BITMAP_HELVETICA_12
 	GLUT_BITMAP_HELVETICA_18*/
 	stringstream t;
-	t << "Current FPS: " << fps;
+	t << "Current FPS: " << fps << " Turn: " << (int)gamestate::turnID;
 	printText(GLUT_BITMAP_HELVETICA_18, t.str().c_str(), 20, height-35, 1, 0, 0);
 
 	glutSwapBuffers ();
