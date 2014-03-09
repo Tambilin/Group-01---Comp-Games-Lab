@@ -1,0 +1,11 @@
+﻿Build started 05/02/2014 22:13:59.
+     1>Project "I:\Files\Visual Studio 2012 Projects\ARApplication\ARApplication\ARApplication.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         I:\Program Files\VisualStudio2012\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TC /analyze- /errorReport:prompt simpleTest.c
+         simpleTest.c
+     1>i:\files\visual studio 2012 projects\arapplication\arapplication\simpletest.c(13): fatal error C1083: Cannot open include file: 'AR/gsub.h': No such file or directory
+     1>Done Building Project "I:\Files\Visual Studio 2012 Projects\ARApplication\ARApplication\ARApplication.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:00.45

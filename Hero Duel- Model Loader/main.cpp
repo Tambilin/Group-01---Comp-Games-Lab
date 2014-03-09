@@ -73,7 +73,7 @@ int main()
 	//md5object1.init ("../Assets/Models/boblampclean.md5mesh" , "../Assets/Animations/boblampclean.md5anim", "../Assets/Textures/guard1_body.tga");
 	//md5object1.useModelShaderTextures("../Assets/Textures/");
 	//md5object1.init("../Assets/Models/anim3.md5mesh", "../Assets/Animations/anim3.md5anim", "../Assets/Textures/grass.tga");
-	md5object2.init("../Assets/Models/anim4.md5mesh", "../Assets/Animations/anim4.md5anim", "../Assets/Textures/grass.tga");
+	md5object2.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Walk2.md5anim", "../Assets/Textures/grass.tga");
 	//md5object1.useModelShaderTextures("../Assets/Textures/");
 
 

@@ -1,0 +1,18 @@
+﻿Build started 05/02/2014 21:33:44.
+     1>Project "I:\Downloads\diddles\ARToolKit-2.72.1-bin-win32\ARToolKit\lib\SRC\VideoWin32DirectShow\libARvideo.vcxproj" on node 4 (Rebuild target(s)).
+     1>ClCompile:
+         I:\Program Files\VisualStudio2012\VC\bin\CL.exe /c /I"I:\Downloads\diddles\ARToolKit-2.72.1-bin-win32\ARToolKit\lib\SRC\VideoWin32DirectShow\..\..\..\include" /I"I:\Downloads\diddles\ARToolKit-2.72.1-bin-win32\ARToolKit\lib\SRC\VideoWin32DirectShow\..\..\..\DSVL\src" /Zi /nologo /W1 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _USRDLL /D LIBARVIDEO_EXPORTS /D _WINDLL /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /FR"Debug\\" /Gd /TP /analyze- /errorReport:prompt videoWin32DirectShow.cpp
+         videoWin32DirectShow.cpp
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V110\Microsoft.CppBuild.targets(1137,5): warning MSB8012: TargetPath(I:\Downloads\diddles\ARToolKit-2.72.1-bin-win32\ARToolKit\lib\SRC\VideoWin32DirectShow\Debug\libARvideo.dll) does not match the Linker's OutputFile property value (I:\Downloads\diddles\ARToolKit-2.72.1-bin-win32\ARToolKit\bin\libARvideod.dll). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V110\Microsoft.CppBuild.targets(1139,5): warning MSB8012: TargetName(libARvideo) does not match the Linker's OutputFile property value (libARvideod). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+       Link:
+         I:\Program Files\VisualStudio2012\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"I:\Downloads\diddles\ARToolKit-2.72.1-bin-win32\ARToolKit\lib\SRC\VideoWin32DirectShow\..\..\..\bin\libARvideod.dll" /NOLOGO /LIBPATH:"I:\Downloads\diddles\ARToolKit-2.72.1-bin-win32\ARToolKit\lib\SRC\VideoWin32DirectShow\..\..\..\DSVL\lib\\" DSVLd.lib comsupp.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"Debug\libARvideo.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"I:\Downloads\diddles\ARToolKit-2.72.1-bin-win32\ARToolKit\lib\SRC\VideoWin32DirectShow\..\..\libARvideod.lib" /MACHINE:X86 /SAFESEH /DLL Debug\videoWin32DirectShow.obj
+            Creating library I:\Downloads\diddles\ARToolKit-2.72.1-bin-win32\ARToolKit\lib\SRC\VideoWin32DirectShow\..\..\libARvideod.lib and object I:\Downloads\diddles\ARToolKit-2.72.1-bin-win32\ARToolKit\lib\SRC\VideoWin32DirectShow\..\..\libARvideod.exp
+         libARvideo.vcxproj -> I:\Downloads\diddles\ARToolKit-2.72.1-bin-win32\ARToolKit\lib\SRC\VideoWin32DirectShow\Debug\libARvideo.dll
+       BscMake:
+         I:\Program Files\VisualStudio2012\VC\bin\bscmake.exe /nologo /o"Debug\libARvideo.bsc" Debug\videoWin32DirectShow.sbr
+     1>Done Building Project "I:\Downloads\diddles\ARToolKit-2.72.1-bin-win32\ARToolKit\lib\SRC\VideoWin32DirectShow\libARvideo.vcxproj" (Rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:02.95
