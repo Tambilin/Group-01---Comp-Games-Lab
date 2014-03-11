@@ -1,8 +1,8 @@
-﻿Build started 09/03/2014 19:26:25.
+﻿Build started 11/03/2014 02:24:27.
      1>Project "C:\Source Repository\SourceTree\Comp Games Lab\Hero Duel- Model Loader\Hero Duel AR Game\Hero Duel AR Game.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Programs\VS 2013\VC\bin\CL.exe /c /ZI /nologo /W1 /WX- /Od /Oy- /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\main.cpp
-         main.cpp
+         C:\Programs\VS 2013\VC\bin\CL.exe /c /ZI /nologo /W1 /WX- /Od /Oy- /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\gamestate.cpp
+         gamestate.cpp
        Link:
          C:\Programs\VS 2013\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Source Repository\SourceTree\Comp Games Lab\Hero Duel- Model Loader\Debug\Hero Duel AR Game.exe" /NOLOGO freetype.lib OpenAL32.lib alut.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Source Repository\SourceTree\Comp Games Lab\Hero Duel- Model Loader\Debug\Hero Duel AR Game.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Source Repository\SourceTree\Comp Games Lab\Hero Duel- Model Loader\Debug\Hero Duel AR Game.lib" /MACHINE:X86 /SAFESEH Debug\bitmap.obj
          Debug\card.obj
@@ -19,4 +19,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.97
+Time Elapsed 00:00:01.30

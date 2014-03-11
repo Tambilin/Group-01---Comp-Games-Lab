@@ -43,7 +43,8 @@ void gamestate::loadStateData(std::string fileScene){
 
 	if (file == NULL){      //Check File Opened Correctly
 		std::cerr << "ERROR: Failed to open the scene file!" << std::endl;
-		exit(EXIT_FAILURE);
+		return;
+		//exit(EXIT_FAILURE);
 	}
 	else {
 		cout << "Scene File Opened...." << endl;

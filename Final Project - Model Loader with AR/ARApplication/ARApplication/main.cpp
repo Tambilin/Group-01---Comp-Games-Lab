@@ -18,6 +18,7 @@
 #include "md5load.h"
 #include "menutextures.h"
 #include "objload.h"
+#include "soundeffect.h"
 //
 // Camera configuration.
 //
@@ -39,11 +40,16 @@ int             patt_id;
 double          patt_width     = 80.0;
 double          patt_center[2] = {0.0, 0.0};
 double          patt_trans[3][4];
+
+//Additional Variables
 bool			loadOpenGL = false;
 static bool     leftButtonDown = false;
 int             c = 0;
 bool            renderModel = false;
+int				movement = 0;
+int				fps = 0;
 
+//Class Objects
 md5load md5object;
 md5load md5object1;
 md5load md5object2;
@@ -51,12 +57,14 @@ md5load md5object3;
 
 menutextures * Menu = new menutextures();
 objload * Wings = new objload();
+soundeffect * t = new soundeffect();
 
 static void   init(void);
 static void   cleanup(void);
 static void   keyEvent( unsigned char key, int x, int y);
 static void   mainLoop(void);
 static void   draw( void );
+static void   loadData(void);
 static void   keyboard(unsigned char key, int x, int y);
 static void   mouse(int button, int state, int x, int y);
 
@@ -173,22 +181,10 @@ static void cleanup(void)
 
 static void draw( void )
 {
-	/*Initialise Functions*/
-	if (loadOpenGL == false){
-		//Load MD5 Models
-		md5object.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Vic1.md5anim", "../Assets/Textures/Head.tga");
-		md5object1.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Walk2.md5anim", "../Assets/Textures/grass.tga");
-		//Load OBJ Models
-		Wings->InitGL();
-		Wings->LoadModel("../Assets/Models/coin.obj");
-		//Load Menus
-		Menu->load();
-		//Initialise Glut Functionality
-		glutKeyboardFunc(keyboard);
-		glutMouseFunc(mouse);
-		loadOpenGL = true;
+	/*One Off Initialise Functions*/
+	if (!loadOpenGL){
+		loadData();
 	}
-
 
 	//Setup camera for 3D rendering
     argDrawMode3D();
@@ -251,18 +247,52 @@ static void draw( void )
 	/// 2D Menu Rendering ///
 	argDrawMode2D();
 
-	//Render the OBJ coin
-	glPushMatrix();
-	glTranslatef(width / 2, height / 2, 0);
-	glRotatef(90, 1, 0, 0);
-	glScalef(20, 20, 20);
-	Wings->DrawModelUsingFixedFuncPipeline();
-	glPopMatrix();
-
 	//Render Menus
 	glPushMatrix();
 	Menu->render(width, height);
 	glPopMatrix();
+
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT1);
+
+	//Render the OBJ coin
+	glPushMatrix();
+	glTranslatef(width / 2, height / 2, 0);
+	glRotatef(90, 1, 0, 0);
+	glRotatef(movement, 0, 0, 1);
+	glScalef(60, 60, 60);
+	Wings->enableTextures(true);
+	Wings->enableBackFaceCulling(false);
+	Wings->DrawModelUsingFixedFuncPipeline();
+	glPopMatrix();
+
+	//Update Rotations
+	if (movement < 720)
+		movement = movement + 1;
+	else
+		movement = 0;
+}
+
+void loadData(){
+	gamestate::init();
+	//Load MD5 Models
+	md5object.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Gun.md5anim", "../Assets/Textures/Head.tga");
+	md5object1.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Walk2.md5anim", "../Assets/Textures/grass.tga");
+	//Load OBJ Models
+	Wings->InitGL();
+	Wings->LoadModel("../Assets/Models/coin.obj");
+	//Load Menus
+	Menu->load();
+	//Load Sounds
+	t->createSound("../Assets/Sounds/inception.wav", 0);
+	t->createSound("../Assets/Sounds/sound.wav", 1);
+	t->createSound("../Assets/Sounds/lorry.wav", 2);
+	//Play Ambient Sounds
+	t->toggleBackgroundSound(2, true);
+	//Initialise Glut Functionality
+	glutKeyboardFunc(keyboard);
+	glutMouseFunc(mouse);
+	loadOpenGL = true;
 }
 
 void keyboard(unsigned char key, int x, int y)
@@ -285,6 +315,13 @@ void keyboard(unsigned char key, int x, int y)
 	if (key == 51){ //'2' Key{
 		md5object.cleanup();
 		md5object.init("../Assets/Models/pinky.md5mesh", "../Assets/Animations/attack.md5anim", "../Assets/Textures/pinky_d.tga");
+	}
+
+	if (key == 32){ //'Space' Key{
+		t->play(0);
+	}
+	if (key == 46){ //'.' Key{
+		t->play(1);
 	}
 }
 
