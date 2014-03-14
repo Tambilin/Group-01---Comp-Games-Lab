@@ -20,13 +20,8 @@
 #include "objload.h"
 #include "soundeffect.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-#include "object.h"
-#ifdef __cplusplus
-}
-#endif
+#include "object.c"
+
 
 #define COLLIDE_DIST 30000.0
 
@@ -50,6 +45,12 @@ int             count2 = 0;
 char           *cparam_name    = "Data/camera_para.dat";
 ARParam         cparam;
 
+//char           *patt_name      = "Data/patt.hiro";
+//int             patt_id;
+//double          patt_width     = 80.0;
+//double          patt_center[2] = {0.0, 0.0};
+//double          patt_trans[3][4];
+
 //Additional Variables
 bool			loadOpenGL = false;
 static bool     leftButtonDown = false;
@@ -59,10 +60,9 @@ int				movement = 0;
 int				fps = 0;
 
 //Class Objects
-md5load md5object;
-md5load md5object1;
-md5load md5object2;
-md5load md5object3;
+md5load RobotP1;
+md5load RobotP2;
+md5load Alien;
 
 menutextures * Menu = new menutextures();
 objload * Wings = new objload();
@@ -85,7 +85,6 @@ int main(int argc, char **argv)
 
     arVideoCapStart();
     argMainLoop( NULL, keyEvent, mainLoop );
-	return (0);
 }
 
 static void   keyEvent( unsigned char key, int x, int y)
@@ -116,6 +115,9 @@ static void mainLoop(void)
 
     argDrawMode2D();
     argDispImage( dataPtr, 0,0 );
+
+	//glColor3f(1.0, 0.0, 0.0);
+	//glLineWidth(6.0);
 
 	/* detect the markers in the video frame */
 	if (arDetectMarker(dataPtr, thresh,
@@ -179,37 +181,40 @@ static void mainLoop(void)
     draw(object, objectnum);
 
 	//Swap buffers
-	glutSwapBuffers();
-	glutPostRedisplay();
+	argSwapBuffers();
+	//glutSwapBuffers();
+	//glutPostRedisplay();
 }
 
 static void init( void )
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    ARParam  wparam;
-	
-    /* open the video path */
-    if( arVideoOpen( vconf ) < 0 ) exit(0);
-    /* find the size of the window */
-    if( arVideoInqSize(&width, &height) < 0 ) exit(0);
-    printf("Image size (x,y) = (%d,%d)\n", width, height);
+	ARParam  wparam;
 
-    /* set the initial camera parameters */
-    if( arParamLoad(cparam_name, 1, &wparam) < 0 ) {
-        printf("Camera parameter load error !!\n");
-        exit(0);
-    }
-    arParamChangeSize( &wparam, width, height, &cparam );
-    arInitCparam( &cparam );
-    printf("*** Camera Parameter ***\n");
-    arParamDisp( &cparam );
+	/* open the video path */
+	if (arVideoOpen(vconf) < 0) exit(0);
+	/* find the size of the window */
+	if (arVideoInqSize(&width, &height) < 0) exit(0);
+	printf("Image size (x,y) = (%d,%d)\n", width, height);
+
+	/* set the initial camera parameters */
+	if (arParamLoad(cparam_name, 1, &wparam) < 0) {
+		printf("Camera parameter load error !!\n");
+		exit(0);
+	}
+	arParamChangeSize(&wparam, width, height, &cparam);
+	arInitCparam(&cparam);
+	printf("*** Camera Parameter ***\n");
+	arParamDisp(&cparam);
 
 	/* load in the object data - trained markers and associated bitmap files */
 	if ((object = read_ObjData(model_name, &objectnum)) == NULL) exit(0);
 	printf("Objectfile num = %d\n", objectnum);
 
-    /* open the graphics window */
-    argInit( &cparam, 1.0, 0, 0, 0, 0 );
+	/* open the graphics window */
+	argInit(&cparam, 1.0, 0, 0, 0, 0);
+
+
 }
 
 /* cleanup function called when program exits */
@@ -241,12 +246,6 @@ static int draw(ObjectData_T *object, int objectnum)
     glDepthFunc(GL_LEQUAL);
 	//glEnable(GL_LIGHTING);
     
-	/* calculate the viewing parameters - gl_para */
-	for (i = 0; i < objectnum; i++) {
-		if (object[i].visible == 0) continue;
-		argConvGlpara(object[i].trans, gl_para);
-		draw_object(object[i].id, gl_para);
-	}
 
 	/* Setup Lighting */
 	GLfloat light_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
@@ -273,23 +272,12 @@ static int draw(ObjectData_T *object, int objectnum)
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
 
-<<<<<<< HEAD
-	if (renderModel){
-		md5object.enableTextured(false);
-		glTranslatef(0, -0, -150);
-		glPushMatrix();
-		md5object.draw(0, 0, 0, 1, 0, 0, 0, 0); //Draw Model
-		glPopMatrix();
+	/* calculate the viewing parameters - gl_para */
+	for (i = 0; i < objectnum; i++) {
+		if (object[i].visible == 0) continue;
+		argConvGlpara(object[i].trans, gl_para);
+		draw_object(object[i].id, gl_para);
 	}
-=======
-	//if (renderModel){
-	//	md5object.enableTextured(false);
-	//	glTranslatef(0, -0, -200);
-	//	glPushMatrix();
-	//	md5object.draw(0, 0, 0, 1, 0, 0, 0, 0); //Draw Model
-	//	glPopMatrix();
-	//}
->>>>>>> eea23e9bd16fa5cfdbfe6435887e105832e81fd5
 
 	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
@@ -306,6 +294,8 @@ static int draw(ObjectData_T *object, int objectnum)
 	Menu->render(width, height);
 	glPopMatrix();
 
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT1);
 
 	//Render the OBJ coin
 	//glPushMatrix();
@@ -314,6 +304,7 @@ static int draw(ObjectData_T *object, int objectnum)
 	//glRotatef(movement, 0, 0, 1);
 	//glScalef(60, 60, 60);
 	//Wings->enableTextures(true);
+	//Wings->enableBackFaceCulling(false);
 	//Wings->DrawModelUsingFixedFuncPipeline();
 	//glPopMatrix();
 
@@ -343,6 +334,12 @@ static int draw_object(int obj_id, double gl_para[16])
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixd(gl_para);
 
+	//Clear Depth Buffer
+	glClearDepth(1.0);
+	glClear(GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
+
 	/* set the material */
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
@@ -352,42 +349,32 @@ static int draw_object(int obj_id, double gl_para[16])
 
 	glMaterialfv(GL_FRONT, GL_SHININESS, mat_flash_shiny);
 
-	//enable client states for glDrawElements
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_NORMAL_ARRAY);
-
 	if (obj_id == 0){
-		glMaterialfv(GL_FRONT, GL_SPECULAR, mat_flash_collide);
-		glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient_collide);
+		//glMaterialfv(GL_FRONT, GL_SPECULAR, mat_flash_collide);
+		//glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient_collide);
 		/* draw a cube */
 		/*glTranslatef(0.0, 0.0, 30.0);
 		glutSolidSphere(30, 12, 6);*/
 		//Draw robot 1
-		md5object.enableTextured(false);
-		glTranslatef(0, -0, -200);
+		RobotP1.enableTextured(true);
+		glTranslatef(0, -0, -150);
 		glPushMatrix();
-			md5object.draw(0, 0, 0, 1, 0, 0, 0, 0); //Draw Model
+			RobotP1.draw(0, 0, 0, 1, 0, 0, 0, 0); //Draw Model
 		glPopMatrix();
 	}
 	else {
-		glMaterialfv(GL_FRONT, GL_SPECULAR, mat_flash);
-		glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+		//glMaterialfv(GL_FRONT, GL_SPECULAR, mat_flash);
+		//glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
 		/* draw a cube */
 		/*glTranslatef(0.0, 0.0, 30.0);
 		glutSolidCube(60);*/
 		//Draw robot 2
-		md5object1.enableTextured(false);
-		glTranslatef(0, -0, -200);
+		RobotP2.enableTextured(true);
+		glTranslatef(0, -0, -150);
 		glPushMatrix();
-			md5object1.draw(0, 0, 0, 1, 0, 0, 0, 0); //Draw Model
+			RobotP2.draw(0, 0, 0, 1, 0, 0, 0, 0); //Draw Model
 		glPopMatrix();
 	}
-
-	//disable client states for glDrawElements
-	glDisableClientState(GL_NORMAL_ARRAY);
-	glDisableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	argDrawMode2D();
 
@@ -395,10 +382,10 @@ static int draw_object(int obj_id, double gl_para[16])
 }
 
 void loadData(){
-	gamestate::init();
+	//gamestate::init();
 	//Load MD5 Models
-	md5object.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Walk.md5anim", "../Assets/Textures/Head.tga");
-	md5object1.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Walk2.md5anim", "../Assets/Textures/grass.tga");
+	RobotP1.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Gun.md5anim", "../Assets/Textures/Head.tga");
+	RobotP2.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Walk.md5anim", "../Assets/Textures/grass.tga");
 	//Load OBJ Models
 	Wings->InitGL();
 	Wings->LoadModel("../Assets/Models/coin.obj");
@@ -422,24 +409,20 @@ void keyboard(unsigned char key, int x, int y)
 	if (key == 27)
 		exit(0);
 	if (key == 48){ //'0' Key{
-		md5object.cleanup();
-		md5object.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Walk.md5anim", "../Assets/Textures/Head.tga");
-		//md5object.init("../Assets/Models/pinky.md5mesh", "../Assets/Animations/run.md5anim", "../Assets/Textures/pinky_d.tga");
+		RobotP1.cleanup();
+		RobotP1.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Walk.md5anim", "../Assets/Textures/Head.tga");
 	}
 	if (key == 49){ //'1' Key{
-		md5object.cleanup();
-		md5object.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Attack(DualSwords).md5anim", "../Assets/Textures/Head.tga");
-		//md5object.init("../Assets/Models/pinky.md5mesh", "../Assets/Animations/run.md5anim", "../Assets/Textures/pinky_s.tga");
+		RobotP1.cleanup();
+		RobotP1.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Idle.md5anim", "../Assets/Textures/Head.tga");
 	}
 	if (key == 50){ //'2' Key{
-		md5object.cleanup();
-		md5object.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_EntryPose2.md5anim", "../Assets/Textures/Head.tga");
-		//md5object.init("../Assets/Models/pinky.md5mesh", "../Assets/Animations/idle1.md5anim", "../Assets/Textures/pinky_s.tga");
+		RobotP1.cleanup();
+		RobotP1.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Attack(DualSwords).md5anim", "../Assets/Textures/Head.tga");
 	}
 	if (key == 51){ //'2' Key{
-		md5object.cleanup();
-		md5object.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Idle.md5anim", "../Assets/Textures/Head.tga");
-		//md5object.init("../Assets/Models/pinky.md5mesh", "../Assets/Animations/attack.md5anim", "../Assets/Textures/pinky_d.tga");
+		RobotP1.cleanup();
+		RobotP1.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Victory1.md5anim", "../Assets/Textures/Head.tga");
 	}
 
 	if (key == 32){ //'Space' Key{
