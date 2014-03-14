@@ -1,14 +1,74 @@
 #the number of patterns to be recognized
-2
+12
 
 #pattern 1
-Hiro
-Data/patt.hiro
+patt01
+Data/patt01
 80.0
 0.0 0.0
 
 #pattern 2
-Kanji
-Data/patt.kanji
+patt02
+Data/patt02
+80.0
+0.0 0.0
+
+#pattern 3
+patt03
+Data/patt03
+80.0
+0.0 0.0
+
+#pattern 4
+patt04
+Data/patt04
+80.0
+0.0 0.0
+
+#pattern 5
+patt05
+Data/patt05
+80.0
+0.0 0.0
+
+#pattern 6
+patt06
+Data/patt06
+80.0
+0.0 0.0
+
+#pattern 7
+patt07
+Data/patt07
+80.0
+0.0 0.0
+
+#pattern 8
+patt08
+Data/patt08
+80.0
+0.0 0.0
+
+#pattern 9
+patt09
+Data/patt09
+80.0
+0.0 0.0
+
+#pattern 10
+patt10
+Data/patt10
+80.0
+0.0 0.0
+
+#pattern 11
+patt11
+Data/patt11
+80.0
+0.0 0.0
+
+#pattern 12
+patt12
+Data/patt12
 80.0
 0.0 0.0

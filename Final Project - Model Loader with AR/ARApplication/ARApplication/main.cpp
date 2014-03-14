@@ -120,8 +120,7 @@ static void mainLoop(void)
 	//glLineWidth(6.0);
 
 	/* detect the markers in the video frame */
-	if (arDetectMarker(dataPtr, thresh,
-		&marker_info, &marker_num) < 0) {
+	if (arDetectMarker(dataPtr, thresh,	&marker_info, &marker_num) < 0) {
 		cleanup();
 		exit(0);
 	}
@@ -294,8 +293,8 @@ static int draw(ObjectData_T *object, int objectnum)
 	Menu->render(width, height);
 	glPopMatrix();
 
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT1);
+	//glEnable(GL_LIGHTING);
+	//glEnable(GL_LIGHT1);
 
 	//Render the OBJ coin
 	//glPushMatrix();
@@ -352,9 +351,6 @@ static int draw_object(int obj_id, double gl_para[16])
 	if (obj_id == 0){
 		//glMaterialfv(GL_FRONT, GL_SPECULAR, mat_flash_collide);
 		//glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient_collide);
-		/* draw a cube */
-		/*glTranslatef(0.0, 0.0, 30.0);
-		glutSolidSphere(30, 12, 6);*/
 		//Draw robot 1
 		RobotP1.enableTextured(true);
 		glTranslatef(0, -0, -150);
@@ -362,12 +358,19 @@ static int draw_object(int obj_id, double gl_para[16])
 			RobotP1.draw(0, 0, 0, 1, 0, 0, 0, 0); //Draw Model
 		glPopMatrix();
 	}
-	else {
+	else if (obj_id == 1) {
 		//glMaterialfv(GL_FRONT, GL_SPECULAR, mat_flash);
 		//glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
-		/* draw a cube */
-		/*glTranslatef(0.0, 0.0, 30.0);
-		glutSolidCube(60);*/
+		//Draw robot 2
+		RobotP2.enableTextured(true);
+		glTranslatef(0, -0, -150);
+		glPushMatrix();
+			RobotP2.draw(0, 0, 0, 1, 0, 0, 0, 0); //Draw Model
+		glPopMatrix();
+	}
+	else if (obj_id == 3) {
+		//glMaterialfv(GL_FRONT, GL_SPECULAR, mat_flash);
+		//glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
 		//Draw robot 2
 		RobotP2.enableTextured(true);
 		glTranslatef(0, -0, -150);
@@ -386,6 +389,7 @@ void loadData(){
 	//Load MD5 Models
 	RobotP1.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Gun.md5anim", "../Assets/Textures/Head.tga");
 	RobotP2.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Walk.md5anim", "../Assets/Textures/grass.tga");
+	Alien.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Walk.md5anim", "../Assets/Textures/grass.tga");
 	//Load OBJ Models
 	Wings->InitGL();
 	Wings->LoadModel("../Assets/Models/coin.obj");
