@@ -18,6 +18,7 @@
     <ClCompile Include="md5load.cpp" />
     <ClCompile Include="menutextures.cpp" />
     <ClCompile Include="model_obj.cpp" />
+    <ClCompile Include="object.c" />
     <ClCompile Include="objload.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="soundeffect.cpp" />
@@ -30,6 +31,7 @@
     <ClInclude Include="md5load.h" />
     <ClInclude Include="menutextures.h" />
     <ClInclude Include="model_obj.h" />
+    <ClInclude Include="object.h" />
     <ClInclude Include="objload.h" />
     <ClInclude Include="soundeffect.h" />
   </ItemGroup>
@@ -61,7 +63,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -78,6 +82,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>$(ProjectDir)\include;C:\Windows\SysWOW64;</AdditionalIncludeDirectories>
+      <OmitDefaultLibName>false</OmitDefaultLibName>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

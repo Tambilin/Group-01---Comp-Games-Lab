@@ -19,6 +19,17 @@
 #include "menutextures.h"
 #include "objload.h"
 #include "soundeffect.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+#include "object.h"
+#ifdef __cplusplus
+}
+#endif
+
+#define COLLIDE_DIST 30000.0
+
 //
 // Camera configuration.
 //
@@ -28,18 +39,16 @@ char			*vconf = "Data\\WDM_camera_flipV.xml";
 char			*vconf = "";
 #endif
 
+char            *model_name = "Data/object_data2";
+ObjectData_T    *object;
+int             objectnum;
+
 int             width, height;
 int             thresh = 100;
 int             count2 = 0;
 
 char           *cparam_name    = "Data/camera_para.dat";
 ARParam         cparam;
-
-char           *patt_name      = "Data/patt.hiro";
-int             patt_id;
-double          patt_width     = 80.0;
-double          patt_center[2] = {0.0, 0.0};
-double          patt_trans[3][4];
 
 //Additional Variables
 bool			loadOpenGL = false;
@@ -63,7 +72,8 @@ static void   init(void);
 static void   cleanup(void);
 static void   keyEvent( unsigned char key, int x, int y);
 static void   mainLoop(void);
-static void   draw( void );
+static int    draw(ObjectData_T *object, int objectnum);
+static int    draw_object(int obj_id, double gl_para[16]);
 static void   loadData(void);
 static void   keyboard(unsigned char key, int x, int y);
 static void   mouse(int button, int state, int x, int y);
@@ -91,13 +101,12 @@ static void   keyEvent( unsigned char key, int x, int y)
 /* main loop */
 static void mainLoop(void)
 {
-
     ARUint8         *dataPtr;
     ARMarkerInfo    *marker_info;
     int             marker_num;
-    int             j, k;
+    int             i, j, k;
 
-    /* grab a vide frame */
+    /* grab a video frame */
     if( (dataPtr = (ARUint8 *)arVideoGetImage()) == NULL ) {
         arUtilSleep(2);
         return;
@@ -108,34 +117,66 @@ static void mainLoop(void)
     argDrawMode2D();
     argDispImage( dataPtr, 0,0 );
 
-    /* detect the markers in the video frame */
-	arDetectMarker(dataPtr, thresh, &marker_info, &marker_num);
+	/* detect the markers in the video frame */
+	if (arDetectMarker(dataPtr, thresh,
+		&marker_info, &marker_num) < 0) {
+		cleanup();
+		exit(0);
+	}
+	for (i = 0; i < marker_num; i++) {
+		argDrawSquare(marker_info[i].vertex, 0, 0);
+	}
+
+	/* check for known patterns */
+	for (i = 0; i < objectnum; i++) {
+		k = -1;
+		for (j = 0; j < marker_num; j++) {
+			if (object[i].id == marker_info[j].id) {
+
+				/* you've found a pattern */
+				//printf("Found pattern: %d ",patt_id);
+				//glColor3f(0.0, 1.0, 0.0);
+				argDrawSquare(marker_info[j].vertex, 0, 0);
+
+				if (k == -1) k = j;
+				else /* make sure you have the best pattern (highest confidence factor) */
+					if (marker_info[k].cf < marker_info[j].cf) k = j;
+			}
+		}
+		if (k == -1) {
+			object[i].visible = 0;
+			continue;
+		}
+
+		/* calculate the transform for each marker */
+		if (object[i].visible == 0) {
+			arGetTransMat(&marker_info[k],
+				object[i].marker_center, object[i].marker_width,
+				object[i].trans);
+		}
+		else {
+			arGetTransMatCont(&marker_info[k], object[i].trans,
+				object[i].marker_center, object[i].marker_width,
+				object[i].trans);
+		}
+		object[i].visible = 1;
+	}
 
 	//Get next video capture
     arVideoCapNext();
 
-    /* check for object visibility */
-    k = -1;
-    for( j = 0; j < marker_num; j++ ) {
-        if( patt_id == marker_info[j].id ) {
-            if( k == -1 ) k = j;
-            else if( marker_info[k].cf < marker_info[j].cf ) k = j;
-        }
-    }
-
-	renderModel = (k != -1); //Enable rendering of model
-
+	//renderModel = (k != -1); //Enable rendering of model
 
     /* get the transformation between the marker and the real camera */
-	if (c > 10){
+	/*if (c > 10){
 		arGetTransMat(&marker_info[k], patt_center, patt_width, patt_trans);
 		c = 0;
 	}
 	else {
 		c++;
-	}
+	}*/
 
-    draw();
+    draw(object, objectnum);
 
 	//Swap buffers
 	glutSwapBuffers();
@@ -152,6 +193,7 @@ static void init( void )
     /* find the size of the window */
     if( arVideoInqSize(&width, &height) < 0 ) exit(0);
     printf("Image size (x,y) = (%d,%d)\n", width, height);
+
     /* set the initial camera parameters */
     if( arParamLoad(cparam_name, 1, &wparam) < 0 ) {
         printf("Camera parameter load error !!\n");
@@ -162,10 +204,9 @@ static void init( void )
     printf("*** Camera Parameter ***\n");
     arParamDisp( &cparam );
 
-    if( (patt_id=arLoadPatt(patt_name)) < 0 ) {
-        printf("pattern load error !!\n");
-        exit(0);
-    }
+	/* load in the object data - trained markers and associated bitmap files */
+	if ((object = read_ObjData(model_name, &objectnum)) == NULL) exit(0);
+	printf("Objectfile num = %d\n", objectnum);
 
     /* open the graphics window */
     argInit( &cparam, 1.0, 0, 0, 0, 0 );
@@ -179,8 +220,11 @@ static void cleanup(void)
     argCleanup();
 }
 
-static void draw( void )
+static int draw(ObjectData_T *object, int objectnum)
 {
+	int     i;
+	double  gl_para[16];
+
 	/*One Off Initialise Functions*/
 	if (!loadOpenGL){
 		loadData();
@@ -195,14 +239,14 @@ static void draw( void )
     glClear(GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
+	//glEnable(GL_LIGHTING);
     
-    /* load the camera transformation matrix and model transformations*/
-	double    gl_para[16]; 
-    argConvGlpara(patt_trans, gl_para);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadMatrixd( gl_para ); //Load model transformation matrix (Translates model to card position)
-	glMatrixMode(GL_MODELVIEW);
-
+	/* calculate the viewing parameters - gl_para */
+	for (i = 0; i < objectnum; i++) {
+		if (object[i].visible == 0) continue;
+		argConvGlpara(object[i].trans, gl_para);
+		draw_object(object[i].id, gl_para);
+	}
 
 	/* Setup Lighting */
 	GLfloat light_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
@@ -229,6 +273,7 @@ static void draw( void )
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
 
+<<<<<<< HEAD
 	if (renderModel){
 		md5object.enableTextured(false);
 		glTranslatef(0, -0, -150);
@@ -236,6 +281,15 @@ static void draw( void )
 		md5object.draw(0, 0, 0, 1, 0, 0, 0, 0); //Draw Model
 		glPopMatrix();
 	}
+=======
+	//if (renderModel){
+	//	md5object.enableTextured(false);
+	//	glTranslatef(0, -0, -200);
+	//	glPushMatrix();
+	//	md5object.draw(0, 0, 0, 1, 0, 0, 0, 0); //Draw Model
+	//	glPopMatrix();
+	//}
+>>>>>>> eea23e9bd16fa5cfdbfe6435887e105832e81fd5
 
 	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
@@ -268,6 +322,76 @@ static void draw( void )
 		movement = movement + 1;
 	else
 		movement = 0;
+
+	return 0;
+}
+
+/* draw the user object */
+static int draw_object(int obj_id, double gl_para[16])
+{
+	GLfloat   mat_ambient[] = { 0.0, 0.0, 1.0, 1.0 };
+	GLfloat   mat_ambient_collide[] = { 1.0, 0.0, 0.0, 1.0 };
+	GLfloat   mat_flash[] = { 0.0, 0.0, 1.0, 1.0 };
+	GLfloat   mat_flash_collide[] = { 1.0, 0.0, 0.0, 1.0 };
+	GLfloat   mat_flash_shiny[] = { 50.0 };
+	GLfloat   light_position[] = { 100.0, -200.0, 200.0, 0.0 };
+	GLfloat   ambi[] = { 0.1, 0.1, 0.1, 0.1 };
+	GLfloat   lightZeroColor[] = { 0.9, 0.9, 0.9, 0.1 };
+
+	argDrawMode3D();
+	argDraw3dCamera(0, 0);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadMatrixd(gl_para);
+
+	/* set the material */
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, ambi);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightZeroColor);
+
+	glMaterialfv(GL_FRONT, GL_SHININESS, mat_flash_shiny);
+
+	//enable client states for glDrawElements
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+
+	if (obj_id == 0){
+		glMaterialfv(GL_FRONT, GL_SPECULAR, mat_flash_collide);
+		glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient_collide);
+		/* draw a cube */
+		/*glTranslatef(0.0, 0.0, 30.0);
+		glutSolidSphere(30, 12, 6);*/
+		//Draw robot 1
+		md5object.enableTextured(false);
+		glTranslatef(0, -0, -200);
+		glPushMatrix();
+			md5object.draw(0, 0, 0, 1, 0, 0, 0, 0); //Draw Model
+		glPopMatrix();
+	}
+	else {
+		glMaterialfv(GL_FRONT, GL_SPECULAR, mat_flash);
+		glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+		/* draw a cube */
+		/*glTranslatef(0.0, 0.0, 30.0);
+		glutSolidCube(60);*/
+		//Draw robot 2
+		md5object1.enableTextured(false);
+		glTranslatef(0, -0, -200);
+		glPushMatrix();
+			md5object1.draw(0, 0, 0, 1, 0, 0, 0, 0); //Draw Model
+		glPopMatrix();
+	}
+
+	//disable client states for glDrawElements
+	glDisableClientState(GL_NORMAL_ARRAY);
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	argDrawMode2D();
+
+	return 0;
 }
 
 void loadData(){

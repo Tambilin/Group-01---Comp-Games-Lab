@@ -1,0 +1,12 @@
+#the number of patterns to be recognized
+2
+
+#pattern 1
+cube
+Data/patt.hiro 
+80.0
+
+#pattern 2
+sphere
+Data/piePatt
+80.0
