@@ -231,7 +231,7 @@ static void draw( void )
 
 	if (renderModel){
 		md5object.enableTextured(false);
-		glTranslatef(0, -0, -200);
+		glTranslatef(0, -0, -150);
 		glPushMatrix();
 		md5object.draw(0, 0, 0, 1, 0, 0, 0, 0); //Draw Model
 		glPopMatrix();
@@ -252,19 +252,16 @@ static void draw( void )
 	Menu->render(width, height);
 	glPopMatrix();
 
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT1);
 
 	//Render the OBJ coin
-	glPushMatrix();
-	glTranslatef(width / 2, height / 2, 0);
-	glRotatef(90, 1, 0, 0);
-	glRotatef(movement, 0, 0, 1);
-	glScalef(60, 60, 60);
-	Wings->enableTextures(true);
-	Wings->enableBackFaceCulling(false);
-	Wings->DrawModelUsingFixedFuncPipeline();
-	glPopMatrix();
+	//glPushMatrix();
+	//glTranslatef(width / 2, height / 2, 0);
+	//glRotatef(90, 1, 0, 0);
+	//glRotatef(movement, 0, 0, 1);
+	//glScalef(60, 60, 60);
+	//Wings->enableTextures(true);
+	//Wings->DrawModelUsingFixedFuncPipeline();
+	//glPopMatrix();
 
 	//Update Rotations
 	if (movement < 720)
@@ -276,7 +273,7 @@ static void draw( void )
 void loadData(){
 	gamestate::init();
 	//Load MD5 Models
-	md5object.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Gun.md5anim", "../Assets/Textures/Head.tga");
+	md5object.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Walk.md5anim", "../Assets/Textures/Head.tga");
 	md5object1.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Walk2.md5anim", "../Assets/Textures/grass.tga");
 	//Load OBJ Models
 	Wings->InitGL();
@@ -302,19 +299,23 @@ void keyboard(unsigned char key, int x, int y)
 		exit(0);
 	if (key == 48){ //'0' Key{
 		md5object.cleanup();
-		md5object.init("../Assets/Models/pinky.md5mesh", "../Assets/Animations/run.md5anim", "../Assets/Textures/pinky_d.tga");
+		md5object.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Walk.md5anim", "../Assets/Textures/Head.tga");
+		//md5object.init("../Assets/Models/pinky.md5mesh", "../Assets/Animations/run.md5anim", "../Assets/Textures/pinky_d.tga");
 	}
 	if (key == 49){ //'1' Key{
 		md5object.cleanup();
-		md5object.init("../Assets/Models/pinky.md5mesh", "../Assets/Animations/run.md5anim", "../Assets/Textures/pinky_s.tga");
+		md5object.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Attack(DualSwords).md5anim", "../Assets/Textures/Head.tga");
+		//md5object.init("../Assets/Models/pinky.md5mesh", "../Assets/Animations/run.md5anim", "../Assets/Textures/pinky_s.tga");
 	}
 	if (key == 50){ //'2' Key{
 		md5object.cleanup();
-		md5object.init("../Assets/Models/pinky.md5mesh", "../Assets/Animations/idle1.md5anim", "../Assets/Textures/pinky_s.tga");
+		md5object.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_EntryPose2.md5anim", "../Assets/Textures/Head.tga");
+		//md5object.init("../Assets/Models/pinky.md5mesh", "../Assets/Animations/idle1.md5anim", "../Assets/Textures/pinky_s.tga");
 	}
 	if (key == 51){ //'2' Key{
 		md5object.cleanup();
-		md5object.init("../Assets/Models/pinky.md5mesh", "../Assets/Animations/attack.md5anim", "../Assets/Textures/pinky_d.tga");
+		md5object.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Idle.md5anim", "../Assets/Textures/Head.tga");
+		//md5object.init("../Assets/Models/pinky.md5mesh", "../Assets/Animations/attack.md5anim", "../Assets/Textures/pinky_d.tga");
 	}
 
 	if (key == 32){ //'Space' Key{
