@@ -14,6 +14,10 @@ menutextures::menutextures(void)
 {
 	widescreen = false;
 	mode = 0;
+	previousMode = 0;
+	confirm = false;
+	attackedThisTurn = false;
+	cardTex = -2;
 	alpha = 5;
 	rollSize = 1;
 	our_font16.init("../Assets/Fonts/BuxtonSketch.TTF", 16);					    //Build the freetype font
@@ -105,6 +109,7 @@ void menutextures::render(int width, int height){
   else 
     offset = 1;
 
+
   switch (mode)
   {
   case 0:
@@ -113,12 +118,33 @@ void menutextures::render(int width, int height){
 	  drawQuad(6, width - (128 * res), height - (64 * res * 2), width - 10, height - 10 - (64 * res)); //Options
 	  break;
   case 1:
+	  glPushAttrib(GL_CURRENT_BIT);
+	  glPushMatrix();
+	  glColor4f(1.0, 1.0, 0.0, 1.0);
+	  glRasterPos2f(width / 2 - 260 * res, height - height / 3 / res);
+	  freetype_mod::print(*our_font, "Player 1 - Place Your Selected Mech");	// Print GL Text To The Screen
+	  glPopMatrix();
+	  glPopAttrib();
+	  break;
+  case 2:
+	  glPushAttrib(GL_CURRENT_BIT);
+	  glPushMatrix();
+	  glColor4f(1.0, 1.0, 0.0, 1.0);
+	  glRasterPos2f(width / 2 - 260 * res, height - height / 3 / res);
+	  freetype_mod::print(*our_font, "Player 2 - Place Your Selected Mech");	// Print GL Text To The Screen
+	  glPopMatrix();
+	  glPopAttrib();
+	  break;
+  case 3: //1
 	  //drawQuad(0 + offset, 0, 0, width, height); //Border
 	  drawQuad(8, width - (128 * res), height - (64 * res), width - 10, height - 10); //Roll
 	  break;
-  case 2:
+  case 4: //2
 	  //drawQuad(0 + offset, 0, 0, width, height); //Border
 	  drawQuad(7, width - (128 * res), height - (64 * res), width - 10, height - 10); //Next turn
+	  if (!attackedThisTurn){
+		  drawQuad(16, width - (128 * res), height - (64 * res * 2), width - 10, height - 10 - (64 * res)); //Attack
+	  }
 	  ///////////DICE ROLLS RESULTS///////////////////
 	  if (size > 12){
 		  size = 12;
@@ -155,10 +181,16 @@ void menutextures::render(int width, int height){
 	  break; 
   }
 
-
-
   if (mode != 0){
-	  drawQuad(10, 2, height - 64, 256, height-2); //Menu background
+	  drawQuad(10, 2, height - 64, 256, height-2); //TitleBar
+	  glPushMatrix();//P1
+	  glPushAttrib(GL_CURRENT_BIT);
+	  glColor3f(0.0, 0.0, 0.0);
+	  glRasterPos2f(32, height-48);
+	  freetype_mod::print(*our_subfont, "Turn %2.0f - Player %1.0f's Turn", (float)gamestate::turnID, (float)gamestate::phase);	// Print GL Text To The Screen
+	  glPopAttrib();
+	  glPopMatrix();
+
 	  drawQuad(9, 0, 0, (128 * res), (256 * res));
 	  drawQuad(9, width - (128 * res), 0, width, (256 * res));
 
@@ -200,7 +232,7 @@ void menutextures::render(int width, int height){
 	  glPopMatrix();
   }
 
-  if (mode == 2){
+  if (mode == 4){
 	  glPushAttrib(GL_CURRENT_BIT);
 	  glPushMatrix();
 	  glColor4f(1.0, 1.0, 1.0, alpha);
@@ -208,6 +240,32 @@ void menutextures::render(int width, int height){
 	  freetype_mod::print(*our_font, "+%3.0f", (float)total);	// Print GL Text To The Screen
 	  glPopMatrix();
 	  glPopAttrib();
+  }
+
+  //Selection screen when new card is played, overrides other modes.
+  if (confirm){
+	  glPushAttrib(GL_CURRENT_BIT);
+	  glPushMatrix();
+	  glColor4f(1.0, 0.0, 0.0, 1.0);
+	  glRasterPos2f(width - 355 * res, height - (46*res));
+	  freetype_mod::print(*our_subfont, "Do you want to use this card?");	// Print GL Text To The Screen
+	  glPopMatrix();
+	  glPopAttrib();
+	  drawQuad(13, width - (128 * res), height - (64 * res), width - 10, height - 10); //Confirm
+	  drawQuad(14, width - (128 * res), height - (64 * res * 2), width - 10, height - 10 - (64 * res)); //Cancel
+	  char directory[50] = "../Assets/Textures/Cards/";
+	  char number[5] = "";
+	  char filetype[5] = ".png";
+	  sprintf(number, "%d", gamestate::lastPlayedID);
+	  strcat(directory, number);
+	  strcat(directory, filetype);
+	  //cout << directory << endl;
+	  if (cardTex != gamestate::lastPlayedID){
+		  menuTex[15] = loadTexture(directory);
+		  cardTex = gamestate::lastPlayedID;
+	  }
+	  int difference = (((height/2) - (20))*0.72)/2;
+	  drawQuad(15, width / 2-difference, 20, width/2+difference, height/2);
   }
 
   glDisable(GL_BLEND);
@@ -223,6 +281,11 @@ void menutextures::render(int width, int height){
 
 int menutextures::getMode(void){
 	return mode;
+}
+
+void menutextures::setMode(int i){
+	previousMode = mode;
+	mode = i;
 }
 
 void menutextures::drawQuad(int textureID, int minX, int minY, int maxX, int maxY){
@@ -287,48 +350,127 @@ void menutextures::screenSizeMenu(int item)
         return;
 }
 
-
+void menutextures::setConfirm(bool t){
+	confirm = t;
+}
 
 void menutextures::checkButtonClick(int x, int y, int width, int height){
 	  int res = 1 + resolutionX / 1280;
+	  if (confirm && mode != 0){
+		  if (x > width - (128 * res) &&
+			  y > 10 &&
+			  x < width - 10 &&
+			  y < (64 * res)){
+			  cout << "gamestate::lastPlayedID:" << gamestate::lastPlayedID << endl;
+			  if (mode == 1){
+				  gamestate::heroStats.first = gamestate::cardlist[(gamestate::lastPlayedID)];
+				  //gamestate::heroStats.first = gamestate::cardlist.at(1);
+				  mode++;
+				  confirm = false;
+			  } else if (mode == 2){
+				  gamestate::heroStats.second = gamestate::cardlist[(gamestate::lastPlayedID)];
+				  mode++;
+				  confirm = false;
+			  }
+			  //else {
+				//  mode = previousMode;
+				//  confirm = false;
+			 // }
+		  }
+		  else if (x > width - (128 * res) &&
+			  y > 10 + (64 * res) &&
+			  x < width - 10 &&
+			  y < (64 * res * 2)){ //Options)
+			  gamestate::lastPlayedID = -1;
+			  confirm = false;
+		  }
+	  }
+	  else {
+		  if (x > width - (128 * res) &&
+			  y > 10 &&
+			  x < width - 10 &&
+			  y < (64 * res)){ //Start Bo
+			  if (this->mode != 1 && this->mode != 2){
+				  if (this->mode == 5){
+					  /*if (previousMode = 1){
+						  gamestate::heroStats.first = gamestate::cardlist[(gamestate::lastPlayedID)];
+						  }
+						  else if (previousMode = 2){
+						  gamestate::heroStats.second = gamestate::cardlist[(gamestate::lastPlayedID)];
+						  }
+						  previousMode = previousMode+1;*/
+					  mode = previousMode;
+				  }
 
-	  if(x > width-(128*res) && 
-		 y > 10 &&
-		 x < width-10 &&
-		 y < (64*res)){ //Start Bo
-		  if (this->mode == 1){
-			  srand(time(NULL));
-			  int a = rand() % 2;
-			  rolls.push_back(a);
-			  for (int i = 0; i < (int)gamestate::turnID / 2; i++){
-				  if (i < 11){
-				  int temp = rand() % 2;
-				  rolls.push_back(temp);
-				  a += temp;
+				  if (this->mode == 3){
+					  srand(time(NULL));
+					  int a = rand() % 2;
+					  rolls.push_back(a);
+					  for (int i = 0; i < (int)gamestate::turnID / 2; i++){
+						  if (i < 11){
+							  int temp = rand() % 2;
+							  rolls.push_back(temp);
+							  a += temp;
+						  }
+					  }
+					  if (gamestate::turnID % 2 == 0){
+						  gamestate::manaPoints.first += a;
+					  }
+					  else {
+						  gamestate::manaPoints.second += a;
+						  if (rollSize < 12)
+							  rollSize++;
+					  }
+				  }
+
+				  this->mode++;
+				  if (this->mode > 4){
+					  gamestate::turnID++;
+					  attackedThisTurn = false;
+					  rolls.clear();
+					  alpha = 1.5;
+					  if (gamestate::phase == 2){
+						  gamestate::phase = 1;
+					  }
+					  else {
+						  gamestate::phase = 2;
+					  }
+					  this->mode = 3;
 				  }
 			  }
-			  if (gamestate::turnID % 2 == 0){
-				  gamestate::manaPoints.first += a;
-			  }
-			  else {
-				  gamestate::manaPoints.second += a;
-				  if (rollSize < 12)
-					rollSize ++;
+		  }
+		  else if (x > width - (128 * res) &&
+			  y > 10 + (64 * res) &&
+			  x < width - 10 &&
+			  y < (64 * res * 2)){ //Options)
+			  if (this->mode == 4 && attackedThisTurn == false){
+				  if (gamestate::phase == 1){
+					  int attack = gamestate::heroStats.first.attack - gamestate::heroStats.second.defence;
+					  if (attack <= 0){
+						  attack = 0;
+					  }
+					  if (gamestate::heroStats.second.evasion <= 0){
+						  gamestate::heroStats.second.hp -= attack;
+					  }
+					  else {
+						  gamestate::heroStats.second.evasion --;
+					  }
+				  }
+				  else {
+					  int attack = gamestate::heroStats.second.attack - gamestate::heroStats.first.defence;
+					  if (attack <= 0){
+						  attack = 0;
+					  }
+					  if (gamestate::heroStats.first.evasion <= 0){
+						  gamestate::heroStats.first.hp -= attack;
+					  }
+					  else {
+						  gamestate::heroStats.first.evasion--;
+					  }
+				  }
+				  attackedThisTurn = true;
 			  }
 		  }
-
-		  this->mode++;
-		  if (this->mode > 2){
-			  gamestate::turnID++;
-			  rolls.clear();
-			  alpha = 5;
-			  this->mode = 1;
-		  }
-	  } else if(x > width- (128*res) &&
-		 y > 10+(64*res) &&
-		 x < width-10 &&
-		 y < (64*res*2)){ //Options)
-
 	  }
 }
 
@@ -358,6 +500,9 @@ void menutextures::load(void){
 	menuTex[10] = loadTexture("../Assets/Textures/Titlebar.png");
 	menuTex[11] = loadTexture("../Assets/Textures/0.jpg");
 	menuTex[12] = loadTexture("../Assets/Textures/1.jpg");
+	menuTex[13] = loadTexture("../Assets/Textures/Confirm.png");
+	menuTex[14] = loadTexture("../Assets/Textures/Cancel.png");
+	menuTex[16] = loadTexture("../Assets/Textures/Attack.png");
 
 	// Create a menu
 	glutCreateMenu(&menutextures::screenSizeMenu);

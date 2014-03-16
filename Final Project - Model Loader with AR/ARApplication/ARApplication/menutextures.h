@@ -28,14 +28,20 @@ private:
 	static int resolutionX; 
 	static int resolutionY; 
 	int mode;
+	int previousMode;
 	bool widescreen; 
 	vector<int> rolls;
 	float alpha;
 	int rollSize;
+	bool confirm;
+	bool attackedThisTurn;
+	int cardTex;
 public:
 	menutextures(void);
 	void load(void);
+	void setConfirm(bool t);
 	int getMode(void);
+	void setMode(int i);
 	void render(int width, int height);
 	void checkButtonClick(int x, int y, int width, int height);
 	void text(void *font, const char *fmt, int x, int y, float r, float g, float b);

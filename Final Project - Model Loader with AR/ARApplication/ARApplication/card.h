@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include "md5load.h"
 using namespace std;
 
 class card
@@ -18,7 +19,10 @@ public:
 	int element;
 	int draw;
 	std::string description;
+	md5load model;
 
+	void loadModel();
+	void drawModel();
 	card();
 	~card();
 };

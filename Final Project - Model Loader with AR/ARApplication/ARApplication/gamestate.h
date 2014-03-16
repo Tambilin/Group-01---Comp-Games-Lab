@@ -19,8 +19,9 @@ public:
 	static std::pair<card, card> heroStats;
 	static std::unordered_map< int, card > cardlist;
 	static int phase;
+	static int lastPlayedID;
 
-
+	static void setHero(int player, int cardid);
 	static void init();
 	static void updateState(void);
 	static int currentState();

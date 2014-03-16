@@ -1,16 +1,17 @@
 #include "gamestate.h"
 
-int gamestate::turnID = 0;
+int gamestate::turnID = 1;
 bool gamestate::firstSecond = false;
 std::pair<int, int> gamestate::manaPoints = std::make_pair(0, 0);
 std::pair<int, int> gamestate::deckSize = std::make_pair(30, 30);
 std::pair<int, int> gamestate::handSize = std::make_pair(0, 0);
 std::pair<card, card> gamestate::heroStats;
 std::unordered_map< int, card > gamestate::cardlist;
-int gamestate::phase = 0;
+int gamestate::phase = 1;
+int gamestate::lastPlayedID = -1;
 
 gamestate::gamestate()
-{
+{  
 }
 
 
@@ -19,9 +20,13 @@ gamestate::~gamestate()
 }
 
 void gamestate::init(){
-	loadStateData("CardData.txt");
-	heroStats.first = cardlist.at(1);
-	heroStats.second = cardlist.at(2);
+	loadStateData("CardData4.txt");
+	heroStats.first = cardlist[0];
+	heroStats.second = cardlist[0];
+}
+
+void gamestate::setHero(int player, int cardid){
+
 }
 
 void gamestate::updateState(void){
@@ -74,6 +79,7 @@ void gamestate::loadStateData(std::string fileScene){
 			//	printf("Incorrect format of object in card file");
 			//}
 			//else {
+				c->loadModel();
 				cardlist[c->id] = *c;
 			//}
 		}

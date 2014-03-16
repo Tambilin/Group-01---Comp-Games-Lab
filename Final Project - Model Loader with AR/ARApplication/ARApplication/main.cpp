@@ -58,6 +58,7 @@ int             c = 0;
 bool            renderModel = false;
 int				movement = 0;
 int				fps = 0;
+int				lastPlayedID = -1;
 
 //Class Objects
 md5load RobotP1;
@@ -66,6 +67,7 @@ md5load Alien;
 
 menutextures * Menu = new menutextures();
 objload * Wings = new objload();
+objload * objModel = new objload();
 soundeffect * t = new soundeffect();
 
 static void   init(void);
@@ -293,6 +295,11 @@ static int draw(ObjectData_T *object, int objectnum)
 	Menu->render(width, height);
 	glPopMatrix();
 
+	glPushMatrix();
+	glTranslatef(250, 250, 0);
+	objModel->DrawModelUsingFixedFuncPipeline();
+	glPopMatrix();
+
 	//glEnable(GL_LIGHTING);
 	//glEnable(GL_LIGHT1);
 
@@ -346,53 +353,26 @@ static int draw_object(int obj_id, double gl_para[16])
 	glLightfv(GL_LIGHT0, GL_AMBIENT, ambi);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightZeroColor);
 
-	glMaterialfv(GL_FRONT, GL_SHININESS, mat_flash_shiny);
+	//glMaterialfv(GL_FRONT, GL_SHININESS, mat_flash_shiny);
 
-	if (obj_id == 0){
-		//glMaterialfv(GL_FRONT, GL_SPECULAR, mat_flash_collide);
-		//glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient_collide);
-		//Draw robot 1
-		RobotP1.enableTextured(true);
-		glTranslatef(0, -0, -150);
-		glPushMatrix();
-			RobotP1.draw(0, 0, 0, 1, 0, 0, 0, 0); //Draw Model
-		glPopMatrix();
-	}
-	else if (obj_id == 1) {
-		//glMaterialfv(GL_FRONT, GL_SPECULAR, mat_flash);
-		//glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
-		//Draw robot 2
-		RobotP2.enableTextured(true);
-		glTranslatef(0, -0, -150);
-		glPushMatrix();
-			RobotP2.draw(0, 0, 0, 1, 0, 0, 0, 0); //Draw Model
-		glPopMatrix();
-	}
-	else if (obj_id == 3) {
-		//glMaterialfv(GL_FRONT, GL_SPECULAR, mat_flash);
-		//glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
-		//Draw robot 2
-		RobotP2.enableTextured(true);
-		glTranslatef(0, -0, -150);
-		glPushMatrix();
-			RobotP2.draw(0, 0, 0, 1, 0, 0, 0, 0); //Draw Model
-		glPopMatrix();
+	if (Menu->getMode() != 0 && Menu->getMode() != 3 && gamestate::lastPlayedID != obj_id + 1 && gamestate::heroStats.first.id != obj_id + 1 && gamestate::heroStats.second.id != obj_id + 1){
+		Menu->setConfirm(true);
+		cout << "Detected New Card!" << endl;
+		gamestate::lastPlayedID = obj_id + 1;
 	}
 
+	gamestate::cardlist[obj_id+1].drawModel();
 	argDrawMode2D();
 
 	return 0;
 }
 
 void loadData(){
-	//gamestate::init();
-	//Load MD5 Models
-	RobotP1.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Gun.md5anim", "../Assets/Textures/Head.tga");
-	RobotP2.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Walk.md5anim", "../Assets/Textures/grass.tga");
-	Alien.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Walk.md5anim", "../Assets/Textures/grass.tga");
+	gamestate::init();
 	//Load OBJ Models
 	Wings->InitGL();
 	Wings->LoadModel("../Assets/Models/coin.obj");
+	objModel->LoadModel("../Assets/Models/dice.obj");
 	//Load Menus
 	Menu->load();
 	//Load Sounds
