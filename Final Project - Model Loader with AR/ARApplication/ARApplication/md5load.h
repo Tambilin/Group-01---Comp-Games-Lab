@@ -7,6 +7,7 @@
 #include <iostream>
 #include <assert.h>
 #include <vector>
+#include "soundeffect.h"
 
 #include "GLEW/glew.h"
 #include <GL/gl.h>
@@ -154,6 +155,9 @@ class md5load
 		void draw(float x, float y, float z, float scale);
 		void draw (float x, float y, float z, float scale, float a, float rot1, float rot2, float rot3);
 		void init (const char *filename, const char *animfile, char *texturefile);
+		void loadAnimation(const char *filename);
+		void loadModel(const char *filename);
+		void AnimateSound(int frameID, int soundID,soundeffect &sound);
 
 		void enableSkeleton(bool skeleton);
 		void enableTextured(bool textured);
@@ -163,6 +167,7 @@ class md5load
 		
 		float getSkeletonPosition(int joint, int xyz);
 		bool PrepareNormals(md5_mesh_t *mesh);
+
 
      private:
 		 //function definitions

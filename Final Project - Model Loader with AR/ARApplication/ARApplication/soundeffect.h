@@ -39,6 +39,7 @@ public:
 	int createSound(char * filename, int track);
 	soundeffect(void);
 	soundeffect(char * filePath);
+	void cleanup(int arg);
 	void toggleBackgroundSound(int track, bool enabled);
 	int play(int track);
 	~soundeffect(void);

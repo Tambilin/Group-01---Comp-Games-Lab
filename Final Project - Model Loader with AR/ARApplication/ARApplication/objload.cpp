@@ -178,7 +178,7 @@ void objload::DrawModelUsingFixedFuncPipeline()
             {
                 glEnable(GL_TEXTURE_2D);
                 glBindTexture(GL_TEXTURE_2D, iter->second);
-				cout << "BINDING TEXTURE" << endl;
+				//cout << "BINDING TEXTURE" << endl;
             }
         }
         else

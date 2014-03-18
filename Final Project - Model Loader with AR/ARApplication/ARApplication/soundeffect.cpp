@@ -64,7 +64,7 @@ int soundeffect::createSound(char * filename, int arg)
     cout << "Bytes Per Sample: " << bytesPerSample << "\n";
     cout << "Bits Per Sample: " << bitsPerSample << "\n";
     cout << "Data Size: " << dataSize << "\n";
-        
+    
     buf[arg]= new unsigned char[dataSize];                            //Allocate memory for the sound data
     cout << fread(buf[arg],sizeof(BYTE),dataSize,fp) << " bytes loaded\n";           //Read the sound data and display the 
                                                                                 //number of bytes loaded.
@@ -140,6 +140,10 @@ void soundeffect::setLoop(int track, bool status){
 	} else {
 		alSourcei (source[track], AL_LOOPING,  AL_FALSE );
 	}
+}
+
+void soundeffect::cleanup(int arg){
+	delete buf[arg];
 }
 
 void soundeffect::toggleBackgroundSound(int track, bool enabled){

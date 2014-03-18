@@ -14,13 +14,13 @@ void card::loadModel(){
 	switch (this->id)
 	{
 	case 1:
-		this->model.init("../Assets/Models/Alpha_Mesh_Broadsword.md5mesh", "../Assets/Animations/Alpha_Attack(BroadSword).md5anim", "../Assets/Textures/Head.tga");
+		this->model.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Idle.md5anim", "../Assets/Textures/Head.tga");
 		break;
 	case 2:
-		this->model.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Walk.md5anim", "../Assets/Textures/grass.tga");
+		this->model.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Idle.md5anim", "../Assets/Textures/grass.tga");
 		break;
 	case 3:
-		this->model.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Walk.md5anim", "../Assets/Textures/grass.tga");
+		this->model.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Idle.md5anim", "../Assets/Textures/Feet.tga");
 		break;
 	case 4:
 		break;

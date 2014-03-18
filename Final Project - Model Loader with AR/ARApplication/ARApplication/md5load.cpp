@@ -135,6 +135,70 @@ void md5load::init (const char *filename, const char *animfile, char *texturefil
 
 }
 
+void md5load::loadAnimation(const char *filename){
+	FreeAnim(&md5anim);
+
+	if (animated && skeleton)
+	{
+		free(skeleton);
+		skeleton = NULL;
+	}
+
+	/* Load MD5 animation file */
+	if (filename)
+	{
+		if (!ReadMD5Anim(filename, &md5anim))
+		{
+			FreeAnim(&md5anim);
+			cout << "Animation not loaded" << endl;
+		}
+		else
+		{
+			animInfo.curr_frame = 0;
+			animInfo.next_frame = 1;
+
+			animInfo.last_time = 0;
+			animInfo.max_time = 1.0 / md5anim.frameRate;
+			
+			/* Allocate memory for animated skeleton */
+			skeleton = (struct md5_joint_t *)
+				malloc(sizeof (struct md5_joint_t) * md5anim.num_joints);
+
+			animated = 1;
+			cout << "Animation loaded" << endl;
+		}
+	}
+
+	if (!animated)
+		printf("init: no animation loaded.\n");
+
+	for (int i = 0; i < md5file.num_meshes; ++i)
+	{
+		PrepareMesh(&md5file.meshes[i], md5file.baseSkel);
+		PrepareNormals(&md5file.meshes[i]);
+	}
+}
+
+void md5load::loadModel(const char *filename){
+	
+	FreeModel(&md5file);
+	FreeVertexArrays();
+
+	/* Load MD5 model file */
+	if (!ReadMD5Model(filename, &md5file))
+		exit(EXIT_FAILURE);
+
+	cout << "Model loaded" << endl;
+
+	AllocVertexArrays();
+
+	for (int i = 0; i < md5file.num_meshes; ++i)
+	{
+		PrepareMesh(&md5file.meshes[i], md5file.baseSkel);
+		PrepareNormals(&md5file.meshes[i]);
+	}
+}
+
 void md5load::AllocVertexArrays ()
 {
   vertexArray = (vec5_t *)malloc (sizeof (vec5_t) * max_verts);
@@ -676,6 +740,7 @@ void md5load::draw (float x, float y, float z, float scale, float a, float rot1,
   last_time = curent_time;
   curent_time = (double)glutGet(GLUT_ELAPSED_TIME) / 1000; // 2000000.0; //#Change Number to alter speed
 
+
   //glLoadIdentity ();
 
   if (drawTexture == true)
@@ -988,6 +1053,13 @@ bool md5load::PrepareNormals(md5_mesh_t *mesh)
 }
 
 
+void md5load::AnimateSound(int frameID, int soundID, soundeffect &sound){
+	if (animInfo.curr_frame == frameID){
+		sound.play(soundID);
+	}
+}
+
+
 /**
  * Perform animation related computations.  Calculate the current and
  * next frames, given a delta time.
@@ -997,6 +1069,8 @@ void md5load::Animate (const struct md5_anim_t *anim, struct anim_info_t *animIn
   int maxFrames = anim->num_frames - 1;
 
   animInfo->last_time += dt;
+
+  cout << maxFrames << " : " << animInfo->curr_frame << endl;
 
   /* move to next frame */
   if (animInfo->last_time >= animInfo->max_time)

@@ -1,4 +1,4 @@
-﻿Build started 16/03/2014 21:57:21.
+﻿Build started 18/03/2014 00:02:41.
      1>Project "C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\ARApplication\ARApplication.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Programs\VS 2013\VC\bin\CL.exe /c /I"C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\ARApplication\\include" /IC:\Windows\SysWOW64 /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
@@ -65,4 +65,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:02.85
+Time Elapsed 00:00:03.53

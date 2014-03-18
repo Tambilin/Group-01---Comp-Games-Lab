@@ -34,6 +34,7 @@ char			*vconf = "Data\\WDM_camera_flipV.xml";
 char			*vconf = "";
 #endif
 
+ARParam			wparam;
 char            *model_name = "Data/object_data2";
 ObjectData_T    *object;
 int             objectnum;
@@ -79,6 +80,7 @@ static int    draw_object(int obj_id, double gl_para[16]);
 static void   loadData(void);
 static void   keyboard(unsigned char key, int x, int y);
 static void   mouse(int button, int state, int x, int y);
+static void   reshape(int w, int h);
 
 int main(int argc, char **argv)
 {
@@ -190,7 +192,6 @@ static void mainLoop(void)
 static void init( void )
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	ARParam  wparam;
 
 	/* open the video path */
 	if (arVideoOpen(vconf) < 0) exit(0);
@@ -359,9 +360,13 @@ static int draw_object(int obj_id, double gl_para[16])
 		Menu->setConfirm(true);
 		cout << "Detected New Card!" << endl;
 		gamestate::lastPlayedID = obj_id + 1;
+		t->play(1);
 	}
 
 	gamestate::cardlist[obj_id+1].drawModel();
+	gamestate::cardlist[gamestate::heroStats.first.id].model.AnimateSound(50, 1, *t);
+
+
 	argDrawMode2D();
 
 	return 0;
@@ -376,12 +381,14 @@ void loadData(){
 	//Load Menus
 	Menu->load();
 	//Load Sounds
-	t->createSound("../Assets/Sounds/inception.wav", 0);
-	t->createSound("../Assets/Sounds/sound.wav", 1);
-	t->createSound("../Assets/Sounds/lorry.wav", 2);
+	//t->createSound("../Assets/Sounds/Entrance.wav", 0);
+	t->createSound("../Assets/Sounds/Entrance.wav", 1);
+	t->createSound("../Assets/Sounds/Ambient2.wav", 2);
+	t->createSound("../Assets/Sounds/Upgrade.wav", 3);
 	//Play Ambient Sounds
 	t->toggleBackgroundSound(2, true);
 	//Initialise Glut Functionality
+	glutReshapeFunc(reshape);
 	glutKeyboardFunc(keyboard);
 	glutMouseFunc(mouse);
 	loadOpenGL = true;
@@ -391,28 +398,45 @@ void keyboard(unsigned char key, int x, int y)
 {
 	/* Escape */
 	if (key == 27)
-		exit(0);
-	if (key == 48){ //'0' Key{
-		RobotP1.cleanup();
-		RobotP1.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Walk.md5anim", "../Assets/Textures/Head.tga");
-	}
-	if (key == 49){ //'1' Key{
-		RobotP1.cleanup();
-		RobotP1.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Idle.md5anim", "../Assets/Textures/Head.tga");
-	}
-	if (key == 50){ //'2' Key{
-		RobotP1.cleanup();
-		RobotP1.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Attack(DualSwords).md5anim", "../Assets/Textures/Head.tga");
-	}
-	if (key == 51){ //'2' Key{
-		RobotP1.cleanup();
-		RobotP1.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Victory1.md5anim", "../Assets/Textures/Head.tga");
+		exit(0);      
+
+	/////// DO NOT PRESS UNTIL MECHS ARE SELECTED OR SYSTEM WILL CRASH
+	if (Menu->getMode() > 2){
+		if (key == 48){ //'0' Key{
+			gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Walk.md5anim");
+		}
+		if (key == 49){ //'1' Key{
+			gamestate::cardlist[gamestate::heroStats.first.id].model.loadModel("../Assets/Models/Alpha_Mesh_Dualswords.md5mesh");
+			gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Attack(DualSwords).md5anim");
+		}
+		if (key == 50){ //'2' Key{
+			gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Walk.md5anim");
+		}
+		if (key == 51){ //'3' Key{
+			gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Walk.md5anim");
+		}
 	}
 
+	//Memory Leak Issue
 	if (key == 32){ //'Space' Key{
-		t->play(0);
+		t->cleanup(1);
+		t->createSound("../Assets/Sounds/Dodge.wav", 1);
+		t->play(1);
 	}
 	if (key == 46){ //'.' Key{
+		t->createSound("../Assets/Sounds/Sword.wav", 1);
+		t->play(1);
+	}
+	if (key == 47){ //'/' Key{
+		t->createSound("../Assets/Sounds/Upgrade.wav", 1);
+		t->play(1);
+	}
+	if (key == 77){ //'.' Key{
+		t->createSound("../Assets/Sounds/Entrance.wav", 1);
+		t->play(1);
+	}
+	if (key == 78){ //'.' Key{
+		t->createSound("../Assets/Sounds/Sound.wav", 1);
 		t->play(1);
 	}
 }
@@ -429,4 +453,13 @@ void mouse(int button, int state, int x, int y)
 			Menu->checkButtonClick(x, y, width, height);
 		}
 	}
+}
+
+void reshape(int w, int h)
+{
+	if (!Menu->checkScreenSize(w, h))
+		return glutReshapeWindow(Menu->getResolutionX(), Menu->getResolutionY());
+
+	width = w;
+	height = h;
 }
