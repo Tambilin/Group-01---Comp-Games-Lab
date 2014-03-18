@@ -15,6 +15,7 @@
 #include <AR/video.h>
 #include <AR/param.h>
 #include <AR/ar.h>
+#include <vector>
 #include "md5load.h"
 #include "menutextures.h"
 #include "objload.h"
@@ -25,6 +26,8 @@
 
 #define COLLIDE_DIST 30000.0
 
+#define PI	3.14159265358979323846
+
 //
 // Camera configuration.
 //
@@ -34,7 +37,6 @@ char			*vconf = "Data\\WDM_camera_flipV.xml";
 char			*vconf = "";
 #endif
 
-ARParam			wparam;
 char            *model_name = "Data/object_data2";
 ObjectData_T    *object;
 int             objectnum;
@@ -60,6 +62,7 @@ bool            renderModel = false;
 int				movement = 0;
 int				fps = 0;
 int				lastPlayedID = -1;
+vector<int>		robotsDrawn;
 
 //Class Objects
 md5load RobotP1;
@@ -80,7 +83,9 @@ static int    draw_object(int obj_id, double gl_para[16]);
 static void   loadData(void);
 static void   keyboard(unsigned char key, int x, int y);
 static void   mouse(int button, int state, int x, int y);
-static void   reshape(int w, int h);
+static float getMarkerDiffX(int m1, int m2);
+static float getMarkerDiffY(int m1, int m2);
+static float getAngleBetweenRobots(int m1, int m2);
 
 int main(int argc, char **argv)
 {
@@ -170,17 +175,6 @@ static void mainLoop(void)
 	//Get next video capture
     arVideoCapNext();
 
-	//renderModel = (k != -1); //Enable rendering of model
-
-    /* get the transformation between the marker and the real camera */
-	/*if (c > 10){
-		arGetTransMat(&marker_info[k], patt_center, patt_width, patt_trans);
-		c = 0;
-	}
-	else {
-		c++;
-	}*/
-
     draw(object, objectnum);
 
 	//Swap buffers
@@ -192,6 +186,7 @@ static void mainLoop(void)
 static void init( void )
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	ARParam  wparam;
 
 	/* open the video path */
 	if (arVideoOpen(vconf) < 0) exit(0);
@@ -215,8 +210,6 @@ static void init( void )
 
 	/* open the graphics window */
 	argInit(&cparam, 1.0, 0, 0, 0, 0);
-
-
 }
 
 /* cleanup function called when program exits */
@@ -275,10 +268,14 @@ static int draw(ObjectData_T *object, int objectnum)
 	glEnableClientState(GL_NORMAL_ARRAY);
 
 	/* calculate the viewing parameters - gl_para */
+	robotsDrawn.clear();
 	for (i = 0; i < objectnum; i++) {
 		if (object[i].visible == 0) continue;
 		argConvGlpara(object[i].trans, gl_para);
 		draw_object(object[i].id, gl_para);
+		if (i < 4) {
+			robotsDrawn.push_back(i);
+		}
 	}
 
 	glDisableClientState(GL_NORMAL_ARRAY);
@@ -303,17 +300,6 @@ static int draw(ObjectData_T *object, int objectnum)
 
 	//glEnable(GL_LIGHTING);
 	//glEnable(GL_LIGHT1);
-
-	//Render the OBJ coin
-	//glPushMatrix();
-	//glTranslatef(width / 2, height / 2, 0);
-	//glRotatef(90, 1, 0, 0);
-	//glRotatef(movement, 0, 0, 1);
-	//glScalef(60, 60, 60);
-	//Wings->enableTextures(true);
-	//Wings->enableBackFaceCulling(false);
-	//Wings->DrawModelUsingFixedFuncPipeline();
-	//glPopMatrix();
 
 	//Update Rotations
 	if (movement < 720)
@@ -360,13 +346,30 @@ static int draw_object(int obj_id, double gl_para[16])
 		Menu->setConfirm(true);
 		cout << "Detected New Card!" << endl;
 		gamestate::lastPlayedID = obj_id + 1;
-		t->play(1);
 	}
 
-	gamestate::cardlist[obj_id+1].drawModel();
-	gamestate::cardlist[gamestate::heroStats.first.id].model.AnimateSound(50, 1, *t);
-
-
+	if (robotsDrawn.size() == 2) {
+		float angle = getAngleBetweenRobots(robotsDrawn.at(0), robotsDrawn.at(1));
+		if (obj_id == robotsDrawn.at(0)) {
+			glPushMatrix();
+				glRotatef(angle, 0, 1, 0);
+				gamestate::cardlist[obj_id+1].drawModel();
+			glPopMatrix();
+		}
+		else if (obj_id == robotsDrawn.at(1)) {
+			glPushMatrix();
+				glRotatef(-angle, 0, 1, 0);
+				gamestate::cardlist[obj_id+1].drawModel();
+			glPopMatrix();
+		}
+		else {
+			gamestate::cardlist[obj_id+1].drawModel();
+		}
+	}
+	else {
+		gamestate::cardlist[obj_id+1].drawModel();
+	}
+	
 	argDrawMode2D();
 
 	return 0;
@@ -381,14 +384,12 @@ void loadData(){
 	//Load Menus
 	Menu->load();
 	//Load Sounds
-	//t->createSound("../Assets/Sounds/Entrance.wav", 0);
-	t->createSound("../Assets/Sounds/Entrance.wav", 1);
-	t->createSound("../Assets/Sounds/Ambient2.wav", 2);
-	t->createSound("../Assets/Sounds/Upgrade.wav", 3);
+	t->createSound("../Assets/Sounds/inception.wav", 0);
+	t->createSound("../Assets/Sounds/sound.wav", 1);
+	t->createSound("../Assets/Sounds/lorry.wav", 2);
 	//Play Ambient Sounds
 	t->toggleBackgroundSound(2, true);
 	//Initialise Glut Functionality
-	glutReshapeFunc(reshape);
 	glutKeyboardFunc(keyboard);
 	glutMouseFunc(mouse);
 	loadOpenGL = true;
@@ -398,45 +399,53 @@ void keyboard(unsigned char key, int x, int y)
 {
 	/* Escape */
 	if (key == 27)
-		exit(0);      
-
-	/////// DO NOT PRESS UNTIL MECHS ARE SELECTED OR SYSTEM WILL CRASH
-	if (Menu->getMode() > 2){
-		if (key == 48){ //'0' Key{
-			gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Walk.md5anim");
-		}
-		if (key == 49){ //'1' Key{
-			gamestate::cardlist[gamestate::heroStats.first.id].model.loadModel("../Assets/Models/Alpha_Mesh_Dualswords.md5mesh");
-			gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Attack(DualSwords).md5anim");
-		}
-		if (key == 50){ //'2' Key{
-			gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Walk.md5anim");
-		}
-		if (key == 51){ //'3' Key{
-			gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Walk.md5anim");
+		exit(0);
+	if (key == 48){ //'0' Key{
+		RobotP1.cleanup();
+		RobotP1.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Walk.md5anim", "../Assets/Textures/Head.tga");
+	}
+	if (key == 49){ //'1' Key{
+		RobotP1.cleanup();
+		RobotP1.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Idle.md5anim", "../Assets/Textures/Head.tga");
+	}
+	if (key == 50){ //'2' Key{
+		RobotP1.cleanup();
+		RobotP1.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Attack(DualSwords).md5anim", "../Assets/Textures/Head.tga");
+	}
+	if (key == 51){ //'3' Key{
+		RobotP1.cleanup();
+		RobotP1.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Victory1.md5anim", "../Assets/Textures/Head.tga");
+	}
+	if (key == 53){ //'5' Key{
+		if (robotsDrawn.size() == 2) {
+			RobotP1.cleanup();
+			RobotP1.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Walk.md5anim", "../Assets/Textures/Head.tga");
+			float distX = getMarkerDiffX(robotsDrawn.at(0), robotsDrawn.at(1));
+			float distY = getMarkerDiffY(robotsDrawn.at(0), robotsDrawn.at(1));
+			float stepX = distX / 100;
+			float stepY = distY / 100;
+			for (int i = 0; i < 100; i++) {
+				glPushMatrix();
+					glTranslatef(stepX, stepY, 0);
+				glPopMatrix();
+			}
+			RobotP1.cleanup();
+			RobotP1.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Attack(DualSwords).md5anim", "../Assets/Textures/Head.tga");
+			//Need to find a way to wait here until attack animation is finished
+			RobotP1.cleanup();
+			RobotP1.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Walk.md5anim", "../Assets/Textures/Head.tga");
+			for (int i = 0; i < 100; i++) {
+				glPushMatrix();
+				glTranslatef(-stepX, -stepY, 0);
+				glPopMatrix();
+			}
 		}
 	}
 
-	//Memory Leak Issue
 	if (key == 32){ //'Space' Key{
-		t->cleanup(1);
-		t->createSound("../Assets/Sounds/Dodge.wav", 1);
-		t->play(1);
+		t->play(0);
 	}
 	if (key == 46){ //'.' Key{
-		t->createSound("../Assets/Sounds/Sword.wav", 1);
-		t->play(1);
-	}
-	if (key == 47){ //'/' Key{
-		t->createSound("../Assets/Sounds/Upgrade.wav", 1);
-		t->play(1);
-	}
-	if (key == 77){ //'.' Key{
-		t->createSound("../Assets/Sounds/Entrance.wav", 1);
-		t->play(1);
-	}
-	if (key == 78){ //'.' Key{
-		t->createSound("../Assets/Sounds/Sound.wav", 1);
 		t->play(1);
 	}
 }
@@ -455,11 +464,14 @@ void mouse(int button, int state, int x, int y)
 	}
 }
 
-void reshape(int w, int h)
-{
-	if (!Menu->checkScreenSize(w, h))
-		return glutReshapeWindow(Menu->getResolutionX(), Menu->getResolutionY());
+static float getMarkerDiffX(int m1, int m2) {
+	return object[m2].marker_center[0] - object[m1].marker_center[0] - (object[m1].marker_width * 2) - (object[m2].marker_width * 2);
+}
 
-	width = w;
-	height = h;
+static float getMarkerDiffY(int m1, int m2) {
+	return object[m2].marker_center[1] - object[m1].marker_center[1] - (object[m1].marker_width * 2) - (object[m2].marker_width * 2);
+}
+
+static float getAngleBetweenRobots(int m1, int m2) {
+	return atan2(getMarkerDiffX(m1, m2), getMarkerDiffY(m1, m2)) * 180 / PI;
 }
