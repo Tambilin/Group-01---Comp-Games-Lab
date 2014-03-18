@@ -63,6 +63,9 @@ int				movement = 0;
 int				fps = 0;
 int				lastPlayedID = -1;
 vector<int>		robotsDrawn;
+// declaration of players positions array
+int mech1Position[6];
+int mech2Position[6];
 
 //Class Objects
 md5load RobotP1;
@@ -83,6 +86,7 @@ static int    draw_object(int obj_id, double gl_para[16]);
 static void   loadData(void);
 static void   keyboard(unsigned char key, int x, int y);
 static void   mouse(int button, int state, int x, int y);
+static void   reshape(int w, int h);
 static float getMarkerDiffX(int m1, int m2);
 static float getMarkerDiffY(int m1, int m2);
 static float getAngleBetweenRobots(int m1, int m2);
@@ -240,7 +244,6 @@ static int draw(ObjectData_T *object, int objectnum)
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
 	//glEnable(GL_LIGHTING);
-    
 
 	/* Setup Lighting */
 	GLfloat light_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
@@ -268,14 +271,62 @@ static int draw(ObjectData_T *object, int objectnum)
 	glEnableClientState(GL_NORMAL_ARRAY);
 
 	/* calculate the viewing parameters - gl_para */
+	
+	//Precompute the positioning data
 	robotsDrawn.clear();
 	for (i = 0; i < objectnum; i++) {
 		if (object[i].visible == 0) continue;
 		argConvGlpara(object[i].trans, gl_para);
-		draw_object(object[i].id, gl_para);
-		if (i < 4) {
-			robotsDrawn.push_back(i);
+		//cout << i << " : " << gamestate::heroStats.first.id << endl;
+		if (i == gamestate::heroStats.first.id){
+			cout << "Setup first Mech" << endl;
+			mech1Position[0] = gl_para[12];//X Position
+			mech1Position[1] = gl_para[13];//Y Position
+			mech1Position[2] = gl_para[14];//Z Position
+			if (gl_para[0] != 0.0f || gl_para[1] != 0.0f) {
+				const float alignment_x = atan2(-gl_para[1], gl_para[0]);
+				float c2;
+				if (0 != cosf(alignment_x)) {
+					c2 = gl_para[0] / cosf(alignment_x);
+				}
+				else {
+					c2 = gl_para[1] / -sinf(alignment_x);
+				}
+				const float alignment_y = atan2(gl_para[2], c2);
+				const float alignment_z = atan2(-gl_para[6], gl_para[10]);
+				mech1Position[3] = alignment_x*57.2957795;//X Rotation (Degrees)
+				mech1Position[4] = alignment_y*57.2957795;//Y Rotation (Degrees)
+				mech1Position[5] = alignment_z*57.2957795;//Z Rotation (Degrees)
+			}
 		}
+		else if (i == gamestate::heroStats.second.id){
+			cout << "Setup second Mech" << endl;
+			mech2Position[0] = gl_para[12];//X Position
+			mech2Position[1] = gl_para[13];//Y Position
+			mech2Position[2] = gl_para[14];//Z Position
+			if (gl_para[0] != 0.0f || gl_para[1] != 0.0f) {
+				const float alignment_x = atan2(-gl_para[1], gl_para[0]);
+				float c2;
+				if (0 != cosf(alignment_x)) {
+					c2 = gl_para[0] / cosf(alignment_x);
+				}
+				else {
+					c2 = gl_para[1] / -sinf(alignment_x);
+				}
+				const float alignment_y = atan2(gl_para[2], c2);
+				const float alignment_z = atan2(-gl_para[6], gl_para[10]);
+				mech2Position[3] = alignment_x*57.2957795;//X Rotation (Degrees)
+				mech2Position[4] = alignment_y*57.2957795;//Y Rotation (Degrees)
+				mech2Position[5] = alignment_z*57.2957795;//Z Rotation (Degrees)
+			}
+		}
+		robotsDrawn.push_back(i);
+	}
+
+	for (i = 0; i < objectnum; i++) {
+		if (object[i].visible == 0) continue;
+		argConvGlpara(object[i].trans, gl_para);
+		draw_object(object[i].id, gl_para);
 	}
 
 	glDisableClientState(GL_NORMAL_ARRAY);
@@ -340,27 +391,24 @@ static int draw_object(int obj_id, double gl_para[16])
 	glLightfv(GL_LIGHT0, GL_AMBIENT, ambi);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightZeroColor);
 
-	//glMaterialfv(GL_FRONT, GL_SHININESS, mat_flash_shiny);
-
+	//Check for new detected card
 	if (Menu->getMode() != 0 && Menu->getMode() != 3 && gamestate::lastPlayedID != obj_id + 1 && gamestate::heroStats.first.id != obj_id + 1 && gamestate::heroStats.second.id != obj_id + 1){
 		Menu->setConfirm(true);
 		cout << "Detected New Card!" << endl;
 		gamestate::lastPlayedID = obj_id + 1;
+		t->play(1);
 	}
 
+	gamestate::cardlist[gamestate::heroStats.first.id].model.AnimateSound(50, 1, *t);
+	
+	//Make robots face each other
 	if (robotsDrawn.size() == 2) {
-		float angle = getAngleBetweenRobots(robotsDrawn.at(0), robotsDrawn.at(1));
-		if (obj_id == robotsDrawn.at(0)) {
-			glPushMatrix();
-				glRotatef(angle, 0, 1, 0);
-				gamestate::cardlist[obj_id+1].drawModel();
-			glPopMatrix();
+		cout << mech1Position[3] << " " << mech2Position[3] << " A: " << mech1Position[3] - mech2Position[3] << endl;
+		if (gamestate::heroStats.first.id == obj_id + 1) {
+				gamestate::cardlist[obj_id + 1].drawModel(0, 0, 0, mech1Position[3] - mech2Position[3], 0, 0, 1);
 		}
-		else if (obj_id == robotsDrawn.at(1)) {
-			glPushMatrix();
-				glRotatef(-angle, 0, 1, 0);
-				gamestate::cardlist[obj_id+1].drawModel();
-			glPopMatrix();
+		else if (gamestate::heroStats.second.id == obj_id + 1) {
+				gamestate::cardlist[obj_id + 1].drawModel(0, 0, 0, 360-(mech1Position[3] - mech2Position[3]), 0, 0, 1);
 		}
 		else {
 			gamestate::cardlist[obj_id+1].drawModel();
@@ -384,12 +432,13 @@ void loadData(){
 	//Load Menus
 	Menu->load();
 	//Load Sounds
-	t->createSound("../Assets/Sounds/inception.wav", 0);
-	t->createSound("../Assets/Sounds/sound.wav", 1);
-	t->createSound("../Assets/Sounds/lorry.wav", 2);
+	t->createSound("../Assets/Sounds/Entrance.wav", 1);
+	t->createSound("../Assets/Sounds/Ambient2.wav", 2);
+	t->createSound("../Assets/Sounds/Upgrade.wav", 3);
 	//Play Ambient Sounds
 	t->toggleBackgroundSound(2, true);
 	//Initialise Glut Functionality
+	glutReshapeFunc(reshape);
 	glutKeyboardFunc(keyboard);
 	glutMouseFunc(mouse);
 	loadOpenGL = true;
@@ -400,21 +449,20 @@ void keyboard(unsigned char key, int x, int y)
 	/* Escape */
 	if (key == 27)
 		exit(0);
-	if (key == 48){ //'0' Key{
-		RobotP1.cleanup();
-		RobotP1.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Walk.md5anim", "../Assets/Textures/Head.tga");
-	}
-	if (key == 49){ //'1' Key{
-		RobotP1.cleanup();
-		RobotP1.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Idle.md5anim", "../Assets/Textures/Head.tga");
-	}
-	if (key == 50){ //'2' Key{
-		RobotP1.cleanup();
-		RobotP1.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Attack(DualSwords).md5anim", "../Assets/Textures/Head.tga");
-	}
-	if (key == 51){ //'3' Key{
-		RobotP1.cleanup();
-		RobotP1.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Victory1.md5anim", "../Assets/Textures/Head.tga");
+	if (Menu->getMode() > 2){
+		if (key == 48){ //'0' Key{
+			gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Walk.md5anim");
+		}
+		if (key == 49){ //'1' Key{
+			gamestate::cardlist[gamestate::heroStats.first.id].model.loadModel("../Assets/Models/Alpha_Mesh_Dualswords.md5mesh");
+			gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Attack(DualSwords).md5anim");
+		}
+		if (key == 50){ //'2' Key{
+			gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Walk.md5anim");
+		}
+		if (key == 51){ //'3' Key{
+			gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Walk.md5anim");
+		}
 	}
 	if (key == 53){ //'5' Key{
 		if (robotsDrawn.size() == 2) {
@@ -442,10 +490,26 @@ void keyboard(unsigned char key, int x, int y)
 		}
 	}
 
+	//Memory Leak Issue
 	if (key == 32){ //'Space' Key{
-		t->play(0);
+		t->cleanup(1);
+		t->createSound("../Assets/Sounds/Dodge.wav", 1);
+		t->play(1);
 	}
 	if (key == 46){ //'.' Key{
+		t->createSound("../Assets/Sounds/Sword.wav", 1);
+		t->play(1);
+	}
+	if (key == 47){ //'/' Key{
+		t->createSound("../Assets/Sounds/Upgrade.wav", 1);
+		t->play(1);
+	}
+	if (key == 77){ //'.' Key{
+		t->createSound("../Assets/Sounds/Entrance.wav", 1);
+		t->play(1);
+	}
+	if (key == 78){ //'.' Key{
+		t->createSound("../Assets/Sounds/Sound.wav", 1);
 		t->play(1);
 	}
 }
@@ -465,13 +529,22 @@ void mouse(int button, int state, int x, int y)
 }
 
 static float getMarkerDiffX(int m1, int m2) {
-	return object[m2].marker_center[0] - object[m1].marker_center[0] - (object[m1].marker_width * 2) - (object[m2].marker_width * 2);
+	return object[m2].marker_center[0] - object[m1].marker_center[0];// -(object[m1].marker_width * 2) - (object[m2].marker_width * 2);
 }
 
 static float getMarkerDiffY(int m1, int m2) {
-	return object[m2].marker_center[1] - object[m1].marker_center[1] - (object[m1].marker_width * 2) - (object[m2].marker_width * 2);
+	return object[m2].marker_center[1] - object[m1].marker_center[1];// - (object[m1].marker_width * 2) - (object[m2].marker_width * 2);
 }
 
 static float getAngleBetweenRobots(int m1, int m2) {
 	return atan2(getMarkerDiffX(m1, m2), getMarkerDiffY(m1, m2)) * 180 / PI;
+}
+
+void reshape(int w, int h)
+{
+	if (!Menu->checkScreenSize(w, h))
+		return glutReshapeWindow(Menu->getResolutionX(), Menu->getResolutionY());
+
+	width = w;
+	height = h;
 }

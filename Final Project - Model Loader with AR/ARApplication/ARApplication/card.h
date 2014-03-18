@@ -23,6 +23,7 @@ public:
 
 	void loadModel();
 	void drawModel();
+	void drawModel(int x, int y, int z, int angle, int i, int j, int k);
 	card();
 	~card();
 };

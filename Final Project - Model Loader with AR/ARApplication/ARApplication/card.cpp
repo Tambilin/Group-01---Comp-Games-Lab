@@ -44,3 +44,12 @@ void card::drawModel(){
 	model.draw(0, 0, 0, 1, 0, 0, 0, 0); //Draw Model
 	glPopMatrix();
 }
+
+void card::drawModel(int x, int y, int z, int angle, int i, int j, int k){
+	model.enableTextured(true);
+	glTranslatef(0+x, -0+y, -150+z);
+	glRotatef(angle , i, j, k);
+	glPushMatrix();
+	model.draw(0, 0, 0, 1, 0, 0, 0, 0); //Draw Model
+	glPopMatrix();
+}
