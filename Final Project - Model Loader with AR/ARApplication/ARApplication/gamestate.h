@@ -27,6 +27,8 @@ public:
 	static int currentState();
 	static void nextState();
 	static void loadStateData(std::string fileScene);
+	static void loadCSV(std::string fileScene);
+	static void cardActivated(int player, int cardID);
 	gamestate();
 	~gamestate();
 };

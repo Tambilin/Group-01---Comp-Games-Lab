@@ -20,7 +20,7 @@ gamestate::~gamestate()
 }
 
 void gamestate::init(){
-	loadStateData("CardData4.txt");
+	loadCSV("CardData.csv");
 	heroStats.first = cardlist[0];
 	heroStats.second = cardlist[0];
 }
@@ -37,6 +37,7 @@ int gamestate::currentState(){
 	return phase;
 }
 
+/* Deprecated Code */
 void gamestate::loadStateData(std::string fileScene){
 	////////////////Load Scene file///////////////////
 	cout << "Loading Data File..." << endl;
@@ -85,4 +86,44 @@ void gamestate::loadStateData(std::string fileScene){
 		}
 	}
 	/////////////////////////////////////////////////////
+}
+
+void gamestate::loadCSV(std::string fileScene){
+	std::ifstream  data(fileScene);
+
+	std::string line;
+	while (std::getline(data, line))
+	{
+		std::stringstream  lineStream(line);
+		std::string        cell;
+		std::string data[12];
+		int id = 0;
+		while (std::getline(lineStream, cell, ','))
+		{
+			data[id] = cell;
+			id++;
+		}
+		if (strcmp(data[0].c_str(), "c") == 0){
+			card * c = new card();
+			stringstream(data[1]) >> c->id;
+			stringstream(data[2]) >> c->cardname;
+			stringstream(data[3]) >> c->cost;
+			stringstream(data[4]) >> c->type;
+			stringstream(data[5]) >> c->hp;
+			stringstream(data[6]) >> c->attack;
+			stringstream(data[7]) >> c->defence;
+			stringstream(data[8]) >> c->evasion;
+			stringstream(data[9]) >> c->element;
+			stringstream(data[10]) >> c->draw;
+			stringstream(data[11]) >> c->description;
+			c->loadModel();
+			cout << "Card Found" << c->id << endl;
+			cardlist[c->id] = *c;
+			cout << "Card List Found" << cardlist[c->id].attack << endl;
+		}
+	}
+}
+
+void gamestate::cardActivated(int player, int cardID){
+
 }

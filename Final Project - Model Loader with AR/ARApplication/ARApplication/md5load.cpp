@@ -820,7 +820,7 @@ void md5load::draw (float x, float y, float z, float scale, float a, float rot1,
   GLfloat light_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
   GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
   GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-  GLfloat light_position[] = { 25.0, 25.0, 50.0, 0.0 };
+  GLfloat light_position[] = { 0.0, 0.0, 50.0, 0.0 };
 
   glLightfv(GL_LIGHT1, GL_AMBIENT, light_ambient);
   glLightfv(GL_LIGHT1, GL_DIFFUSE, light_diffuse);

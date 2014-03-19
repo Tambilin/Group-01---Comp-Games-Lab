@@ -1,7 +1,18 @@
-﻿Build started 18/03/2014 12:01:37.
+﻿Build started 19/03/2014 02:53:09.
      1>Project "C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\ARApplication\ARApplication.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Programs\VS 2013\VC\bin\CL.exe /c /I"C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\ARApplication\\include" /IC:\Windows\SysWOW64 /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         C:\Programs\VS 2013\VC\bin\CL.exe /c /I"C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\ARApplication\\include" /IC:\Windows\SysWOW64 /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt gamestate.cpp main.cpp menutextures.cpp
+         gamestate.cpp
+     1>gamestate.cpp(46): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Programs\VS 2013\VC\include\stdio.h(356) : see declaration of 'sprintf'
+     1>gamestate.cpp(47): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Programs\VS 2013\VC\include\stdio.h(211) : see declaration of 'fopen'
+     1>gamestate.cpp(61): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
+     1>gamestate.cpp(68): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
+     1>gamestate.cpp(78): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
          main.cpp
      1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\object.c(43): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  C:\Programs\VS 2013\VC\include\stdio.h(211) : see declaration of 'fopen'
@@ -15,6 +26,13 @@
                  C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
      1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\object.c(80): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
+         menutextures.cpp
+     1>menutextures.cpp(238): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Programs\VS 2013\VC\include\stdio.h(356) : see declaration of 'sprintf'
+     1>menutextures.cpp(239): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Programs\VS 2013\VC\include\string.h(118) : see declaration of 'strcat'
+     1>menutextures.cpp(240): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Programs\VS 2013\VC\include\string.h(118) : see declaration of 'strcat'
        Link:
          C:\Programs\VS 2013\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\Release\ARApplication.exe" /NOLOGO libARd.lib libARgsubd.lib libARvideod.lib freetype.lib OpenAL32.lib alut.lib opengl32.lib glu32.lib glut32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\Release\ARApplication.pdb" /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\Release\ARApplication.lib" /MACHINE:X86 /SAFESEH Release\bitmap.obj
          Release\card.obj
@@ -65,4 +83,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:02.96
+Time Elapsed 00:00:05.73

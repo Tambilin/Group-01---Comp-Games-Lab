@@ -1,0 +1,18 @@
+#,1,2,3,4,5,6,7,8,9,10,11
+s,640,480,,,,,,,,,
+#,ID,Card Name,Cost,Type,HP,Attack,Defence,Evasion,Element,Draw,Description
+c,0,Unselected,0,0,0,0,0,0,0,0,Default
+c,1,Alpha Prime,0,0,100,2,0,0,0,0,Mech robot 
+c,2,Delta Tank,0,0,100,1,1,0,0,0,Mech robot 
+c,3,Epsilon Zero,0,0,100,1,0,2,0,0,Mech robot 
+c,4,Broadsword,6,1,0,5,0,0,0,0,Two Handed Broadsword. Not Affected by Armour. (Replaces any other sword)
+c,5,Dual Swords,6,1,0,2,0,0,0,0,Dual Swords. Not Affected by Evasion. (Replaces any other sword)
+c,6,Gladius,4,1,0,2,0,0,0,0,Short One Handed Sword. Can be used with Shield. (Replaces any other sword)
+c,7,Wings of Evasion,8,1,0,0,0,2,0,0,Provides Two Evasion Attempts where Damage can be evaded.
+c,8,Power Chip,2,2,0,1,0,0,0,0,Provides additional attack power.
+c,9,Power Chip MKII,5,2,0,3,0,0,0,0,Provides additional attack power.
+c,10,Shielding Chip,3,2,0,0,1,0,0,0,Description
+c,11,Overclocked Shield,7,2,0,0,3,0,0,0,Description
+c,12,Speed Core Z,5,2,0,0,0,1,0,0,Description
+c,13,Extra Weight,7,3,0,2,2,-3,0,0,Description
+c,14,Forward Convertor,3,3,-5,5,0,0,0,0,Description

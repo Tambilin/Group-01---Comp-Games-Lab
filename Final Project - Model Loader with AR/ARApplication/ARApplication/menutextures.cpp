@@ -71,24 +71,11 @@ GLuint menutextures::loadTexture(char *fileName)
 }
 
 void menutextures::render(int width, int height){
-	//glLoadIdentity();
- //glPushMatrix();
-  //glMatrixMode(GL_PROJECTION);
- // glLoadIdentity();
- // gluOrtho2D(0,width,0,height);
- // glMatrixMode(GL_MODELVIEW);
- // glLoadIdentity();
-
-
   glEnable( GL_BLEND );
   glDisable( GL_DEPTH_TEST );
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_CONSTANT_ALPHA); //GL_ONE_MINUS_SRC_ALPHA);
-  //glBlendFunc(GL_ONE_MINUS_DST_ALPHA, GL_DST_ALPHA);
-  //glBlendFunc(GL_ONE, GL_ONE);
-  //glBlendFunc(GL_SRC_ALPHA, GL_DST_ALPHA );
-  //glColor4f(0.0, 0.0, 0.0, 0.0);
-  //Useful variables
+
+  //Define Variables
   int offset = 0;
   int res = 1+resolutionX/1280;
   int total = 0;
@@ -104,20 +91,21 @@ void menutextures::render(int width, int height){
 	  our_subfont = &our_font16;
   }
 
+  //Widescreen mode
   if(widescreen == false)
 	offset = 0;
   else 
     offset = 1;
 
-
+  //Switch between different menus being drawn
   switch (mode)
   {
-  case 0:
+  case 0: //Main Menu
 	  drawQuad(3 + offset, 0, 0, width, height); //Menu background
 	  drawQuad(5, width - (128 * res), height - (64 * res), width - 10, height - 10); //Start
 	  drawQuad(6, width - (128 * res), height - (64 * res * 2), width - 10, height - 10 - (64 * res)); //Options
 	  break;
-  case 1:
+  case 1: //Player 1 Select Data
 	  glPushAttrib(GL_CURRENT_BIT);
 	  glPushMatrix();
 	  glColor4f(1.0, 1.0, 0.0, 1.0);
@@ -126,7 +114,7 @@ void menutextures::render(int width, int height){
 	  glPopMatrix();
 	  glPopAttrib();
 	  break;
-  case 2:
+  case 2: //Player 2 Select Data
 	  glPushAttrib(GL_CURRENT_BIT);
 	  glPushMatrix();
 	  glColor4f(1.0, 1.0, 0.0, 1.0);
@@ -135,12 +123,10 @@ void menutextures::render(int width, int height){
 	  glPopMatrix();
 	  glPopAttrib();
 	  break;
-  case 3: //1
-	  //drawQuad(0 + offset, 0, 0, width, height); //Border
+  case 3: //Roll dice screen
 	  drawQuad(8, width - (128 * res), height - (64 * res), width - 10, height - 10); //Roll
 	  break;
-  case 4: //2
-	  //drawQuad(0 + offset, 0, 0, width, height); //Border
+  case 4: //Turn screen
 	  drawQuad(7, width - (128 * res), height - (64 * res), width - 10, height - 10); //Next turn
 	  if (!attackedThisTurn){
 		  drawQuad(16, width - (128 * res), height - (64 * res * 2), width - 10, height - 10 - (64 * res)); //Attack
@@ -164,16 +150,7 @@ void menutextures::render(int width, int height){
 	  
 	  if (alpha > 0){
 		  alpha = alpha - 0.1;
-		  //cout << alpha << endl;
 	  }
-
-	  //glPushMatrix();//Draw Dice Roll
-	  //glPushAttrib(GL_CURRENT_BIT);
-	  //glColor4f(1.0, 1.0, 1.0, 1.0);
-	  //glRasterPos2f(width / 2 - 30*res, height - width / 4 / res);
-	  //freetype_mod::print(*our_font, "+%3.0f", (float)total);	// Print GL Text To The Screen
-	  //glPopAttrib();
-	  //glPopMatrix();
 	  ////////////////////////////////////////
 	  break;
   default:
@@ -181,6 +158,7 @@ void menutextures::render(int width, int height){
 	  break; 
   }
 
+  // Draw player stats
   if (mode != 0){
 	  drawQuad(10, 2, height - 64, 256, height-2); //TitleBar
 	  glPushMatrix();//P1
@@ -213,6 +191,7 @@ void menutextures::render(int width, int height){
 	  glPopMatrix();
 
 
+
 	  glPushMatrix();//P2
 	  glPushAttrib(GL_CURRENT_BIT);
 	  glColor3f(0.0, 0.0, 0.0);
@@ -232,7 +211,7 @@ void menutextures::render(int width, int height){
 	  glPopMatrix();
   }
 
-  if (mode == 4){
+  if (mode == 4){ //Dice results
 	  glPushAttrib(GL_CURRENT_BIT);
 	  glPushMatrix();
 	  glColor4f(1.0, 1.0, 1.0, alpha);
@@ -269,14 +248,6 @@ void menutextures::render(int width, int height){
   }
 
   glDisable(GL_BLEND);
-
-  //glMatrixMode (GL_PROJECTION);
-	///glLoadIdentity ();
-//	gluPerspective (45.0, width/(GLdouble)height, 0.1, 1000.0);
-//	glMatrixMode (GL_MODELVIEW);
-//	glLoadIdentity ();
- //glPopMatrix();
- //glEnable( GL_DEPTH_TEST );
 }
 
 int menutextures::getMode(void){
@@ -354,6 +325,7 @@ void menutextures::setConfirm(bool t){
 	confirm = t;
 }
 
+//Check mouse button input interaction with GUI elements
 void menutextures::checkButtonClick(int x, int y, int width, int height){
 	  int res = 1 + resolutionX / 1280;
 	  if (confirm && mode != 0){
@@ -364,18 +336,23 @@ void menutextures::checkButtonClick(int x, int y, int width, int height){
 			  cout << "gamestate::lastPlayedID:" << gamestate::lastPlayedID << endl;
 			  if (mode == 1){
 				  gamestate::heroStats.first = gamestate::cardlist[(gamestate::lastPlayedID)];
-				  //gamestate::heroStats.first = gamestate::cardlist.at(1);
 				  mode++;
 				  confirm = false;
 			  } else if (mode == 2){
 				  gamestate::heroStats.second = gamestate::cardlist[(gamestate::lastPlayedID)];
 				  mode++;
 				  confirm = false;
+			  } else if (mode == 4){
+				  //New Card placed
+				  if (gamestate::phase == 2){
+					  //Apply stat change to P2
+					  gamestate::cardActivated(2,(gamestate::lastPlayedID));
+				  }
+				  else {
+					  //Apply stat change to P2
+					  gamestate::cardActivated(1, (gamestate::lastPlayedID));
+				  }
 			  }
-			  //else {
-				//  mode = previousMode;
-				//  confirm = false;
-			 // }
 		  }
 		  else if (x > width - (128 * res) &&
 			  y > 10 + (64 * res) &&
