@@ -416,7 +416,9 @@ static int draw_object(int obj_id, double gl_para[16])
 			}
 			else if (robotMode1 == 1) {
 				gamestate::cardlist[obj_id + 1].drawModel(stepX * currentStep, stepY * currentStep, stepZ * currentStep, getAngleBetweenRobots() - mech1Position[3], 0, 0, 1);
-				gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Walk.md5anim");
+				if (currentStep == 0) {
+					gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Walk.md5anim");
+				}
 				currentStep++;
 				if (currentStep == numSteps) {
 					robotMode1 = 3;
@@ -424,7 +426,9 @@ static int draw_object(int obj_id, double gl_para[16])
 			}
 			else if (robotMode1 == 2) {
 				gamestate::cardlist[obj_id + 1].drawModel(-stepX * currentStep, -stepY * currentStep, -stepZ * currentStep, getAngleBetweenRobots() - mech1Position[3], 0, 0, 1);
-				gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Walk.md5anim");
+				if (currentStep == numSteps) {
+					gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Walk.md5anim");
+				}
 				currentStep--;
 				if (currentStep == 0) {
 					robotMode1 = 0;
@@ -445,7 +449,9 @@ static int draw_object(int obj_id, double gl_para[16])
 			}
 			else if (robotMode2 == 1) {
 				gamestate::cardlist[obj_id + 1].drawModel(stepX * currentStep, stepY * currentStep, stepZ * currentStep, getAngleBetweenRobots() - mech1Position[3], 0, 0, 1);
-				gamestate::cardlist[gamestate::heroStats.second.id].model.loadAnimation("../Assets/Animations/Alpha_Walk.md5anim");
+				if (currentStep == 0) {
+					gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Walk.md5anim");
+				}
 				currentStep++;
 				if (currentStep == numSteps) {
 					robotMode2 = 3;
@@ -453,7 +459,9 @@ static int draw_object(int obj_id, double gl_para[16])
 			}
 			else if (robotMode2 == 2) {
 				gamestate::cardlist[obj_id + 1].drawModel(-stepX * currentStep, -stepY * currentStep, -stepZ * currentStep, getAngleBetweenRobots() - mech1Position[3], 0, 0, 1);
-				gamestate::cardlist[gamestate::heroStats.second.id].model.loadAnimation("../Assets/Animations/Alpha_Walk.md5anim");
+				if (currentStep == numSteps) {
+					gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Walk.md5anim");
+				}
 				currentStep--;
 				if (currentStep == 0) {
 					robotMode2 = 0;
