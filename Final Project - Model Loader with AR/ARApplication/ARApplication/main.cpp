@@ -48,12 +48,6 @@ int             count2 = 0;
 char           *cparam_name    = "Data/camera_para.dat";
 ARParam         cparam;
 
-//char           *patt_name      = "Data/patt.hiro";
-//int             patt_id;
-//double          patt_width     = 80.0;
-//double          patt_center[2] = {0.0, 0.0};
-//double          patt_trans[3][4];
-
 //Additional Variables
 bool			loadOpenGL = false;
 static bool     leftButtonDown = false;
@@ -63,9 +57,19 @@ int				movement = 0;
 int				fps = 0;
 int				lastPlayedID = -1;
 vector<int>		robotsDrawn;
+int				robotMode1 = 0; //0 for idle, 1 for going towards enemy, 2 for going away from enemy, 3 for attacking enemy
+int				robotMode2 = 0; //0 for idle, 1 for going towards enemy, 2 for going away from enemy, 3 for attacking enemy
+float			distX = 0;
+float			distY = 0;
+float			distZ = 0;
+float			stepX = 0;
+float			stepY = 0;
+float			stepZ = 0;
+int				numSteps = 0;
+int				currentStep = 0;
 // declaration of players positions array
-int mech1Position[6];
-int mech2Position[6];
+int				mech1Position[6];
+int				mech2Position[6];
 
 //Class Objects
 md5load RobotP1;
@@ -87,9 +91,10 @@ static void   loadData(void);
 static void   keyboard(unsigned char key, int x, int y);
 static void   mouse(int button, int state, int x, int y);
 static void   reshape(int w, int h);
-static float getMarkerDiffX(int m1, int m2);
-static float getMarkerDiffY(int m1, int m2);
-static float getAngleBetweenRobots(int m1, int m2);
+static float  getMarkerDiffX();
+static float  getMarkerDiffY();
+static float  getMarkerDiffZ();
+static float  getAngleBetweenRobots();
 
 int main(int argc, char **argv)
 {
@@ -138,7 +143,7 @@ static void mainLoop(void)
 		exit(0);
 	}
 	for (i = 0; i < marker_num; i++) {
-		argDrawSquare(marker_info[i].vertex, 0, 0);
+		//argDrawSquare(marker_info[i].vertex, 0, 0);
 	}
 
 	/* check for known patterns */
@@ -286,7 +291,7 @@ static int draw(ObjectData_T *object, int objectnum)
 			if (gl_para[0] != 0.0f || gl_para[1] != 0.0f) {
 				const float alignment_x = atan2(-gl_para[1], gl_para[0]);
 				float c2;
-				if (0 != cosf(alignment_x)) {
+				if (cosf(alignment_x) != 0) {
 					c2 = gl_para[0] / cosf(alignment_x);
 				}
 				else {
@@ -401,14 +406,66 @@ static int draw_object(int obj_id, double gl_para[16])
 
 	gamestate::cardlist[gamestate::heroStats.first.id].model.AnimateSound(50, 1, *t);
 	
-	//Make robots face each other
+	//Make robots face and attack eachother
 	if (robotsDrawn.size() == 2) {
 		cout << mech1Position[3] << " " << mech2Position[3] << " A: " << mech1Position[3] - mech2Position[3] << endl;
 		if (gamestate::heroStats.first.id == obj_id + 1) {
-				gamestate::cardlist[obj_id + 1].drawModel(0, 0, 0, mech1Position[3] - mech2Position[3], 0, 0, 1);
+			//gamestate::cardlist[obj_id + 1].drawModel(0, 0, 0, mech1Position[3] - mech2Position[3], 0, 0, 1);
+			if (robotMode1 == 0) {
+				gamestate::cardlist[obj_id + 1].drawModel(0, 0, 0, getAngleBetweenRobots() - mech1Position[3], 0, 0, 1);
+			}
+			else if (robotMode1 == 1) {
+				gamestate::cardlist[obj_id + 1].drawModel(stepX * currentStep, stepY * currentStep, stepZ * currentStep, getAngleBetweenRobots() - mech1Position[3], 0, 0, 1);
+				gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Walk.md5anim");
+				currentStep++;
+				if (currentStep == numSteps) {
+					robotMode1 = 3;
+				}
+			}
+			else if (robotMode1 == 2) {
+				gamestate::cardlist[obj_id + 1].drawModel(-stepX * currentStep, -stepY * currentStep, -stepZ * currentStep, getAngleBetweenRobots() - mech1Position[3], 0, 0, 1);
+				gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Walk.md5anim");
+				currentStep--;
+				if (currentStep == 0) {
+					robotMode1 = 0;
+				}
+			}
+			else {
+				gamestate::cardlist[obj_id + 1].drawModel(stepX * numSteps, stepY * numSteps, stepZ * numSteps, getAngleBetweenRobots() - mech1Position[3], 0, 0, 1);
+				gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Attack(DualSwords).md5anim");
+				//if (animation done) {
+					robotMode1 == 2;
+				//}
+			}
 		}
 		else if (gamestate::heroStats.second.id == obj_id + 1) {
-				gamestate::cardlist[obj_id + 1].drawModel(0, 0, 0, 360-(mech1Position[3] - mech2Position[3]), 0, 0, 1);
+			//gamestate::cardlist[obj_id + 1].drawModel(0, 0, 0, 360-(mech1Position[3] - mech2Position[3]), 0, 0, 1);
+			if (robotMode2 == 0) {
+				gamestate::cardlist[obj_id + 1].drawModel(0, 0, 0, -getAngleBetweenRobots() - mech2Position[3], 0, 0, 1);
+			}
+			else if (robotMode2 == 1) {
+				gamestate::cardlist[obj_id + 1].drawModel(stepX * currentStep, stepY * currentStep, stepZ * currentStep, getAngleBetweenRobots() - mech1Position[3], 0, 0, 1);
+				gamestate::cardlist[gamestate::heroStats.second.id].model.loadAnimation("../Assets/Animations/Alpha_Walk.md5anim");
+				currentStep++;
+				if (currentStep == numSteps) {
+					robotMode2 = 3;
+				}
+			}
+			else if (robotMode2 == 2) {
+				gamestate::cardlist[obj_id + 1].drawModel(-stepX * currentStep, -stepY * currentStep, -stepZ * currentStep, getAngleBetweenRobots() - mech1Position[3], 0, 0, 1);
+				gamestate::cardlist[gamestate::heroStats.second.id].model.loadAnimation("../Assets/Animations/Alpha_Walk.md5anim");
+				currentStep--;
+				if (currentStep == 0) {
+					robotMode2 = 0;
+				}
+			}
+			else {
+				gamestate::cardlist[obj_id + 1].drawModel(stepX * numSteps, stepY * numSteps, stepZ * numSteps, getAngleBetweenRobots() - mech1Position[3], 0, 0, 1);
+				gamestate::cardlist[gamestate::heroStats.second.id].model.loadAnimation("../Assets/Animations/Alpha_Attack(DualSwords).md5anim");
+				//if (animation done) {
+				robotMode2 == 2;
+				//}
+			}
 		}
 		else {
 			gamestate::cardlist[obj_id+1].drawModel();
@@ -466,27 +523,15 @@ void keyboard(unsigned char key, int x, int y)
 	}
 	if (key == 53){ //'5' Key{
 		if (robotsDrawn.size() == 2) {
-			RobotP1.cleanup();
-			RobotP1.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Walk.md5anim", "../Assets/Textures/Head.tga");
-			float distX = getMarkerDiffX(robotsDrawn.at(0), robotsDrawn.at(1));
-			float distY = getMarkerDiffY(robotsDrawn.at(0), robotsDrawn.at(1));
-			float stepX = distX / 100;
-			float stepY = distY / 100;
-			for (int i = 0; i < 100; i++) {
-				glPushMatrix();
-					glTranslatef(stepX, stepY, 0);
-				glPopMatrix();
-			}
-			RobotP1.cleanup();
-			RobotP1.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Attack(DualSwords).md5anim", "../Assets/Textures/Head.tga");
-			//Need to find a way to wait here until attack animation is finished
-			RobotP1.cleanup();
-			RobotP1.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Walk.md5anim", "../Assets/Textures/Head.tga");
-			for (int i = 0; i < 100; i++) {
-				glPushMatrix();
-				glTranslatef(-stepX, -stepY, 0);
-				glPopMatrix();
-			}
+			robotMode1 = 1;
+			distX = getMarkerDiffX();
+			distY = getMarkerDiffY();
+			distZ = getMarkerDiffZ();
+			numSteps = 100;
+			currentStep = 0;
+			stepX = distX / 100;
+			stepY = distY / 100;
+			stepZ = distZ / 100;
 		}
 	}
 
@@ -528,16 +573,23 @@ void mouse(int button, int state, int x, int y)
 	}
 }
 
-static float getMarkerDiffX(int m1, int m2) {
-	return object[m2].marker_center[0] - object[m1].marker_center[0];// -(object[m1].marker_width * 2) - (object[m2].marker_width * 2);
+static float getMarkerDiffX() {
+	//return object[m2].marker_center[0] - object[m1].marker_center[0];// -(object[m1].marker_width * 2) - (object[m2].marker_width * 2);
+	return mech2Position[0] - mech1Position[0];
 }
 
-static float getMarkerDiffY(int m1, int m2) {
-	return object[m2].marker_center[1] - object[m1].marker_center[1];// - (object[m1].marker_width * 2) - (object[m2].marker_width * 2);
+static float getMarkerDiffY() {
+	//return object[m2].marker_center[1] - object[m1].marker_center[1];// - (object[m1].marker_width * 2) - (object[m2].marker_width * 2);
+	return mech2Position[1] - mech1Position[1];
 }
 
-static float getAngleBetweenRobots(int m1, int m2) {
-	return atan2(getMarkerDiffX(m1, m2), getMarkerDiffY(m1, m2)) * 180 / PI;
+static float getMarkerDiffZ() {
+	//return object[m2].marker_center[2] - object[m2].marker_center[2];// - (object[m1].marker_width * 2) - (object[m2].marker_width * 2);
+	return mech2Position[2] - mech1Position[2];
+}
+
+static float getAngleBetweenRobots() {
+	return atan2(getMarkerDiffX(), getMarkerDiffY()) * 180 / PI;
 }
 
 void reshape(int w, int h)
