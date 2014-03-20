@@ -15,12 +15,15 @@ void card::loadModel(){
 	{
 	case 1:
 		this->model.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Idle.md5anim", "../Assets/Textures/Head.tga");
+		animation = "../Assets/Animations/Alpha_Punch.md5anim";
 		break;
 	case 2:
 		this->model.init("../Assets/Models/Alpha_Mesh.md5mesh", "../Assets/Animations/Alpha_Idle.md5anim", "../Assets/Textures/grass.tga");
+		animation = "../Assets/Animations/Alpha_Punch.md5anim";
 		break;
 	case 3:
 		this->model.init("../Assets/Models/Epsilon_Mesh.md5mesh", NULL, "../Assets/Textures/Feet.tga");
+		animation = "../Assets/Animations/Epsilon_Punch.md5anim";
 		break;
 	case 4:
 		break;
@@ -65,4 +68,8 @@ void card::drawModel(int x, int y, int z, int angle, int i, int j, int k){
 		model.draw(0, 0, 0, 1, 0, 0, 0, 0); //Draw Model
 	}
 	glPopMatrix();
+}
+
+void card::performAnimation(){
+	model.loadAnimation(animation);
 }

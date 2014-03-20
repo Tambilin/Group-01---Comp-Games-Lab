@@ -343,15 +343,8 @@ void menutextures::checkButtonClick(int x, int y, int width, int height){
 				  mode++;
 				  confirm = false;
 			  } else if (mode == 4){
-				  //New Card placed
-				  if (gamestate::phase == 2){
-					  //Apply stat change to P2
-					  gamestate::cardActivated(2,(gamestate::lastPlayedID));
-				  }
-				  else {
-					  //Apply stat change to P2
-					  gamestate::cardActivated(1, (gamestate::lastPlayedID));
-				  }
+				  gamestate::cardActivated(gamestate::phase, (gamestate::lastPlayedID));
+				  confirm = false;
 			  }
 		  }
 		  else if (x > width - (128 * res) &&
@@ -379,7 +372,7 @@ void menutextures::checkButtonClick(int x, int y, int width, int height){
 					  mode = previousMode;
 				  }
 
-				  if (this->mode == 3){
+				  if (this->mode == 3){ //Calculate Roll Data
 					  srand(time(NULL));
 					  int a = rand() % 2;
 					  rolls.push_back(a);
@@ -401,7 +394,7 @@ void menutextures::checkButtonClick(int x, int y, int width, int height){
 				  }
 
 				  this->mode++;
-				  if (this->mode > 4){
+				  if (this->mode > 4){ //Reset turn data
 					  gamestate::turnID++;
 					  attackedThisTurn = false;
 					  rolls.clear();
@@ -419,32 +412,9 @@ void menutextures::checkButtonClick(int x, int y, int width, int height){
 		  else if (x > width - (128 * res) &&
 			  y > 10 + (64 * res) &&
 			  x < width - 10 &&
-			  y < (64 * res * 2)){ //Options)
-			  if (this->mode == 4 && attackedThisTurn == false){
-				  if (gamestate::phase == 1){
-					  int attack = gamestate::heroStats.first.attack - gamestate::heroStats.second.defence;
-					  if (attack <= 0){
-						  attack = 0;
-					  }
-					  if (gamestate::heroStats.second.evasion <= 0){
-						  gamestate::heroStats.second.hp -= attack;
-					  }
-					  else {
-						  gamestate::heroStats.second.evasion --;
-					  }
-				  }
-				  else {
-					  int attack = gamestate::heroStats.second.attack - gamestate::heroStats.first.defence;
-					  if (attack <= 0){
-						  attack = 0;
-					  }
-					  if (gamestate::heroStats.first.evasion <= 0){
-						  gamestate::heroStats.first.hp -= attack;
-					  }
-					  else {
-						  gamestate::heroStats.first.evasion--;
-					  }
-				  }
+			  y < (64 * res * 2)){ 
+			  if (this->mode == 4 && attackedThisTurn == false){ //Perform attack action
+				  gamestate::cardAttack();
 				  attackedThisTurn = true;
 			  }
 		  }

@@ -79,7 +79,7 @@ int soundeffect::createSound(char * filename, int arg)
     alGenSources(1, &source[arg]);                                                   //Generate one OpenAL Source and link to "source"
 	//alGenBuffers(NUM_BUFFERS, buffer);                                                    //Generate one OpenAL Buffer and link to "buffer"
     //alGenSources(NUM_SOURCES, source);                                                   //Generate one OpenAL Source and link to "source"
-    if(alGetError() != AL_NO_ERROR) return endWithError("Error GenSource");     //Error during buffer/source generation
+    //if(alGetError() != AL_NO_ERROR) return endWithError("Error GenSource");     //Error during buffer/source generation
     
     //Figure out the format of the WAVE file
     if(bitsPerSample == 8)
@@ -99,8 +99,8 @@ int soundeffect::createSound(char * filename, int arg)
     if(!format) return endWithError("Wrong BitPerSample");                      //Not valid format
 
     alBufferData(buffer[arg], format, buf[arg], dataSize, frequency);                    //Store the sound data in the OpenAL Buffer
-    if(alGetError() != AL_NO_ERROR) 
-    return endWithError("Error loading ALBuffer");                              //Error during buffer loading
+    //if(alGetError() != AL_NO_ERROR) 
+    //return endWithError("Error loading ALBuffer");                              //Error during buffer loading
   
     //Sound setting variables
     ALfloat SourcePos[] = { 0.0, 0.0, 0.0 };                                    //Position of the source sound
@@ -130,7 +130,7 @@ int soundeffect::createSound(char * filename, int arg)
 
 int soundeffect::play(int track){
     alSourcePlay(source[track]);                                                       //Play the sound buffer linked to the source
-    if(alGetError() != AL_NO_ERROR) return endWithError("Error playing sound"); //Error when playing sound
+    //if(alGetError() != AL_NO_ERROR) return endWithError("Error playing sound"); //Error when playing sound
 	return 0;
 }
 

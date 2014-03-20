@@ -145,8 +145,6 @@ class md5load
 {
 
 
-
-
 	public:
         md5load(void);           //constructor
         ~md5load(void);          //destructor
@@ -226,6 +224,8 @@ class md5load
 		float angle = 0;
 		double curent_time = 0;
 		double last_time = 0;
+
+		const char * previousAnimation;
 
 		
 }; 

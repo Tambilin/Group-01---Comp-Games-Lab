@@ -6,7 +6,7 @@ using namespace std;
 class card
 {
 private:
-
+	bool attacking;
 public:
 	int id;
 	std::string cardname;
@@ -19,11 +19,13 @@ public:
 	int element;
 	int draw;
 	std::string description;
+	const char * animation;
 	md5load model;
 
 	void loadModel();
 	void drawModel();
 	void drawModel(int x, int y, int z, int angle, int i, int j, int k);
+	void performAnimation();
 	card();
 	~card();
 };

@@ -136,13 +136,14 @@ void md5load::init (const char *filename, const char *animfile, char *texturefil
 }
 
 void md5load::loadAnimation(const char *filename){
-	FreeAnim(&md5anim);
+	previousAnimation = filename;
+	//FreeAnim(&md5anim);
 
-	if (animated && skeleton)
-	{
-		free(skeleton);
-		skeleton = NULL;
-	}
+	//if (animated && skeleton)
+	//{
+	//	free(skeleton);
+	//	skeleton = NULL;
+	//}
 
 	/* Load MD5 animation file */
 	if (filename)
@@ -181,8 +182,8 @@ void md5load::loadAnimation(const char *filename){
 
 void md5load::loadModel(const char *filename){
 	
-	FreeModel(&md5file);
-	FreeVertexArrays();
+	//FreeModel(&md5file);
+	//FreeVertexArrays();
 
 	/* Load MD5 model file */
 	if (!ReadMD5Model(filename, &md5file))
@@ -756,8 +757,7 @@ void md5load::draw (float x, float y, float z, float scale, float a, float rot1,
 
   glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
 
-  glTranslatef (x, y, z);
-
+ // glTranslatef(x, y, z);
   glRotatef (a, rot1, rot2, rot3);
 
   if (rotate == true)
@@ -1080,8 +1080,10 @@ void md5load::Animate (const struct md5_anim_t *anim, struct anim_info_t *animIn
       animInfo->next_frame++;
       animInfo->last_time = 0.0;
 
-      if (animInfo->curr_frame > maxFrames)
-	animInfo->curr_frame = 0;
+	  if (animInfo->curr_frame > maxFrames){
+		  animInfo->curr_frame = 0;
+		  //loadAnimation(previousAnimation);
+	  }
 
       if (animInfo->next_frame > maxFrames)
 	animInfo->next_frame = 0;
