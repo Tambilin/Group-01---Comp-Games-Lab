@@ -214,7 +214,7 @@ static void init( void )
 	arParamDisp(&cparam);
 
 	/* load in the object data - trained markers and associated bitmap files */
-	if ((object = read_ObjData(model_name, &objectnum)) == NULL) exit(0);
+	if ((object = read_ObjData(model_name, &objectnum)) == NULL) cout << "ERROR LOADING FILE DATA";
 	printf("Objectfile num = %d\n", objectnum);
 
 	/* open the graphics window */
@@ -386,17 +386,17 @@ static int draw_object(int obj_id, double gl_para[16])
 	GLfloat   lightZeroColor[] = { 0.9, 0.9, 0.9, 0.1 };
 
 	//cout << "Vector: " << mech2Position[0] - mech1Position[0] << " , " << mech2Position[1] - mech1Position[1] << " , " << mech2Position[2] - mech1Position[2] << endl;
-	float ax = mech2Position[0] - mech1Position[0];
-	float ay = mech2Position[1] - mech1Position[1];
-	float az = mech2Position[2] - mech1Position[2];
-	float magnitude = sqrt((ax * ax) + (ay * ay) + (az * az));
+	//float ax = mech2Position[0] - mech1Position[0];
+	//float ay = mech2Position[1] - mech1Position[1];
+	//float az = mech2Position[2] - mech1Position[2];
+	//float magnitude = sqrt((ax * ax) + (ay * ay) + (az * az));
 
 	//gl_para[12] = gl_para[12] + (ax*currentStep * 10);
 	//gl_para[13] = gl_para[13] + (ay*currentStep * 10);
 	//gl_para[14] = gl_para[14] + (az*currentStep * 10);
 	//cout << "Normalised Vector: " << ax / magnitude << " , " << ay / magnitude << " , " << az / magnitude << endl;
 	//glTranslatef(stepX * currentStep*100, stepY * currentStep*100, stepZ * currentStep*100);
-	glMultMatrixd(gl_para);
+	glLoadMatrixd(gl_para);
 
 	//Clear Depth Buffer
 	//glClearDepth(1.0);
@@ -434,10 +434,10 @@ static int draw_object(int obj_id, double gl_para[16])
 		//stepY = ay / magnitude * 10;
 		//stepZ = az / magnitude * 10;
 		float Pi = 3.14159265;
-		float stepX2 = (cosf(getAngleBetweenRobots() - abs(mech1Position[3]))) * stepX - (sinf(getAngleBetweenRobots() - abs(mech1Position[3])) * stepZ));
-		float stepZ2 = (sinf(getAngleBetweenRobots() - abs(mech1Position[3])) * stepX + cosf(getAngleBetweenRobots() - abs(mech1Position[3])) * stepZ);
+		//float stepX2 = (cosf(getAngleBetweenRobots() - abs(mech1Position[3])) * stepX - (sinf(getAngleBetweenRobots() - abs(mech1Position[3])) * stepZ));
+		//float stepZ2 = (sinf(getAngleBetweenRobots() - abs(mech1Position[3])) * stepX + cosf(getAngleBetweenRobots() - abs(mech1Position[3])) * stepZ);
 		//glTranslatef(stepX2*currentStep, stepY2*currentStep, az / magnitude*currentStep);
-		stepX = stepX2, stepY = stepY, stepZ = stepZ2;
+		//stepX = stepX2, stepY = stepY, stepZ = stepZ2;
 		//cout << mech1Position[3] << "A: " << mech1Position[3] << " A: " << mech2Position[3]<<" Angle:" << getAngleBetweenRobots() << endl;
 		if (gamestate::heroStats.first.id == obj_id + 1) {
 			//gamestate::cardlist[obj_id + 1].drawModel(0, 0, 0, mech1Position[3] - mech2Position[3], 0, 0, 1);
@@ -552,8 +552,8 @@ void keyboard(unsigned char key, int x, int y)
 			gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Defence1.md5anim");
 		}
 		if (key == 49){ //'1' Key{
-			//gamestate::cardlist[gamestate::heroStats.first.id].model.loadModel("../Assets/Models/Alpha_Mesh_Dualswords.md5mesh");
-			gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Defence2.md5anim");
+			gamestate::cardlist[gamestate::heroStats.first.id].model.loadModel("../Assets/Models/Delta_Mesh.md5mesh");
+			gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Delta_Gun.md5anim");
 		}
 		if (key == 50){ //'2' Key{
 			//gamestate::cardlist[gamestate::heroStats.first.id].model.loadModel("../Assets/Models/Alpha_Mesh.md5mesh");
