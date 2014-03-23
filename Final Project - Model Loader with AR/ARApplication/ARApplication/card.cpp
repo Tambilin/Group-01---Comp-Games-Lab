@@ -40,32 +40,59 @@ void card::loadModel(){
 	}
 }
 
+void card::loadAnimation(){
+	switch (this->id)
+	{
+	case 1:
+		this->model.loadAnimation("../Assets/Animations/Alpha_Idle.md5anim");
+		//animation = "../Assets/Animations/Alpha_Punch.md5anim";
+		break;
+	case 2:
+		this->model.loadAnimation("../Assets/Animations/Alpha_Idle.md5anim");
+		//animation = "../Assets/Animations/Alpha_Punch.md5anim";
+		break;
+	case 3:
+		this->model.loadAnimation("../Assets/Animations/Epsilon_Idle.md5anim");
+		//animation = "../Assets/Animations/Epsilon.md5anim";
+	default:
+		break;
+	}
+}
+
 void card::drawModel(){
 	model.enableTextured(true);
 	glPushMatrix();
 	if (this->id == 3){
-		glTranslatef(0, 0, 10);
-		model.draw(0, 0, 0, 0.4, 0, 0, 0, 0); //Draw Model
+		glTranslatef(0, 0, 100);
+		model.draw(0, 0, 0, 0.2, 0, 0, 0, 0); //Draw Model
+	}
+	else if (this->id == 1){
+		glTranslatef(0, 0, 0);
+		model.draw(0, 0, 0, 0.5, 0, 0, 0, 0); //Draw Model
 	}
 	else {
-		glTranslatef(0, -0, -150);
-		model.draw(0, 0, 0, 1, 0, 0, 0, 0); //Draw Model
+		glTranslatef(0, -0, 50);
+		model.draw(0, 0, 0, 0.5, 0, 0, 0, 0); //Draw Model
 	}
 	glPopMatrix();
 }
 
 void card::drawModel(int x, int y, int z, int angle, int i, int j, int k){
+	if (model.temporaryAnimation && model.animationFinished){
+		model.temporaryAnimation = false;
+		model.animationFinished = false;
+		loadAnimation();
+	}
+
 	model.enableTextured(true);
-	glTranslatef(0+x, -0+y, -150+z);
-	glRotatef(angle , i, j, k);
 	glPushMatrix();
 	if (this->id == 3){
-		glTranslatef(0, 0, 10);
-		model.draw(0, 0, 0, 0.4, 0, 0, 0, 0); //Draw Model
+		glTranslatef(0, 0, -50);
+		model.draw(x, y, z, 0.2, angle, i, j, k); //Draw Model
 	}
 	else {
-		glTranslatef(0, -0, -150);
-		model.draw(0, 0, 0, 1, 0, 0, 0, 0); //Draw Model
+		glTranslatef(0, -0, -100);
+		model.draw(x, y, z, 0.5, angle, i, j, k); //Draw Model
 	}
 	glPopMatrix();
 }

@@ -28,6 +28,9 @@ md5load::md5load()
 		multiTexture = false;
 		drawSkeleton = false;
 		rotate = false;
+
+		temporaryAnimation = false;
+		animationFinished = false;
 } // end constructor
 
 void md5load::cleanup()
@@ -757,13 +760,15 @@ void md5load::draw (float x, float y, float z, float scale, float a, float rot1,
 
   glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
 
- // glTranslatef(x, y, z);
+  glTranslatef(x, y, z);
+
   glRotatef (a, rot1, rot2, rot3);
 
   if (rotate == true)
   {
 	  glRotatef(angle, 0.0, 0.0, 1.0);
   }
+
 
   glScalef(scale, scale, scale);
 
@@ -1082,6 +1087,9 @@ void md5load::Animate (const struct md5_anim_t *anim, struct anim_info_t *animIn
 
 	  if (animInfo->curr_frame > maxFrames){
 		  animInfo->curr_frame = 0;
+		  if (temporaryAnimation){
+			  animationFinished = true;
+		  }
 		  //loadAnimation(previousAnimation);
 	  }
 

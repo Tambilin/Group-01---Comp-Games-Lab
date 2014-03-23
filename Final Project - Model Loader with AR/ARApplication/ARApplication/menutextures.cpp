@@ -165,7 +165,7 @@ void menutextures::render(int width, int height){
 	  glPushAttrib(GL_CURRENT_BIT);
 	  glColor3f(0.0, 0.0, 0.0);
 	  glRasterPos2f(32, height-48);
-	  freetype_mod::print(*our_subfont, "Turn %2.0f - Player %1.0f's Turn", (float)gamestate::turnID, (float)gamestate::phase);	// Print GL Text To The Screen
+	  freetype_mod::print(our_font16, "Turn %2.0f - Player %1.0f's Turn", (float)gamestate::turnID, (float)gamestate::phase);	// Print GL Text To The Screen
 	  glPopAttrib();
 	  glPopMatrix();
 
@@ -214,7 +214,7 @@ void menutextures::render(int width, int height){
   if (mode == 4){ //Dice results
 	  glPushAttrib(GL_CURRENT_BIT);
 	  glPushMatrix();
-	  glColor4f(1.0, 1.0, 1.0, alpha);
+	  glColor4f(1.0, 1.0, 0.0, alpha);
 	  glRasterPos2f(width / 2 - 30*res, height - width / 4 / res);
 	  freetype_mod::print(*our_font, "+%3.0f", (float)total);	// Print GL Text To The Screen
 	  glPopMatrix();
@@ -226,7 +226,7 @@ void menutextures::render(int width, int height){
 	  glPushAttrib(GL_CURRENT_BIT);
 	  glPushMatrix();
 	  glColor4f(1.0, 0.0, 0.0, 1.0);
-	  glRasterPos2f(width - 355 * res, height - (46*res));
+	  glRasterPos2f(width - 360 * res, height - (46*res));
 	  freetype_mod::print(*our_subfont, "Do you want to use this card?");	// Print GL Text To The Screen
 	  glPopMatrix();
 	  glPopAttrib();
@@ -346,6 +346,7 @@ void menutextures::checkButtonClick(int x, int y, int width, int height){
 				  gamestate::cardActivated(gamestate::phase, (gamestate::lastPlayedID));
 				  confirm = false;
 			  }
+			  gamestate::confirmed = false;
 		  }
 		  else if (x > width - (128 * res) &&
 			  y > 10 + (64 * res) &&
@@ -353,6 +354,7 @@ void menutextures::checkButtonClick(int x, int y, int width, int height){
 			  y < (64 * res * 2)){ //Options)
 			  gamestate::lastPlayedID = -1;
 			  confirm = false;
+			  gamestate::confirmed = false;
 		  }
 	  }
 	  else {
@@ -376,7 +378,7 @@ void menutextures::checkButtonClick(int x, int y, int width, int height){
 					  srand(time(NULL));
 					  int a = rand() % 2;
 					  rolls.push_back(a);
-					  for (int i = 0; i < (int)gamestate::turnID / 2; i++){
+					  for (int i = 0; i < ((int)gamestate::turnID-1) / 2; i++){
 						  if (i < 11){
 							  int temp = rand() % 2;
 							  rolls.push_back(temp);
@@ -384,10 +386,10 @@ void menutextures::checkButtonClick(int x, int y, int width, int height){
 						  }
 					  }
 					  if (gamestate::turnID % 2 == 0){
-						  gamestate::manaPoints.first += a;
+						  gamestate::manaPoints.second += a;
 					  }
 					  else {
-						  gamestate::manaPoints.second += a;
+						  gamestate::manaPoints.first += a;
 						  if (rollSize < 12)
 							  rollSize++;
 					  }

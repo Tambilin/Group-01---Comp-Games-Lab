@@ -166,6 +166,9 @@ class md5load
 		float getSkeletonPosition(int joint, int xyz);
 		bool PrepareNormals(md5_mesh_t *mesh);
 
+		bool temporaryAnimation;
+		bool animationFinished;
+
 
      private:
 		 //function definitions

@@ -20,9 +20,14 @@ public:
 	int draw;
 	std::string description;
 	const char * animation;
+	const char * animationDodge;
+	const char * animationUpgrade;
+	const char * animationVictory;
+	const char * animationWalk;
 	md5load model;
 
 	void loadModel();
+	void loadAnimation();
 	void drawModel();
 	void drawModel(int x, int y, int z, int angle, int i, int j, int k);
 	void performAnimation();

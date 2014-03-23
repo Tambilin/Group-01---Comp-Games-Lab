@@ -10,6 +10,7 @@ std::pair<card, card> gamestate::weapons;
 std::unordered_map< int, card > gamestate::cardlist;
 int gamestate::phase = 1;
 int gamestate::lastPlayedID = -1;
+bool gamestate::confirmed = false;
 float gamestate::mech1Position[6] = { 0, 0, 0, 0, 0, 0 };
 float gamestate::mech2Position[6] = { 0, 0, 0, 0, 0, 0 };
 
@@ -145,10 +146,12 @@ bool gamestate::cardActivated(int player, int cardID){
 					hero.attack -= weapons.first.attack;
 					weapons.first = c; 
 					hero.attack += weapons.first.attack;
+					hero.evasion += weapons.first.evasion;
 				} else {
 					hero.attack -= weapons.second.attack;
 					weapons.second = c;
 					hero.attack += weapons.second.attack;
+					hero.evasion += weapons.second.evasion;
 				}
 				hero.cost -= c.cost;
 				loadWeapon();
@@ -187,6 +190,9 @@ bool gamestate::cardActivated(int player, int cardID){
 
 void gamestate::cardAttack(){
 	if (phase == 1){
+		cardlist[heroStats.first.id].model.animationFinished = false;
+		cardlist[heroStats.first.id].model.temporaryAnimation = true;
+		cardlist[heroStats.first.id].performAnimation();
 		//heroStats.first.performAnimation();
 		int attack = heroStats.first.attack + weapons.first.attack;
 		if (weapons.first.id != 4){
@@ -203,7 +209,9 @@ void gamestate::cardAttack(){
 		}
 	}
 	else {
-		//heroStats.second.performAnimation();
+		cardlist[heroStats.second.id].model.animationFinished = false;
+		cardlist[heroStats.second.id].model.temporaryAnimation = true;
+		cardlist[heroStats.second.id].performAnimation();
 		int attack = heroStats.second.attack + weapons.second.attack;
 		if (weapons.second.id != 4){
 			attack -= heroStats.first.defence;
@@ -229,7 +237,7 @@ void gamestate::loadWeapon(){
 			cout << "Robot 1" << endl;
 			if (weapons.first.id == 4){
 				cardlist[heroStats.first.id].model.loadModel("../Assets/Models/Alpha_Mesh_Broadsword.md5mesh");
-				cardlist[heroStats.first.id].animation = "../Assets/Animations/Alpha_Attack(SwordAndShield).md5anim.md5anim";
+				cardlist[heroStats.first.id].animation = "../Assets/Animations/Alpha_Attack(SwordAndShield).md5anim";
 			}
 			else if (weapons.first.id == 5){
 				cardlist[heroStats.first.id].model.loadModel("../Assets/Models/Alpha_Mesh_Dualswords.md5mesh");
@@ -237,7 +245,7 @@ void gamestate::loadWeapon(){
 			}
 			else if (weapons.first.id == 6){
 				cardlist[heroStats.first.id].model.loadModel("../Assets/Models/Alpha_Mesh_Sword.md5mesh");
-				cardlist[heroStats.first.id].animation = "../Assets/Animations/Alpha_Attack(SwordAndShield).md5anim.md5anim";
+				cardlist[heroStats.first.id].animation = "../Assets/Animations/Alpha_Attack(SwordAndShield).md5anim";
 			}
 			else {
 				cardlist[heroStats.first.id].model.loadModel("../Assets/Models/Alpha_Mesh.md5mesh");
@@ -248,7 +256,7 @@ void gamestate::loadWeapon(){
 			cout << "Robot 2" << endl;
 			if (weapons.first.id == 4){
 				cardlist[heroStats.first.id].model.loadModel("../Assets/Models/Alpha_Mesh_Broadsword.md5mesh");
-				cardlist[heroStats.first.id].animation = "../Assets/Animations/Alpha_Attack(SwordAndShield).md5anim.md5anim";
+				cardlist[heroStats.first.id].animation = "../Assets/Animations/Alpha_Attack(SwordAndShield).md5anim";
 			}
 			else if (weapons.first.id == 5){
 				cardlist[heroStats.first.id].model.loadModel("../Assets/Models/Alpha_Mesh_Dualswords.md5mesh");
@@ -256,7 +264,7 @@ void gamestate::loadWeapon(){
 			}
 			else if (weapons.first.id == 6){
 				cardlist[heroStats.first.id].model.loadModel("../Assets/Models/Alpha_Mesh_Sword.md5mesh");
-				cardlist[heroStats.first.id].animation = "../Assets/Animations/Alpha_Attack(SwordAndShield).md5anim.md5anim";
+				cardlist[heroStats.first.id].animation = "../Assets/Animations/Alpha_Attack(SwordAndShield).md5anim";
 			}
 			else {
 				cardlist[heroStats.first.id].model.loadModel("../Assets/Models/Alpha_Mesh.md5mesh");
@@ -267,7 +275,7 @@ void gamestate::loadWeapon(){
 			cout << "Robot 3" << endl;
 			if (weapons.first.id == 4){
 				cardlist[heroStats.first.id].model.loadModel("../Assets/Models/Epsilon_Mesh.md5mesh");
-				cardlist[heroStats.first.id].animation = "../Assets/Animations/Epsilon_Attack(SwordAndShield).md5anim.md5anim";
+				cardlist[heroStats.first.id].animation = "../Assets/Animations/Epsilon_Attack(SwordAndShield).md5anim";
 			}
 			else if (weapons.first.id == 5){
 				cardlist[heroStats.first.id].model.loadModel("../Assets/Models/Epsilon_Mesh.md5mesh");
@@ -275,7 +283,7 @@ void gamestate::loadWeapon(){
 			}
 			else if (weapons.first.id == 6){
 				cardlist[heroStats.first.id].model.loadModel("../Assets/Models/Epsilon_Mesh.md5mesh");
-				cardlist[heroStats.first.id].animation = "../Assets/Animations/Epsilon_Attack(SwordAndShield).md5anim.md5anim";
+				cardlist[heroStats.first.id].animation = "../Assets/Animations/Epsilon_Attack(SwordAndShield).md5anim";
 			}
 			else {
 				cardlist[heroStats.first.id].model.loadModel("../Assets/Models/Epsilon_Mesh.md5mesh");
@@ -288,7 +296,7 @@ void gamestate::loadWeapon(){
 		if (heroStats.second.id == 1){
 			if (weapons.second.id == 4){
 				cardlist[heroStats.second.id].model.loadModel("../Assets/Models/Alpha_Mesh_Broadsword.md5mesh");
-				cardlist[heroStats.second.id].animation = "../Assets/Animations/Alpha_Attack(SwordAndShield).md5anim.md5anim";
+				cardlist[heroStats.second.id].animation = "../Assets/Animations/Alpha_Attack(SwordAndShield).md5anim";
 			}
 			else if (weapons.second.id == 5){
 				cardlist[heroStats.second.id].model.loadModel("../Assets/Models/Alpha_Mesh_Dualswords.md5mesh");
@@ -296,7 +304,7 @@ void gamestate::loadWeapon(){
 			}
 			else if (weapons.second.id == 6){
 				cardlist[heroStats.second.id].model.loadModel("../Assets/Models/Alpha_Mesh_Sword.md5mesh");
-				cardlist[heroStats.second.id].animation = "../Assets/Animations/Alpha_Attack(SwordAndShield).md5anim.md5anim";
+				cardlist[heroStats.second.id].animation = "../Assets/Animations/Alpha_Attack(SwordAndShield).md5anim";
 			}
 			else {
 				cardlist[heroStats.second.id].model.loadModel("../Assets/Models/Alpha_Mesh.md5mesh");
@@ -306,7 +314,7 @@ void gamestate::loadWeapon(){
 		else if (heroStats.second.id == 2){
 			if (weapons.second.id == 4){
 				cardlist[heroStats.second.id].model.loadModel("../Assets/Models/Alpha_Mesh_Broadsword.md5mesh");
-				cardlist[heroStats.second.id].animation = "../Assets/Animations/Alpha_Attack(SwordAndShield).md5anim.md5anim";
+				cardlist[heroStats.second.id].animation = "../Assets/Animations/Alpha_Attack(SwordAndShield).md5anim";
 			}
 			else if (weapons.second.id == 5){
 				cardlist[heroStats.second.id].model.loadModel("../Assets/Models/Alpha_Mesh_Dualswords.md5mesh");
@@ -314,7 +322,7 @@ void gamestate::loadWeapon(){
 			}
 			else if (weapons.second.id == 6){
 				cardlist[heroStats.second.id].model.loadModel("../Assets/Models/Alpha_Mesh_Sword.md5mesh");
-				cardlist[heroStats.second.id].animation = "../Assets/Animations/Alpha_Attack(SwordAndShield).md5anim.md5anim";
+				cardlist[heroStats.second.id].animation = "../Assets/Animations/Alpha_Attack(SwordAndShield).md5anim";
 			}
 			else {
 				cardlist[heroStats.second.id].model.loadModel("../Assets/Models/Alpha_Mesh.md5mesh");
@@ -324,7 +332,7 @@ void gamestate::loadWeapon(){
 		else if (heroStats.second.id == 3){
 			if (weapons.second.id == 4){
 				cardlist[heroStats.second.id].model.loadModel("../Assets/Models/Epsilon_Mesh.md5mesh");
-				cardlist[heroStats.second.id].animation = "../Assets/Animations/Epsilon_Attack(SwordAndShield).md5anim.md5anim";
+				cardlist[heroStats.second.id].animation = "../Assets/Animations/Epsilon_Attack(SwordAndShield).md5anim";
 			}
 			else if (weapons.second.id == 5){
 				cardlist[heroStats.second.id].model.loadModel("../Assets/Models/Epsilon_Mesh.md5mesh");
@@ -332,7 +340,7 @@ void gamestate::loadWeapon(){
 			}
 			else if (weapons.second.id == 6){
 				cardlist[heroStats.second.id].model.loadModel("../Assets/Models/Epsilon_Mesh.md5mesh");
-				cardlist[heroStats.second.id].animation = "../Assets/Animations/Epsilon_Attack(SwordAndShield).md5anim.md5anim";
+				cardlist[heroStats.second.id].animation = "../Assets/Animations/Epsilon_Attack(SwordAndShield).md5anim";
 			}
 			else {
 				cardlist[heroStats.second.id].model.loadModel("../Assets/Models/Epsilon_Mesh.md5mesh");
