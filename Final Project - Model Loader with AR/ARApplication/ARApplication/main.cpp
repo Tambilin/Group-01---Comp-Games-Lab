@@ -251,7 +251,7 @@ static int draw(ObjectData_T *object, int objectnum)
 	//glEnable(GL_LIGHTING);
 
 	/* Setup Lighting */
-	GLfloat light_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
+	/*GLfloat light_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
 	GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
 	GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
 	GLfloat light_position[] = { 25.0, 25.0, 50.0, 0.0 };
@@ -262,7 +262,7 @@ static int draw(ObjectData_T *object, int objectnum)
 	glLightfv(GL_LIGHT1, GL_POSITION, light_position);
 
 	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT1);
+	glEnable(GL_LIGHT1);*/
 	glClear(GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
@@ -376,10 +376,10 @@ static int draw(ObjectData_T *object, int objectnum)
 /* draw the user object */
 static int draw_object(int obj_id, double gl_para[16])
 {
-	GLfloat   mat_ambient[] = { 0.0, 0.0, 1.0, 1.0 };
+	GLfloat   mat_ambient[] = { 0.4, 0.4, 0.4, 1.0 };
 	GLfloat   mat_ambient_collide[] = { 1.0, 0.0, 0.0, 1.0 };
-	GLfloat   mat_flash[] = { 0.0, 0.0, 1.0, 1.0 };
-	GLfloat   mat_flash_collide[] = { 1.0, 0.0, 0.0, 1.0 };
+	GLfloat   mat_flash[] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat   mat_flash_collide[] = { 1.0, 1.0, 1.0, 1.0 };
 	GLfloat   mat_flash_shiny[] = { 50.0 };
 	GLfloat   light_position[] = { 100.0, -200.0, 200.0, 0.0 };
 	GLfloat   ambi[] = { 0.1, 0.1, 0.1, 0.1 };
@@ -549,15 +549,19 @@ void keyboard(unsigned char key, int x, int y)
 		exit(0);
 	if (Menu->getMode() > 2){
 		if (key == 48){ //'0' Key{
+			gamestate::cardlist[gamestate::heroStats.first.id].model.loadModel("../Assets/Models/Alpha_Mesh.md5mesh");
 			gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Defence1.md5anim");
+			gamestate::cardlist[gamestate::heroStats.first.id].model.useModelShaderTextures("../Assets/MD5s/Alpha/Textures/");
 		}
 		if (key == 49){ //'1' Key{
-			gamestate::cardlist[gamestate::heroStats.first.id].model.loadModel("../Assets/Models/Delta_Mesh.md5mesh");
+			gamestate::cardlist[gamestate::heroStats.first.id].model.loadModel("../Assets/MD5s/Delta/Delta_Mesh.md5mesh");
 			gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Delta_Gun.md5anim");
+			gamestate::cardlist[gamestate::heroStats.first.id].model.useModelShaderTextures("../Assets/MD5s/Delta/Textures/");
 		}
 		if (key == 50){ //'2' Key{
-			//gamestate::cardlist[gamestate::heroStats.first.id].model.loadModel("../Assets/Models/Alpha_Mesh.md5mesh");
-			gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Dodge.md5anim");
+			gamestate::cardlist[gamestate::heroStats.first.id].model.loadModel("../Assets/Models/Epsilon_Mesh.md5mesh");
+			gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Epsilon_Dodge.md5anim");
+			gamestate::cardlist[gamestate::heroStats.first.id].model.useModelShaderTextures("../Assets/MD5s/Epsilon/Textures/");
 		}
 		if (key == 51){ //'3' Key{
 			gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Walk.md5anim");

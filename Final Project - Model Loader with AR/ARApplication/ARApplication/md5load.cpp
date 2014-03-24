@@ -76,6 +76,7 @@ void md5load::useModelShaderTextures(char *filepath){
 		std::string directory("");
 		directory += filepath;
 		directory += md5file.meshes[i].shader;
+		directory += ".tga";
 		menuTex[i] = loadTexture(const_cast<char*>(directory.c_str()));
     }
 }
@@ -758,7 +759,7 @@ void md5load::draw (float x, float y, float z, float scale, float a, float rot1,
 	 glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
   }
 
-  glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
+  //glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
 
   glTranslatef(x, y, z);
 
@@ -819,7 +820,7 @@ void md5load::draw (float x, float y, float z, float scale, float a, float rot1,
   glEnable(GL_LIGHT1);
   glShadeModel(GL_SMOOTH);*/
 
-  glDisable(GL_LIGHT0);
+ /* glDisable(GL_LIGHT0);
   glDisable(GL_LIGHTING);
   // Lighting
   GLfloat light_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
@@ -834,23 +835,27 @@ void md5load::draw (float x, float y, float z, float scale, float a, float rot1,
 
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT1);
-  glShadeModel(GL_SMOOTH);
+  glShadeModel(GL_SMOOTH);*/
 
 
  //// /* Draw each mesh of the model */
   for (i = 0; i < md5file.num_meshes; ++i)
-    {
+  {
 
-	 // glPushAttrib(GL_CURRENT_BIT);
+	  // glPushAttrib(GL_CURRENT_BIT);
 	  //if(multiTexture == false)
 	  glEnable(GL_TEXTURE_2D);
+	  if (multiTexture == false){
 	  glBindTexture(GL_TEXTURE_2D, modeltexture);
+	  }else{
+	  glBindTexture(GL_TEXTURE_2D, menuTex[i]);
+	  }
 	  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);  ///VERY IMPORTANT LINE OF CODE!!!!
 
 
 	  //glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
-	  GLfloat diff[] = { 1.0, 0.0, 1.0, 1.0 };
-	  GLfloat spec[] = { 0.0, 1.0, 1.0, 1.0 };
+	  GLfloat diff[] = { 1.0, 1.0, 1.0, 1.0 };
+	  GLfloat spec[] = { 1.0, 1.0, 1.0, 1.0 };
 	  glMaterialfv(GL_FRONT, GL_DIFFUSE, diff);
 	  glMaterialfv(GL_FRONT, GL_SPECULAR, spec);
 	  glMaterialf(GL_FRONT, GL_SHININESS, 15.0);
@@ -859,8 +864,9 @@ void md5load::draw (float x, float y, float z, float scale, float a, float rot1,
 
       PrepareMesh (&md5file.meshes[i], skeleton);
 
-	 // if (this->normals == false){
-		  //PrepareNormals(&md5file.meshes[i]);
+	  //if (animInfo.curr_frame % 2 == 0){
+		//  PrepareNormals(&md5file.meshes[i]);
+	  //}
 		//  this->normals = true;
 	 // }
 
