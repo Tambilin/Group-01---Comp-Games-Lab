@@ -170,6 +170,11 @@ static void mainLoop(void)
 			object[i].visible = 0;
 			continue;
 		}
+		//Requires minimum confidence value
+		if (marker_info[k].cf < 0.7) {
+			object[i].visible = 0;
+			continue;
+		}
 
 		/* calculate the transform for each marker */
 		if (object[i].visible == 0) {
