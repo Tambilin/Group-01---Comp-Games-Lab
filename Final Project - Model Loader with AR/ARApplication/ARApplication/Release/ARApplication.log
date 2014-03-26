@@ -1,56 +1,20 @@
-﻿Build started 23/03/2014 23:34:09.
+﻿Build started 25/03/2014 17:09:24.
      1>Project "C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\ARApplication\ARApplication.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Programs\VS 2013\VC\bin\CL.exe /c /I"C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\ARApplication\\include" /IC:\Windows\SysWOW64 /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt md5load.cpp
-         md5load.cpp
-     1>md5load.cpp(255): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Programs\VS 2013\VC\bin\CL.exe /c /I"C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\ARApplication\\include" /IC:\Windows\SysWOW64 /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         main.cpp
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\object.c(43): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  C:\Programs\VS 2013\VC\include\stdio.h(211) : see declaration of 'fopen'
-     1>md5load.cpp(267): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\object.c(49): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(277): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\object.c(60): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(286): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\object.c(67): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(308): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\object.c(74): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(346): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\object.c(80): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(358): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(370): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(380): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(398): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(407): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(443): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(211) : see declaration of 'fopen'
-     1>md5load.cpp(455): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(465): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(476): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(495): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(501): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(518): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(532): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(546): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(553): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(557): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>md5load.cpp(654): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\string.h(112) : see declaration of 'strcpy'
-     1>md5load.cpp(920): warning C4101: 'nm' : unreferenced local variable
-     1>md5load.cpp(955): warning C4018: '<' : signed/unsigned mismatch
        Link:
          C:\Programs\VS 2013\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\Release\ARApplication.exe" /NOLOGO libARd.lib libARgsubd.lib libARvideod.lib freetype.lib OpenAL32.lib alut.lib opengl32.lib glu32.lib glut32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\Release\ARApplication.pdb" /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\Release\ARApplication.lib" /MACHINE:X86 /SAFESEH Release\bitmap.obj
          Release\card.obj
@@ -102,4 +66,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:02.87
+Time Elapsed 00:00:03.08

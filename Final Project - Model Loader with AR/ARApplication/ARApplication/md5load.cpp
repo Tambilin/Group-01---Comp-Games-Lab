@@ -820,7 +820,7 @@ void md5load::draw (float x, float y, float z, float scale, float a, float rot1,
   glEnable(GL_LIGHT1);
   glShadeModel(GL_SMOOTH);*/
 
- /* glDisable(GL_LIGHT0);
+  glDisable(GL_LIGHT0);
   glDisable(GL_LIGHTING);
   // Lighting
   GLfloat light_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
@@ -835,7 +835,7 @@ void md5load::draw (float x, float y, float z, float scale, float a, float rot1,
 
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT1);
-  glShadeModel(GL_SMOOTH);*/
+  glShadeModel(GL_SMOOTH);
 
 
  //// /* Draw each mesh of the model */

@@ -20,6 +20,7 @@
 #include "menutextures.h"
 #include "objload.h"
 #include "soundeffect.h"
+#include "vmath.h"
 
 #include "object.c"
 
@@ -95,6 +96,7 @@ static float  getMarkerDiffX();
 static float  getMarkerDiffY();
 static float  getMarkerDiffZ();
 static float  getAngleBetweenRobots();
+static void   updateRobots();
 
 int main(int argc, char **argv)
 {
@@ -130,8 +132,10 @@ static void mainLoop(void)
     }
     if( count2 == 0 ) arUtilTimerReset();
     count2++;
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     argDrawMode2D();
+	//argDispHalfImage(dataPtr, 1, 0);
     argDispImage( dataPtr, 0,0 );
 
 	//glColor3f(1.0, 0.0, 0.0);
@@ -270,11 +274,6 @@ static int draw(ObjectData_T *object, int objectnum)
 	/// Rendering Section ///
 	glutSolidCube(20.0);
 
-	//enable client states for glDrawElements
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_NORMAL_ARRAY);
-
 	/* calculate the viewing parameters - gl_para */
 	
 	//Precompute the positioning data
@@ -329,6 +328,10 @@ static int draw(ObjectData_T *object, int objectnum)
 		robotsDrawn.push_back(i);
 	}
 
+	//enable client states for glDrawElements
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
 
 	argDrawMode3D();
 	argDraw3dCamera(0, 0);
@@ -361,15 +364,13 @@ static int draw(ObjectData_T *object, int objectnum)
 	objModel->DrawModelUsingFixedFuncPipeline();
 	glPopMatrix();
 
-	//glEnable(GL_LIGHTING);
-	//glEnable(GL_LIGHT1);
-
 	//Update Rotations
 	if (movement < 720)
 		movement = movement + 1;
 	else
 		movement = 0;
 
+	updateRobots();
 	return 0;
 }
 
@@ -381,30 +382,27 @@ static int draw_object(int obj_id, double gl_para[16])
 	GLfloat   mat_flash[] = { 1.0, 1.0, 1.0, 1.0 };
 	GLfloat   mat_flash_collide[] = { 1.0, 1.0, 1.0, 1.0 };
 	GLfloat   mat_flash_shiny[] = { 50.0 };
-	GLfloat   light_position[] = { 100.0, -200.0, 200.0, 0.0 };
+	GLfloat   light_position[] = { 100.0, -200.0, 250.0, 0.0 };
 	GLfloat   ambi[] = { 0.1, 0.1, 0.1, 0.1 };
 	GLfloat   lightZeroColor[] = { 0.9, 0.9, 0.9, 0.1 };
 
-	//cout << "Vector: " << mech2Position[0] - mech1Position[0] << " , " << mech2Position[1] - mech1Position[1] << " , " << mech2Position[2] - mech1Position[2] << endl;
-	//float ax = mech2Position[0] - mech1Position[0];
-	//float ay = mech2Position[1] - mech1Position[1];
-	//float az = mech2Position[2] - mech1Position[2];
-	//float magnitude = sqrt((ax * ax) + (ay * ay) + (az * az));
+	//Perform matrix calculations to move & position robots
+	Matrix4d mat = Matrix4d(gl_para);
+	Matrix4d rot;
+	if (gamestate::heroStats.first.id == obj_id + 1) {
+		rot = mat.createRotationAroundAxis(0, 0, getAngleBetweenRobots() + 180 + mech1Position[3]);
+	}
+	else {
+		rot = mat.createRotationAroundAxis(0, 0, getAngleBetweenRobots() + mech2Position[3]);
+	}
+	Matrix4d trans = Matrix4d();
+	if ((robotMode1 >= 1 && gamestate::heroStats.first.id == obj_id + 1) || (robotMode2 >= 1 && gamestate::heroStats.second.id == obj_id + 1)){
+		trans = mat.createTranslation(0, -currentStep*stepX, 0, 1);
+	}
+	glLoadMatrixd(mat*rot*trans);
 
-	//gl_para[12] = gl_para[12] + (ax*currentStep * 10);
-	//gl_para[13] = gl_para[13] + (ay*currentStep * 10);
-	//gl_para[14] = gl_para[14] + (az*currentStep * 10);
-	//cout << "Normalised Vector: " << ax / magnitude << " , " << ay / magnitude << " , " << az / magnitude << endl;
-	//glTranslatef(stepX * currentStep*100, stepY * currentStep*100, stepZ * currentStep*100);
-	glLoadMatrixd(gl_para);
 
-	//Clear Depth Buffer
-	//glClearDepth(1.0);
-	//glClear(GL_DEPTH_BUFFER_BIT);
-	//glEnable(GL_DEPTH_TEST);
-	//glDepthFunc(GL_LEQUAL);
-
-	/* set the material */
+	/* set the lighting */
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
@@ -422,101 +420,57 @@ static int draw_object(int obj_id, double gl_para[16])
 		}
 	}
 
-	//gamestate::cardlist[gamestate::heroStats.first.id].model.AnimateSound(50, 1, *t);
-	
-	//gamestate::cardlist[obj_id + 1].drawModel(0, 0, 0, 0, 0, 0, 0);
-
-	//Make robots face and attack eachother
+	//Draw robots
 	if (robotsDrawn.size() >= 2) {
-		
-
-		//stepX = ax / magnitude * 10;
-		//stepY = ay / magnitude * 10;
-		//stepZ = az / magnitude * 10;
-		float Pi = 3.14159265;
-		//float stepX2 = (cosf(getAngleBetweenRobots() - abs(mech1Position[3])) * stepX - (sinf(getAngleBetweenRobots() - abs(mech1Position[3])) * stepZ));
-		//float stepZ2 = (sinf(getAngleBetweenRobots() - abs(mech1Position[3])) * stepX + cosf(getAngleBetweenRobots() - abs(mech1Position[3])) * stepZ);
-		//glTranslatef(stepX2*currentStep, stepY2*currentStep, az / magnitude*currentStep);
-		//stepX = stepX2, stepY = stepY, stepZ = stepZ2;
-		//cout << mech1Position[3] << "A: " << mech1Position[3] << " A: " << mech2Position[3]<<" Angle:" << getAngleBetweenRobots() << endl;
-		if (gamestate::heroStats.first.id == obj_id + 1) {
-			//gamestate::cardlist[obj_id + 1].drawModel(0, 0, 0, mech1Position[3] - mech2Position[3], 0, 0, 1);
-			if (robotMode1 == 0) {
-				gamestate::cardlist[obj_id + 1].drawModel(0, 0, 0, -getAngleBetweenRobots() + 180 - mech1Position[3], 0, 0, 1);
-			}
-			else if (robotMode1 == 1) {
-				//glTranslatef(0, 0, currentStep * 10);
-				gamestate::cardlist[obj_id + 1].drawModel(stepX * currentStep, stepY * currentStep, stepZ * currentStep, -getAngleBetweenRobots() + 180 - mech1Position[3], 0, 0, 1);
-				if (currentStep == 0) {
-					//gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Walk.md5anim");
-				}
-				currentStep++;
-				if (currentStep == numSteps) {
-					robotMode1 = 3;
-				}
-			}
-			else if (robotMode1 == 2) {
-				gamestate::cardlist[obj_id + 1].drawModel(stepX * currentStep, stepY * currentStep, stepZ * currentStep, -getAngleBetweenRobots() + 180 - mech1Position[3] + 180, 0, 0, 1);
-				if (currentStep == numSteps) {
-					//gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Walk.md5anim");
-				}
-				//cout << currentStep << endl;
-				currentStep--;
-				if (currentStep == 0) {
-					robotMode1 = 0;
-				}
-			}
-			else {
-				gamestate::cardlist[obj_id + 1].drawModel(stepX * numSteps, stepY * currentStep, stepZ * currentStep, -getAngleBetweenRobots() + 180 - mech1Position[3], 0, 0, 1);
-				//gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Attack(DualSwords).md5anim");
-				//if (animation done) {
-					robotMode1 = 2;
-				//}
-			}
-		}
-		else if (gamestate::heroStats.second.id == obj_id + 1) {
-			//gamestate::cardlist[obj_id + 1].drawModel(0, 0, 0, 360-(mech1Position[3] - mech2Position[3]), 0, 0, 1);
-			if (robotMode2 == 0) {
-				gamestate::cardlist[obj_id + 1].drawModel(0, 0, 0, -getAngleBetweenRobots() - mech2Position[3], 0, 0, 1);
-			}
-			else if (robotMode2 == 1) {
-				gamestate::cardlist[obj_id + 1].drawModel(-stepX * currentStep, -stepY * currentStep, -stepZ * currentStep, getAngleBetweenRobots() - mech2Position[3] + 180, 0, 0, 1);
-				if (currentStep == 0) {
-					//gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Walk.md5anim");
-				}
-				currentStep++;
-				if (currentStep == numSteps) {
-					robotMode2 = 3;
-				}
-			}
-			else if (robotMode2 == 2) {
-				gamestate::cardlist[obj_id + 1].drawModel(-stepX * currentStep, -stepY * currentStep, -stepZ * currentStep, getAngleBetweenRobots() - mech2Position[3], 0, 0, 1);
-				if (currentStep == numSteps) {
-					//gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Walk.md5anim");
-				}
-				currentStep--;
-				if (currentStep == 0) {
-					robotMode2 = 0;
-				}
-			}
-			else {
-				gamestate::cardlist[obj_id + 1].drawModel(-stepX * numSteps, -stepY * numSteps, -stepZ * numSteps, getAngleBetweenRobots() - mech2Position[3], 0, 0, 1);
-				//gamestate::cardlist[gamestate::heroStats.second.id].model.loadAnimation("../Assets/Animations/Alpha_Attack(DualSwords).md5anim");
-				//if (animation done) {
-				robotMode2 = 2;
-				//}
-			}
-		}
-		else {
-			gamestate::cardlist[obj_id+1].drawModel();
+		if (gamestate::heroStats.first.id == obj_id + 1 || gamestate::heroStats.second.id == obj_id + 1) {
+			gamestate::cardlist[obj_id + 1].drawModel(0, 0, 0, 0, 0, 0, 0); //Grounded selected robots
 		}
 	}
 	else {
-		gamestate::cardlist[obj_id+1].drawModel();
+		gamestate::cardlist[obj_id + 1].drawModel(); //Hovering Robots
 	}
-	
-	//argDrawMode2D();
 	return 0;
+}
+
+void updateRobots(){
+	//Update robots positions
+	if (robotsDrawn.size() >= 2) {
+		if (robotMode1 == 0) {
+		}
+		else if (robotMode1 == 1) {
+			currentStep++;
+			if (currentStep == numSteps) {
+				robotMode1 = 3;
+			}
+		}
+		else if (robotMode1 == 2) {
+			currentStep--;
+			if (currentStep == 0) {
+				robotMode1 = 0;
+			}
+		}
+		else {
+			robotMode1 = 2;
+		}
+
+		if (robotMode2 == 0) {
+		}
+		else if (robotMode2 == 1) {
+			currentStep++;
+			if (currentStep == numSteps) {
+				robotMode2 = 3;
+			}
+		}
+		else if (robotMode2 == 2) {
+			currentStep--;
+			if (currentStep == 0) {
+				robotMode2 = 0;
+			}
+		}
+		else {
+			robotMode2 = 2;
+		}
+	}
 }
 
 void loadData(){
@@ -559,8 +513,8 @@ void keyboard(unsigned char key, int x, int y)
 			gamestate::cardlist[gamestate::heroStats.first.id].model.useModelShaderTextures("../Assets/MD5s/Delta/Textures/");
 		}
 		if (key == 50){ //'2' Key{
-			gamestate::cardlist[gamestate::heroStats.first.id].model.loadModel("../Assets/Models/Epsilon_Mesh.md5mesh");
-			gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Epsilon_Dodge.md5anim");
+			gamestate::cardlist[gamestate::heroStats.first.id].model.loadModel("../Assets/MD5s/Epsilon/Epsilon_Mesh_Gun.md5mesh");
+			gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Epsilon_Gun.md5anim");
 			gamestate::cardlist[gamestate::heroStats.first.id].model.useModelShaderTextures("../Assets/MD5s/Epsilon/Textures/");
 		}
 		if (key == 51){ //'3' Key{
@@ -571,9 +525,10 @@ void keyboard(unsigned char key, int x, int y)
 		if (robotsDrawn.size() >= 2) {
 			cout << "Key 5" << endl;
 			robotMode1 = 1;
-			distX = getMarkerDiffX();
-			distY = getMarkerDiffZ();
-			distZ = getMarkerDiffY();
+			distX = abs(getMarkerDiffX()) - thresh;
+			cout << getMarkerDiffX() - thresh;
+			distY = getMarkerDiffY();
+			distZ = getMarkerDiffZ();
 			numSteps = 50;
 			currentStep = 0;
 			stepX = distX / 50;
@@ -586,7 +541,7 @@ void keyboard(unsigned char key, int x, int y)
 		if (robotsDrawn.size() >= 2) {
 			cout << "Key 6" << endl;
 			robotMode2 = 1;
-			distX = getMarkerDiffX();
+			distX = abs(getMarkerDiffX()) - thresh;
 			distY = getMarkerDiffZ();
 			distZ = getMarkerDiffY();
 			numSteps = 50;
