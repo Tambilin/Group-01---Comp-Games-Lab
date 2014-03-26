@@ -236,116 +236,122 @@ void gamestate::loadWeapon(){
 		if (heroStats.first.id == 1){
 			cout << "Robot 1" << endl;
 			if (weapons.first.id == 4){
-				cardlist[heroStats.first.id].model.loadModel("../Assets/Models/Alpha_Mesh_Broadsword.md5mesh");
-				cardlist[heroStats.first.id].animation = "../Assets/Animations/Alpha_Attack(SwordAndShield).md5anim";
+				cardlist[heroStats.first.id].model.loadModel("../Assets/MD5s/Alpha/Alpha_Mesh_Broadsword.md5mesh");
+				cardlist[heroStats.first.id].animation = "../Assets/MD5s/Alpha/Animations/Alpha_Attack(SwordAndShield).md5anim";
 			}
 			else if (weapons.first.id == 5){
-				cardlist[heroStats.first.id].model.loadModel("../Assets/Models/Alpha_Mesh_Dualswords.md5mesh");
-				cardlist[heroStats.first.id].animation = "../Assets/Animations/Alpha_Attack(DualSwords).md5anim";
+				cardlist[heroStats.first.id].model.loadModel("../Assets/MD5s/Alpha/Alpha_Mesh_Dualswords.md5mesh");
+				cardlist[heroStats.first.id].animation = "../Assets/MD5s/Alpha/Animations/Alpha_Attack(DualSwords).md5anim";
 			}
 			else if (weapons.first.id == 6){
-				cardlist[heroStats.first.id].model.loadModel("../Assets/Models/Alpha_Mesh_Sword.md5mesh");
-				cardlist[heroStats.first.id].animation = "../Assets/Animations/Alpha_Attack(SwordAndShield).md5anim";
+				cardlist[heroStats.first.id].model.loadModel("../Assets/MD5s/Alpha/Alpha_Mesh_Sword.md5mesh");
+				cardlist[heroStats.first.id].animation = "../Assets/MD5s/Alpha/Animations/Alpha_Attack(SwordAndShield).md5anim";
 			}
 			else {
-				cardlist[heroStats.first.id].model.loadModel("../Assets/Models/Alpha_Mesh.md5mesh");
-				cardlist[heroStats.first.id].animation = "../Assets/Animations/Alpha_Punch(Uppercut).md5anim";
+				cardlist[heroStats.first.id].model.loadModel("../Assets/MD5s/Alpha/Alpha_Mesh.md5mesh");
+				cardlist[heroStats.first.id].animation = "../Assets/MD5s/Alpha/Animations/Alpha_Punch(Uppercut).md5anim";
 			}
+			cardlist[heroStats.first.id].model.useModelShaderTextures("../Assets/MD5s/Alpha/Textures/");
 		}
 		else if (heroStats.first.id == 2){
 			cout << "Robot 2" << endl;
 			if (weapons.first.id == 4){
-				cardlist[heroStats.first.id].model.loadModel("../Assets/Models/Alpha_Mesh_Broadsword.md5mesh");
-				cardlist[heroStats.first.id].animation = "../Assets/Animations/Alpha_Attack(SwordAndShield).md5anim";
+				cardlist[heroStats.first.id].model.loadModel("../Assets/MD5s/Delta/Delta_Mesh_Broadsword.md5mesh");
+				cardlist[heroStats.first.id].animation = "../Assets/MD5s/Delta/Animations/Delta_Attack(SwordAndShield).md5anim";
 			}
 			else if (weapons.first.id == 5){
-				cardlist[heroStats.first.id].model.loadModel("../Assets/Models/Alpha_Mesh_Dualswords.md5mesh");
-				cardlist[heroStats.first.id].animation = "../Assets/Animations/Alpha_Attack(DualSwords).md5anim";
+				cardlist[heroStats.first.id].model.loadModel("../Assets/MD5s/Delta/Delta_Mesh_Dualswords.md5mesh");
+				cardlist[heroStats.first.id].animation = "../Assets/MD5s/Delta/Animations/Delta_Attack(DualSwords).md5anim";
 			}
 			else if (weapons.first.id == 6){
-				cardlist[heroStats.first.id].model.loadModel("../Assets/Models/Alpha_Mesh_Sword.md5mesh");
-				cardlist[heroStats.first.id].animation = "../Assets/Animations/Alpha_Attack(SwordAndShield).md5anim";
+				cardlist[heroStats.first.id].model.loadModel("../Assets/MD5s/Delta/Delta_Mesh_Sword.md5mesh");
+				cardlist[heroStats.first.id].animation = "../Assets/MD5s/Delta/Animations/Delta_Attack(SwordAndShield).md5anim";
 			}
 			else {
-				cardlist[heroStats.first.id].model.loadModel("../Assets/Models/Alpha_Mesh.md5mesh");
-				cardlist[heroStats.first.id].animation = "../Assets/Animations/Alpha_Punch(Uppercut).md5anim";
+				cardlist[heroStats.first.id].model.loadModel("../Assets/MD5s/Delta/Delta_Mesh.md5mesh");
+				cardlist[heroStats.first.id].animation = "../Assets/MD5s/Delta/Animations/Delta_Punch(Uppercut).md5anim";
 			}
+			cardlist[heroStats.first.id].model.useModelShaderTextures("../Assets/MD5s/Delta/Textures/");
 		}
 		else if (heroStats.first.id == 3){
 			cout << "Robot 3" << endl;
 			if (weapons.first.id == 4){
-				cardlist[heroStats.first.id].model.loadModel("../Assets/Models/Epsilon_Mesh.md5mesh");
-				cardlist[heroStats.first.id].animation = "../Assets/Animations/Epsilon_Attack(SwordAndShield).md5anim";
+				cardlist[heroStats.first.id].model.loadModel("../Assets/MD5s/Epsilon/Epsilon_Mesh_Broadsword.md5mesh");
+				cardlist[heroStats.first.id].animation = "../Assets/MD5s/Epsilon/Animations/Epsilon_Attack(SwordAndShield).md5anim";
 			}
 			else if (weapons.first.id == 5){
-				cardlist[heroStats.first.id].model.loadModel("../Assets/Models/Epsilon_Mesh.md5mesh");
-				cardlist[heroStats.first.id].animation = "../Assets/Animations/Epsilon_Attack(DualSwords).md5anim";
+				cardlist[heroStats.first.id].model.loadModel("../Assets/MD5s/Epsilon/Epsilon_Mesh_Dualswords.md5mesh");
+				cardlist[heroStats.first.id].animation = ".../Assets/MD5s/Epsilon/Animations/Epsilon_Attack(DualSwords).md5anim";
 			}
 			else if (weapons.first.id == 6){
-				cardlist[heroStats.first.id].model.loadModel("../Assets/Models/Epsilon_Mesh.md5mesh");
-				cardlist[heroStats.first.id].animation = "../Assets/Animations/Epsilon_Attack(SwordAndShield).md5anim";
+				cardlist[heroStats.first.id].model.loadModel("../Assets/MD5s/Epsilon/Epsilon_Mesh_Sword.md5mesh");
+				cardlist[heroStats.first.id].animation = "../Assets/MD5s/Epsilon/Animations/Epsilon_Attack(SwordAndShield).md5anim";
 			}
 			else {
-				cardlist[heroStats.first.id].model.loadModel("../Assets/Models/Epsilon_Mesh.md5mesh");
-				cardlist[heroStats.first.id].animation = "../Assets/Animations/Epsilon_Punch(Uppercut).md5anim";
+				cardlist[heroStats.first.id].model.loadModel("../Assets/MD5s/Epsilon/Epsilon_Mesh.md5mesh");
+				cardlist[heroStats.first.id].animation = "../Assets/MD5s/Epsilon/Animations/Epsilon_Punch(Uppercut).md5anim";
 			}
+			cardlist[heroStats.first.id].model.useModelShaderTextures("../Assets/MD5s/Epsilon/Textures/");
 		}
 	}
 	else {
 		cout << "P2" << endl;
 		if (heroStats.second.id == 1){
 			if (weapons.second.id == 4){
-				cardlist[heroStats.second.id].model.loadModel("../Assets/Models/Alpha_Mesh_Broadsword.md5mesh");
-				cardlist[heroStats.second.id].animation = "../Assets/Animations/Alpha_Attack(SwordAndShield).md5anim";
+				cardlist[heroStats.second.id].model.loadModel("../Assets/MD5s/Alpha/Alpha_Mesh_Broadsword.md5mesh");
+				cardlist[heroStats.second.id].animation = "../Assets/MD5s/Alpha/Animations/Alpha_Attack(SwordAndShield).md5anim";
 			}
 			else if (weapons.second.id == 5){
-				cardlist[heroStats.second.id].model.loadModel("../Assets/Models/Alpha_Mesh_Dualswords.md5mesh");
-				cardlist[heroStats.second.id].animation = "../Assets/Animations/Alpha_Attack(DualSwords).md5anim";
+				cardlist[heroStats.second.id].model.loadModel("../Assets/MD5s/Alpha/Alpha_Mesh_Dualswords.md5mesh");
+				cardlist[heroStats.second.id].animation = "../Assets/MD5s/Alpha/Animations/Alpha_Attack(DualSwords).md5anim";
 			}
 			else if (weapons.second.id == 6){
-				cardlist[heroStats.second.id].model.loadModel("../Assets/Models/Alpha_Mesh_Sword.md5mesh");
-				cardlist[heroStats.second.id].animation = "../Assets/Animations/Alpha_Attack(SwordAndShield).md5anim";
+				cardlist[heroStats.second.id].model.loadModel("../Assets/MD5s/Alpha/Alpha_Mesh_Sword.md5mesh");
+				cardlist[heroStats.second.id].animation = "../Assets/MD5s/Alpha/Animations/Alpha_Attack(SwordAndShield).md5anim";
 			}
 			else {
-				cardlist[heroStats.second.id].model.loadModel("../Assets/Models/Alpha_Mesh.md5mesh");
-				cardlist[heroStats.second.id].animation = "../Assets/Animations/Alpha_Punch(Uppercut).md5anim";
+				cardlist[heroStats.second.id].model.loadModel("../Assets/MD5s/Alpha/Alpha_Mesh.md5mesh");
+				cardlist[heroStats.second.id].animation = "../Assets/MD5s/Alpha/Animations/Alpha_Punch(Uppercut).md5anim";
 			}
+			cardlist[heroStats.second.id].model.useModelShaderTextures("../Assets/MD5s/Alpha/Textures/");
 		}
 		else if (heroStats.second.id == 2){
 			if (weapons.second.id == 4){
-				cardlist[heroStats.second.id].model.loadModel("../Assets/Models/Alpha_Mesh_Broadsword.md5mesh");
-				cardlist[heroStats.second.id].animation = "../Assets/Animations/Alpha_Attack(SwordAndShield).md5anim";
+				cardlist[heroStats.second.id].model.loadModel("../Assets/MD5s/Delta/Delta_Mesh_Broadsword.md5mesh");
+				cardlist[heroStats.second.id].animation = "../Assets/MD5s/Delta/Animations/Delta_Attack(SwordAndShield).md5anim";
 			}
 			else if (weapons.second.id == 5){
-				cardlist[heroStats.second.id].model.loadModel("../Assets/Models/Alpha_Mesh_Dualswords.md5mesh");
-				cardlist[heroStats.second.id].animation = "../Assets/Animations/Alpha_Attack(DualSwords).md5anim";
+				cardlist[heroStats.second.id].model.loadModel("../Assets/MD5s/Delta/Delta_Mesh_Dualswords.md5mesh");
+				cardlist[heroStats.second.id].animation = "../Assets/MD5s/Delta/Animations/Delta_Attack(DualSwords).md5anim";
 			}
 			else if (weapons.second.id == 6){
-				cardlist[heroStats.second.id].model.loadModel("../Assets/Models/Alpha_Mesh_Sword.md5mesh");
-				cardlist[heroStats.second.id].animation = "../Assets/Animations/Alpha_Attack(SwordAndShield).md5anim";
+				cardlist[heroStats.second.id].model.loadModel("../Assets/MD5s/Delta/Delta_Mesh_Sword.md5mesh");
+				cardlist[heroStats.second.id].animation = "../Assets/MD5s/Delta/Animations/Delta_Attack(SwordAndShield).md5anim";
 			}
 			else {
-				cardlist[heroStats.second.id].model.loadModel("../Assets/Models/Alpha_Mesh.md5mesh");
-				cardlist[heroStats.second.id].animation = "../Assets/Animations/Alpha_Punch(Uppercut).md5anim";
+				cardlist[heroStats.second.id].model.loadModel("../Assets/MD5s/Delta/Delta_Mesh.md5mesh");
+				cardlist[heroStats.second.id].animation = "../Assets/MD5s/Delta/Animations/Delta_Punch(Uppercut).md5anim";
 			}
+			cardlist[heroStats.second.id].model.useModelShaderTextures("../Assets/MD5s/Delta/Textures/");
 		}
 		else if (heroStats.second.id == 3){
 			if (weapons.second.id == 4){
-				cardlist[heroStats.second.id].model.loadModel("../Assets/Models/Epsilon_Mesh.md5mesh");
-				cardlist[heroStats.second.id].animation = "../Assets/Animations/Epsilon_Attack(SwordAndShield).md5anim";
+				cardlist[heroStats.second.id].model.loadModel("../Assets/MD5s/Epsilon/Epsilon_Mesh_Broadsword.md5mesh");
+				cardlist[heroStats.second.id].animation = "../Assets/MD5s/Epsilon/Animations/Epsilon_Attack(SwordAndShield).md5anim";
 			}
 			else if (weapons.second.id == 5){
-				cardlist[heroStats.second.id].model.loadModel("../Assets/Models/Epsilon_Mesh.md5mesh");
-				cardlist[heroStats.second.id].animation = "../Assets/Animations/Epsilon_Attack(DualSwords).md5anim";
+				cardlist[heroStats.second.id].model.loadModel("../Assets/MD5s/Epsilon/Epsilon_Mesh_Dualswords.md5mesh");
+				cardlist[heroStats.second.id].animation = "../Assets/MD5s/Epsilon/Animations/Epsilon_Attack(DualSwords).md5anim";
 			}
 			else if (weapons.second.id == 6){
-				cardlist[heroStats.second.id].model.loadModel("../Assets/Models/Epsilon_Mesh.md5mesh");
-				cardlist[heroStats.second.id].animation = "../Assets/Animations/Epsilon_Attack(SwordAndShield).md5anim";
+				cardlist[heroStats.second.id].model.loadModel("../Assets/MD5s/Epsilon/Epsilon_Mesh_Sword.md5mesh");
+				cardlist[heroStats.second.id].animation = "../Assets/MD5s/Epsilon/Animations/Epsilon_Attack(SwordAndShield).md5anim";
 			}
 			else {
-				cardlist[heroStats.second.id].model.loadModel("../Assets/Models/Epsilon_Mesh.md5mesh");
-				cardlist[heroStats.second.id].animation = "../Assets/Animations/Epsilon_Punch(Uppercut).md5anim";
+				cardlist[heroStats.second.id].model.loadModel("../Assets/MD5s/Epsilon/Epsilon_Mesh.md5mesh");
+				cardlist[heroStats.second.id].animation = "../Assets/MD5s/Epsilon/Animations/Epsilon_Punch(Uppercut).md5anim";
 			}
+			cardlist[heroStats.second.id].model.useModelShaderTextures("../Assets/MD5s/Epsilon/Textures/");
 		}
 
 	}

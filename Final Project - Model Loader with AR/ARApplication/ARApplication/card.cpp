@@ -47,15 +47,15 @@ void card::loadAnimation(){
 	switch (this->id)
 	{
 	case 1:
-		this->model.loadAnimation("../Assets/Animations/Alpha_Idle.md5anim");
+		this->model.loadAnimation("../Assets/MD5s/Alpha/Animations/Alpha_Idle.md5anim");
 		//animation = "../Assets/Animations/Alpha_Punch.md5anim";
 		break;
 	case 2:
-		this->model.loadAnimation("../Assets/Animations/Alpha_Idle.md5anim");
+		this->model.loadAnimation("../Assets/MD5s/Delta/Animations/Delta_Idle.md5anim");
 		//animation = "../Assets/Animations/Alpha_Punch.md5anim";
 		break;
 	case 3:
-		this->model.loadAnimation("../Assets/Animations/Epsilon_Idle.md5anim");
+		this->model.loadAnimation("../Assets/MD5s/Epsilon/Animations/Epsilon_Idle.md5anim");
 		//animation = "../Assets/Animations/Epsilon.md5anim";
 	default:
 		break;

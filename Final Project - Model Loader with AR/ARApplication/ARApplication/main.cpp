@@ -503,22 +503,19 @@ void keyboard(unsigned char key, int x, int y)
 		exit(0);
 	if (Menu->getMode() > 2){
 		if (key == 48){ //'0' Key{
-			gamestate::cardlist[gamestate::heroStats.first.id].model.loadModel("../Assets/Models/Alpha_Mesh.md5mesh");
-			gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Defence1.md5anim");
+			gamestate::cardlist[gamestate::heroStats.first.id].model.loadModel("../Assets/MD5s/Alpha/Alpha_Mesh.md5mesh");
+			gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/MD5s/Alpha/Animations/Alpha_Defence1.md5anim");
 			gamestate::cardlist[gamestate::heroStats.first.id].model.useModelShaderTextures("../Assets/MD5s/Alpha/Textures/");
 		}
 		if (key == 49){ //'1' Key{
 			gamestate::cardlist[gamestate::heroStats.first.id].model.loadModel("../Assets/MD5s/Delta/Delta_Mesh.md5mesh");
-			gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Delta_Gun.md5anim");
+			gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/MD5s/Delta/Animations/Delta_Gun.md5anim");
 			gamestate::cardlist[gamestate::heroStats.first.id].model.useModelShaderTextures("../Assets/MD5s/Delta/Textures/");
 		}
 		if (key == 50){ //'2' Key{
 			gamestate::cardlist[gamestate::heroStats.first.id].model.loadModel("../Assets/MD5s/Epsilon/Epsilon_Mesh_Gun.md5mesh");
-			gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Epsilon_Gun.md5anim");
+			gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/MD5s/Epsilon/Animations/Epsilon_Gun.md5anim");
 			gamestate::cardlist[gamestate::heroStats.first.id].model.useModelShaderTextures("../Assets/MD5s/Epsilon/Textures/");
-		}
-		if (key == 51){ //'3' Key{
-			gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/Animations/Alpha_Walk.md5anim");
 		}
 	}
 	if (key == 53){ //'5' Key{
