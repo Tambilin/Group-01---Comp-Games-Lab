@@ -17,16 +17,19 @@ void card::loadModel(){
 		this->model.init("../Assets/MD5s/Alpha/Alpha_Mesh.md5mesh", "../Assets/MD5s/Alpha/Animations/Alpha_Idle.md5anim", "../Assets/Textures/grass.tga");
 		this->model.useModelShaderTextures("../Assets/MD5s/Alpha/Textures/");
 		animation = "../Assets/MD5s/Alpha/Animations/Alpha_Punch.md5anim";
+		animationWalk = "../Assets/MD5s/Alpha/Animations/Alpha_Walk.md5anim";
 		break;
 	case 2:
 		this->model.init("../Assets/MD5s/Delta/Delta_Mesh.md5mesh", "../Assets/MD5s/Delta/Animations/Delta_Idle.md5anim", "../Assets/Textures/grass.tga");
 		this->model.useModelShaderTextures("../Assets/MD5s/Delta/Textures/");
 		animation = "../Assets/MD5s/Delta/Animations/Delta_Punch.md5anim"; 
+		animationWalk = "../Assets/MD5s/Delta/Animations/Delta_Walk.md5anim";
 		break;
 	case 3:
 		this->model.init("../Assets/MD5s/Epsilon/Epsilon_Mesh.md5mesh", "../Assets/MD5s/Epsilon/Animations/Epsilon_Idle.md5anim", "../Assets/Textures/grass.tga");
 		this->model.useModelShaderTextures("../Assets/MD5s/Epsilon/Textures/");
 		animation = "../Assets/MD5s/Epsilon/Animations/Epsilon_Punch.md5anim";
+		animationWalk = "../Assets/MD5s/Epsilon/Animations/Epsilon_Walk.md5anim";
 		break;
 	case 4:
 		break;
@@ -102,4 +105,8 @@ void card::drawModel(int x, int y, int z, int angle, int i, int j, int k){
 
 void card::performAnimation(){
 	model.loadAnimation(animation);
+}
+
+void card::performAnimation(const char * anim){
+	model.loadAnimation(anim);
 }

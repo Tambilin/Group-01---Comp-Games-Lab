@@ -426,7 +426,7 @@ static int draw_object(int obj_id, double gl_para[16])
 	}
 
 	//Draw robots
-	if (robotsDrawn.size() >= 2) {
+	if (Menu->getMode() > 2) {
 		if (gamestate::heroStats.first.id == obj_id + 1 || gamestate::heroStats.second.id == obj_id + 1) {
 			gamestate::cardlist[obj_id + 1].drawModel(0, 0, 0, 0, 0, 0, 0); //Grounded selected robots
 		}
@@ -443,8 +443,16 @@ void updateRobots(){
 		if (robotMode1 == 0) {
 		}
 		else if (robotMode1 == 1) {
-			currentStep++;
-			if (currentStep == numSteps) {
+			if (currentStep == 0) {
+				currentStep = 0;
+				gamestate::cardlist[gamestate::heroStats.first.id].model.animationFinished = false;
+				gamestate::cardlist[gamestate::heroStats.first.id].model.temporaryAnimation = true;
+				stepX = distX / (gamestate::cardlist[gamestate::heroStats.first.id].model.getTotalFrames()/2);
+				gamestate::cardlist[gamestate::heroStats.first.id].performAnimation(gamestate::cardlist[gamestate::heroStats.first.id].animationWalk);
+			}
+			currentStep ++;
+			if (currentStep == gamestate::cardlist[gamestate::heroStats.first.id].model.getTotalFrames()/2) {
+				gamestate::cardlist[gamestate::heroStats.first.id].performAnimation();
 				robotMode1 = 3;
 			}
 		}
@@ -455,7 +463,10 @@ void updateRobots(){
 			}
 		}
 		else {
-			robotMode1 = 2;
+			if (gamestate::cardlist[gamestate::heroStats.first.id].model.getCurrentFrame() == gamestate::cardlist[gamestate::heroStats.first.id].model.getTotalFrames()) {
+				gamestate::cardlist[gamestate::heroStats.first.id].performAnimation(gamestate::cardlist[gamestate::heroStats.first.id].animationWalk);
+				robotMode1 = 2;
+			}
 		}
 
 		if (robotMode2 == 0) {
@@ -528,14 +539,14 @@ void keyboard(unsigned char key, int x, int y)
 			cout << "Key 5" << endl;
 			robotMode1 = 1;
 			distX = abs(getMarkerDiffX()) - thresh;
-			cout << getMarkerDiffX() - thresh;
-			distY = getMarkerDiffY();
-			distZ = getMarkerDiffZ();
-			numSteps = 50;
+			//cout << getMarkerDiffX() - thresh;
+			///distY = getMarkerDiffY();
+			//distZ = getMarkerDiffZ();
+			//numSteps = 50;
 			currentStep = 0;
 			stepX = distX / 50;
-			stepY = distY / 50;
-			stepZ = distZ / 50;
+			//stepY = distY / 50;
+			//stepZ = distZ / 50;
 		}
 	}
 

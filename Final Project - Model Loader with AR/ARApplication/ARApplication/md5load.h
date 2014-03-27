@@ -169,6 +169,9 @@ class md5load
 		bool temporaryAnimation;
 		bool animationFinished;
 
+		float getCurrentFrame();
+		float getTotalFrames();
+
 
      private:
 		 //function definitions

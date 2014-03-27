@@ -108,7 +108,7 @@ void menutextures::render(int width, int height){
   case 1: //Player 1 Select Data
 	  glPushAttrib(GL_CURRENT_BIT);
 	  glPushMatrix();
-	  glColor4f(1.0, 1.0, 0.0, 1.0);
+	  glColor4f(1.0, 0.0, 0.0, 1.0);
 	  glRasterPos2f(width / 2 - 260 * res, height - height / 3 / res);
 	  freetype_mod::print(*our_font, "Player 1 - Place Your Selected Mech");	// Print GL Text To The Screen
 	  glPopMatrix();
@@ -117,13 +117,25 @@ void menutextures::render(int width, int height){
   case 2: //Player 2 Select Data
 	  glPushAttrib(GL_CURRENT_BIT);
 	  glPushMatrix();
-	  glColor4f(1.0, 1.0, 0.0, 1.0);
+	  glColor4f(0.0, 0.0, 1.0, 1.0);
 	  glRasterPos2f(width / 2 - 260 * res, height - height / 3 / res);
 	  freetype_mod::print(*our_font, "Player 2 - Place Your Selected Mech");	// Print GL Text To The Screen
 	  glPopMatrix();
 	  glPopAttrib();
 	  break;
   case 3: //Roll dice screen
+	  glPushAttrib(GL_CURRENT_BIT);
+	  glPushMatrix();
+	  if (gamestate::phase == 1){
+		  glColor4f(1.0, 0.0, 0.0, 1.0);
+	  }
+	  else {
+		  glColor4f(0.0, 0.0, 1.0, 1.0);
+	  }
+	  glRasterPos2f(width / 2 - 160 * res, height - height / 3 / res);
+	  freetype_mod::print(*our_font, "Player %1.0f - Draw a card.", (float)gamestate::phase);	// Print GL Text To The Screen
+	  glPopMatrix();
+	  glPopAttrib();
 	  drawQuad(8, width - (128 * res), height - (64 * res), width - 10, height - 10); //Roll
 	  break;
   case 4: //Turn screen
@@ -225,7 +237,7 @@ void menutextures::render(int width, int height){
   if (confirm){
 	  glPushAttrib(GL_CURRENT_BIT);
 	  glPushMatrix();
-	  glColor4f(1.0, 0.0, 0.0, 1.0);
+	  glColor4f(1.0, 1.0, 0.0, 1.0);
 	  glRasterPos2f(width - 360 * res, height - (46*res));
 	  freetype_mod::print(*our_subfont, "Do you want to use this card?");	// Print GL Text To The Screen
 	  glPopMatrix();

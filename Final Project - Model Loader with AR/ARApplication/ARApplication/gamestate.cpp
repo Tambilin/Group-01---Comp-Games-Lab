@@ -194,7 +194,7 @@ void gamestate::cardAttack(){
 		cardlist[heroStats.first.id].model.temporaryAnimation = true;
 		cardlist[heroStats.first.id].performAnimation();
 		//heroStats.first.performAnimation();
-		int attack = heroStats.first.attack + weapons.first.attack;
+		int attack = heroStats.first.attack;
 		if (weapons.first.id != 4){
 			attack -= heroStats.second.defence;
 		}
@@ -212,7 +212,7 @@ void gamestate::cardAttack(){
 		cardlist[heroStats.second.id].model.animationFinished = false;
 		cardlist[heroStats.second.id].model.temporaryAnimation = true;
 		cardlist[heroStats.second.id].performAnimation();
-		int attack = heroStats.second.attack + weapons.second.attack;
+		int attack = heroStats.second.attack;
 		if (weapons.second.id != 4){
 			attack -= heroStats.first.defence;
 		}

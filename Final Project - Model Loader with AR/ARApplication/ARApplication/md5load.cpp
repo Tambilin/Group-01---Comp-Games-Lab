@@ -743,7 +743,7 @@ void md5load::draw (float x, float y, float z, float scale, float a, float rot1,
 
 
   last_time = curent_time;
-  curent_time = (double)glutGet(GLUT_ELAPSED_TIME) / 1000; // 2000000.0; //#Change Number to alter speed
+  curent_time = (double)glutGet(GLUT_ELAPSED_TIME) / 1; // 2000000.0; //#Change Number to alter speed
 
 
   //glLoadIdentity ();
@@ -1082,7 +1082,7 @@ void md5load::Animate (const struct md5_anim_t *anim, struct anim_info_t *animIn
   animInfo->last_time += dt;
 
   //Print out frame data
-  //cout << maxFrames << " : " << animInfo->curr_frame << endl;
+  cout << maxFrames << " : " << animInfo->curr_frame << endl;
 
   /* move to next frame */
   if (animInfo->last_time >= animInfo->max_time)
@@ -1102,6 +1102,14 @@ void md5load::Animate (const struct md5_anim_t *anim, struct anim_info_t *animIn
       if (animInfo->next_frame > maxFrames)
 	animInfo->next_frame = 0;
     }
+}
+
+float md5load::getCurrentFrame(){
+	return animInfo.curr_frame;
+}
+
+float md5load::getTotalFrames(){
+	return md5anim.num_frames - 1;
 }
 
 /**

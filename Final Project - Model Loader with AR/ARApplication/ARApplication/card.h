@@ -31,6 +31,7 @@ public:
 	void drawModel();
 	void drawModel(int x, int y, int z, int angle, int i, int j, int k);
 	void performAnimation();
+	void performAnimation(const char * anim);
 	card();
 	~card();
 };
