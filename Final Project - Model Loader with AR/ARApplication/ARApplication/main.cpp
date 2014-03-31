@@ -71,6 +71,8 @@ int				currentStep = 0;
 // declaration of players positions array
 int				mech1Position[6];
 int				mech2Position[6];
+double             frustrum = 0.0;
+bool Mode3D = false;
 
 //Class Objects
 md5load RobotP1;
@@ -193,7 +195,18 @@ static void mainLoop(void)
 	//Get next video capture
     arVideoCapNext();
 
-    draw(object, objectnum);
+	if (Mode3D){
+		glColorMask(true, false, false, false);
+		frustrum = -2;
+		draw(object, objectnum);
+		glColorMask(false, true, true, false);
+		frustrum = 2;
+		draw(object, objectnum);
+		glColorMask(true, true, true, true);
+	}
+	else {
+		draw(object, objectnum);
+	}
 
 	//Swap buffers
 	argSwapBuffers();
@@ -361,6 +374,7 @@ static int draw(ObjectData_T *object, int objectnum)
 
 	//Render Menus
 	glPushMatrix();
+	glTranslatef(frustrum, 0, 0);
 	Menu->render(width, height);
 	glPopMatrix();
 
@@ -401,6 +415,7 @@ static int draw_object(int obj_id, double gl_para[16])
 		rot = mat.createRotationAroundAxis(0, 0, getAngleBetweenRobots() + mech2Position[3]);
 	}
 	Matrix4d trans = Matrix4d();
+	trans.setTranslation(Vector3i(frustrum, frustrum, frustrum));
 	if ((robotMode1 >= 1 && gamestate::heroStats.first.id == obj_id + 1) || (robotMode2 >= 1 && gamestate::heroStats.second.id == obj_id + 1)){
 		trans = mat.createTranslation(0, -currentStep*stepX, 0, 1);
 	}
@@ -548,6 +563,10 @@ void keyboard(unsigned char key, int x, int y)
 			//stepY = distY / 50;
 			//stepZ = distZ / 50;
 		}
+	}
+
+	if (key == 32){ //'6' Key{
+		Mode3D = !Mode3D;
 	}
 
 	if (key == 54){ //'6' Key{
