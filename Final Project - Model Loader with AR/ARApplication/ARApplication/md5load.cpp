@@ -1108,6 +1108,10 @@ float md5load::getCurrentFrame(){
 	return animInfo.curr_frame;
 }
 
+void md5load::setCurrentFrame(float a){
+	animInfo.curr_frame = a;
+}
+
 float md5load::getTotalFrames(){
 	return md5anim.num_frames - 1;
 }

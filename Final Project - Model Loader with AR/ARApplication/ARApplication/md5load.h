@@ -170,6 +170,7 @@ class md5load
 		bool animationFinished;
 
 		float getCurrentFrame();
+		void  setCurrentFrame(float a);
 		float getTotalFrames();
 
 

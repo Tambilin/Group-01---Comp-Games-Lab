@@ -20,6 +20,7 @@
     <ClCompile Include="model_obj.cpp" />
     <ClCompile Include="objload.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="particles.cpp" />
     <ClCompile Include="soundeffect.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -31,6 +32,7 @@
     <ClInclude Include="menutextures.h" />
     <ClInclude Include="model_obj.h" />
     <ClInclude Include="objload.h" />
+    <ClInclude Include="particles.h" />
     <ClInclude Include="soundeffect.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

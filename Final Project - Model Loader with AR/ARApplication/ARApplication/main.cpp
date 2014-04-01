@@ -18,6 +18,8 @@
 #include <vector>
 #include "md5load.h"
 #include "menutextures.h"
+#include "particles.h"
+#include "gamestate.h"
 #include "objload.h"
 #include "soundeffect.h"
 #include "vmath.h"
@@ -71,8 +73,11 @@ int				currentStep = 0;
 // declaration of players positions array
 int				mech1Position[6];
 int				mech2Position[6];
-double             frustrum = 0.0;
+double          frustrum = 2.0;
 bool Mode3D = false;
+bool winner = false;
+
+particles * fireworks[particles::FIREWORKS_COUNT];
 
 //Class Objects
 md5load RobotP1;
@@ -137,11 +142,20 @@ static void mainLoop(void)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     argDrawMode2D();
-	//argDispHalfImage(dataPtr, 1, 0);
-    argDispImage( dataPtr, 0,0 );
-
-	//glColor3f(1.0, 0.0, 0.0);
-	//glLineWidth(6.0);
+	//argDispHalfImage(dataPtr, 0, 0);
+	if (Mode3D){
+		glColorMask(true, false, false, false);
+		glTranslatef(-frustrum*4, 0, 0);
+		glScalef(1.0, 1, 1);
+		argDispImage(dataPtr, 0, 0);
+		glColorMask(false, true, true, false);
+		glTranslatef(frustrum*4, 0, 0);
+		argDispImage(dataPtr, 0, 0);
+		glColorMask(true, true, true, true);
+	}
+	else {
+		argDispImage(dataPtr, 0, 0);
+	}
 
 	/* detect the markers in the video frame */
 	if (arDetectMarker(dataPtr, thresh,	&marker_info, &marker_num) < 0) {
@@ -197,10 +211,10 @@ static void mainLoop(void)
 
 	if (Mode3D){
 		glColorMask(true, false, false, false);
-		frustrum = -2;
+		frustrum = frustrum * -1;
 		draw(object, objectnum);
 		glColorMask(false, true, true, false);
-		frustrum = 2;
+		frustrum = frustrum * -1;
 		draw(object, objectnum);
 		glColorMask(true, true, true, true);
 	}
@@ -372,11 +386,60 @@ static int draw(ObjectData_T *object, int objectnum)
 	/// 2D Menu Rendering ///
 	argDrawMode2D();
 
+	if (winner){
+	glPushAttrib(GL_CURRENT_BIT);
+	glPushMatrix();
+	glEnable(GL_BLEND);
+	glDisable(GL_DEPTH_TEST);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	// Draw fireworks
+	for (int loop = 0; loop < particles::FIREWORKS_COUNT; loop++)
+	{
+		for (int particleLoop = 0; particleLoop < particles::FIREWORK_PARTS; particleLoop++)
+		{
+
+			// Set the point size of the firework particles (this needs to be called BEFORE opening the glBegin(GL_POINTS) section!)
+			glPointSize(fireworks[loop]->particleSize);
+			glBegin(GL_POINTS);
+
+			// Set colour to yellow on way up, then whatever colour firework should be when exploded
+			if (fireworks[loop]->exploded == false)
+			{
+				glColor4f(1.0f, 1.0f, 0.0f, 0.5f);
+			}
+			else
+			{
+				glColor4f(fireworks[loop]->r, fireworks[loop]->g, fireworks[loop]->b, fireworks[loop]->a);
+			}
+
+			// Draw the point
+			glVertex2f(fireworks[loop]->x[particleLoop], fireworks[loop]->y[particleLoop]);
+			glEnd();
+		}
+
+		// Move the firework appropriately depending on its explosion state
+		if (fireworks[loop]->exploded == false)
+		{
+			fireworks[loop]->move();
+		}
+		else
+		{
+			fireworks[loop]->explode();
+		}
+	}
+	glDisable(GL_BLEND);
+	glPopMatrix();
+	glPopAttrib();
+	glColor4f(0.2f, 0.2f, 0.2f, 1.0f);
+	}
+
 	//Render Menus
 	glPushMatrix();
 	glTranslatef(frustrum, 0, 0);
 	Menu->render(width, height);
 	glPopMatrix();
+
 
 	glPushMatrix();
 	glTranslatef(250, 250, 0);
@@ -415,11 +478,14 @@ static int draw_object(int obj_id, double gl_para[16])
 		rot = mat.createRotationAroundAxis(0, 0, getAngleBetweenRobots() + mech2Position[3]);
 	}
 	Matrix4d trans = Matrix4d();
-	trans.setTranslation(Vector3i(frustrum, frustrum, frustrum));
+	Matrix4d Offset3D = Matrix4d();
+	if (Mode3D){
+		Offset3D.setTranslation(Vector3i(frustrum*1.5, 0, 0));
+	}
 	if ((robotMode1 >= 1 && gamestate::heroStats.first.id == obj_id + 1) || (robotMode2 >= 1 && gamestate::heroStats.second.id == obj_id + 1)){
 		trans = mat.createTranslation(0, -currentStep*stepX, 0, 1);
 	}
-	glLoadMatrixd(mat*rot*trans);
+	glLoadMatrixd(Offset3D*mat*rot*trans);
 
 
 	/* set the lighting */
@@ -464,22 +530,24 @@ void updateRobots(){
 				gamestate::cardlist[gamestate::heroStats.first.id].model.temporaryAnimation = true;
 				stepX = distX / (gamestate::cardlist[gamestate::heroStats.first.id].model.getTotalFrames()/2);
 				gamestate::cardlist[gamestate::heroStats.first.id].performAnimation(gamestate::cardlist[gamestate::heroStats.first.id].animationWalk);
+				gamestate::cardlist[gamestate::heroStats.first.id].model.setCurrentFrame(20);
 			}
 			currentStep ++;
-			if (currentStep == gamestate::cardlist[gamestate::heroStats.first.id].model.getTotalFrames()/2) {
+			if (currentStep >= gamestate::cardlist[gamestate::heroStats.first.id].model.getTotalFrames()/2) {
 				gamestate::cardlist[gamestate::heroStats.first.id].performAnimation();
 				robotMode1 = 3;
 			}
 		}
 		else if (robotMode1 == 2) {
 			currentStep--;
-			if (currentStep == 0) {
+			if (currentStep <= 0) {
 				robotMode1 = 0;
 			}
 		}
 		else {
 			if (gamestate::cardlist[gamestate::heroStats.first.id].model.getCurrentFrame() == gamestate::cardlist[gamestate::heroStats.first.id].model.getTotalFrames()) {
 				gamestate::cardlist[gamestate::heroStats.first.id].performAnimation(gamestate::cardlist[gamestate::heroStats.first.id].animationWalk);
+				gamestate::cardlist[gamestate::heroStats.first.id].model.setCurrentFrame(gamestate::cardlist[gamestate::heroStats.first.id].model.getTotalFrames() / 2);
 				robotMode1 = 2;
 			}
 		}
@@ -488,13 +556,13 @@ void updateRobots(){
 		}
 		else if (robotMode2 == 1) {
 			currentStep++;
-			if (currentStep == numSteps) {
+			if (currentStep >= numSteps) {
 				robotMode2 = 3;
 			}
 		}
 		else if (robotMode2 == 2) {
 			currentStep--;
-			if (currentStep == 0) {
+			if (currentStep <= 0) {
 				robotMode2 = 0;
 			}
 		}
@@ -524,6 +592,11 @@ void loadData(){
 	glutReshapeFunc(reshape);
 	glutKeyboardFunc(keyboard);
 	glutMouseFunc(mouse);
+	//load particles
+	for (int i = 0; i < particles::FIREWORKS_COUNT; i++){
+		fireworks[i] = new particles(width, height);
+	}
+
 	loadOpenGL = true;
 }
 
@@ -593,6 +666,8 @@ void keyboard(unsigned char key, int x, int y)
 	if (key == 46){ //'.' Key{
 		t->createSound("../Assets/Sounds/Sword.wav", 1);
 		t->play(1);
+		winner = !winner;
+		cout << winner << endl;
 	}
 	if (key == 47){ //'/' Key{
 		t->createSound("../Assets/Sounds/Upgrade.wav", 1);
