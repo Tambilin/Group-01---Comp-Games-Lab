@@ -431,7 +431,7 @@ static int draw(ObjectData_T *object, int objectnum)
 	glDisable(GL_BLEND);
 	glPopMatrix();
 	glPopAttrib();
-	glColor4f(0.2f, 0.2f, 0.2f, 1.0f);
+	//glColor4f(0.2f, 0.2f, 0.2f, 1.0f);
 	}
 
 	//Render Menus

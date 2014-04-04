@@ -139,15 +139,19 @@ void menutextures::render(int width, int height){
 	  drawQuad(8, width - (128 * res), height - (64 * res), width - 10, height - 10); //Roll
 	  break;
   case 4: //Turn screen
-	  drawQuad(7, width - (128 * res), height - (64 * res), width - 10, height - 10); //Next turn
-	  if (!attackedThisTurn){
-		  drawQuad(16, width - (128 * res), height - (64 * res * 2), width - 10, height - 10 - (64 * res)); //Attack
-	  }
+		  if (gamestate::phase == 1 && gamestate::cardlist[gamestate::heroStats.first.id].model.temporaryAnimation == false
+			  || gamestate::phase == 2 && gamestate::cardlist[gamestate::heroStats.second.id].model.temporaryAnimation == false){
+			  drawQuad(7, width - (128 * res), height - (64 * res), width - 10, height - 10); //Next turn
+			  if (!attackedThisTurn){
+				  drawQuad(16, width - (128 * res), height - (64 * res * 2), width - 10, height - 10 - (64 * res)); //Attack
+			  }
+		  }
 	  ///////////DICE ROLLS RESULTS///////////////////
 	  if (size > 12){
 		  size = 12;
 	  }
 
+	  if (alpha > 0){
 	  for (int i = 0; i < size; i++){
 		  int c = i / 4;
 		  int r = i % 4;
@@ -159,9 +163,7 @@ void menutextures::render(int width, int height){
 		  glPopAttrib();
 		  glPopMatrix();
 	  }
-	  
-	  if (alpha > 0){
-		  alpha = alpha - 0.1;
+	  alpha = alpha - 0.1;
 	  }
 	  ////////////////////////////////////////
 	  break;
@@ -428,8 +430,14 @@ void menutextures::checkButtonClick(int x, int y, int width, int height){
 			  x < width - 10 &&
 			  y < (64 * res * 2)){ 
 			  if (this->mode == 4 && attackedThisTurn == false){ //Perform attack action
-				  gamestate::cardAttack();
-				  attackedThisTurn = true;
+				  if (gamestate::phase == 1 && gamestate::cardlist[gamestate::heroStats.first.id].model.temporaryAnimation == false
+					  || gamestate::phase == 2 && gamestate::cardlist[gamestate::heroStats.second.id].model.temporaryAnimation == false){
+					  gamestate::cardAttack();
+					  attackedThisTurn = true;
+					  if (gamestate::winner > 0){
+						  this->mode = 0;
+					  }
+				  }
 			  }
 		  }
 	  }

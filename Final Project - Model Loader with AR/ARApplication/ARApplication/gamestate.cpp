@@ -10,18 +10,10 @@ std::pair<card, card> gamestate::weapons;
 std::unordered_map< int, card > gamestate::cardlist;
 int gamestate::phase = 1;
 int gamestate::lastPlayedID = -1;
+int gamestate::winner = 0;
 bool gamestate::confirmed = false;
 float gamestate::mech1Position[6] = { 0, 0, 0, 0, 0, 0 };
 float gamestate::mech2Position[6] = { 0, 0, 0, 0, 0, 0 };
-
-gamestate::gamestate()
-{  
-}
-
-
-gamestate::~gamestate()
-{
-}
 
 void gamestate::init(){
 	loadCSV("CardData.csv");
@@ -163,6 +155,12 @@ bool gamestate::cardActivated(int player, int cardID){
 				hero.attack += c.attack;
 				hero.defence += c.defence;
 				hero.evasion += c.evasion;
+
+				if (hero.hp < 0) hero.hp = 0;
+				if (hero.attack < 0) hero.attack = 0;
+				if (hero.defence < 0) hero.defence = 0;
+				if (hero.evasion < 0) hero.evasion = 0;
+
 				hero.cost -= c.cost;
 		}
 		else if (c.type == 4){ //DOWNGRADE
@@ -203,6 +201,9 @@ void gamestate::cardAttack(){
 		}
 		if ((heroStats.second.evasion + weapons.second.evasion) <= 0 || weapons.first.id == 5){
 			heroStats.second.hp -= attack;
+			if (heroStats.second.hp == 0){
+				winner = 1;
+			}
 		}
 		else {
 			heroStats.second.evasion--;
@@ -221,6 +222,9 @@ void gamestate::cardAttack(){
 		}
 		if ((heroStats.first.evasion + weapons.first.evasion) <= 0 || weapons.second.id == 5){
 			heroStats.first.hp -= attack;
+			if (heroStats.first.hp == 0){
+				winner = 2;
+			}
 		}
 		else {
 			heroStats.first.evasion--;

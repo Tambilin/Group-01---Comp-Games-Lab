@@ -21,6 +21,7 @@ public:
 	static std::unordered_map< int, card > cardlist;
 	static int phase;
 	static int lastPlayedID;
+	static int winner;
 	static bool confirmed;
 	// declaration of players positions array
 	static float mech1Position[6];
@@ -37,7 +38,5 @@ public:
 	static void cardAttack();
 	static void loadWeapon();
 	static bool checkCard(int mode, int id);
-	gamestate();
-	~gamestate();
 };
 
