@@ -389,6 +389,7 @@ static int draw(ObjectData_T *object, int objectnum)
 	if (winner){
 	glPushAttrib(GL_CURRENT_BIT);
 	glPushMatrix();
+	glDisable(GL_TEXTURE_2D);
 	glEnable(GL_BLEND);
 	glDisable(GL_DEPTH_TEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -429,9 +430,13 @@ static int draw(ObjectData_T *object, int objectnum)
 		}
 	}
 	glDisable(GL_BLEND);
+	glEnable(GL_TEXTURE_2D);
 	glPopMatrix();
 	glPopAttrib();
-	//glColor4f(0.2f, 0.2f, 0.2f, 1.0f);
+	glColor4f(0.2f, 0.2f, 0.2f, 1.0f);
+	}
+	else {
+		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 
 	//Render Menus
@@ -545,7 +550,7 @@ void updateRobots(){
 			}
 		}
 		else {
-			if (gamestate::cardlist[gamestate::heroStats.first.id].model.getCurrentFrame() == gamestate::cardlist[gamestate::heroStats.first.id].model.getTotalFrames()) {
+			if (gamestate::cardlist[gamestate::heroStats.first.id].model.getCurrentFrame() >= gamestate::cardlist[gamestate::heroStats.first.id].model.getTotalFrames()) {
 				gamestate::cardlist[gamestate::heroStats.first.id].performAnimation(gamestate::cardlist[gamestate::heroStats.first.id].animationWalk);
 				gamestate::cardlist[gamestate::heroStats.first.id].model.setCurrentFrame(gamestate::cardlist[gamestate::heroStats.first.id].model.getTotalFrames() / 2);
 				robotMode1 = 2;
@@ -622,27 +627,41 @@ void keyboard(unsigned char key, int x, int y)
 			gamestate::cardlist[gamestate::heroStats.first.id].model.useModelShaderTextures("../Assets/MD5s/Epsilon/Textures/");
 		}
 	}
-	if (key == 53){ //'5' Key{
-		if (robotsDrawn.size() >= 2) {
-			cout << "Key 5" << endl;
-			robotMode1 = 1;
-			distX = abs(getMarkerDiffX()) - thresh;
-			//cout << getMarkerDiffX() - thresh;
-			///distY = getMarkerDiffY();
-			//distZ = getMarkerDiffZ();
-			//numSteps = 50;
-			currentStep = 0;
-			stepX = distX / 50;
-			//stepY = distY / 50;
-			//stepZ = distZ / 50;
+	if (Menu->getMode() > 3){
+		if (key == 53){ //'5' Key{
+			if (robotsDrawn.size() >= 2) {
+				cout << "Key 5" << endl;
+				robotMode1 = 1;
+				distX = abs(getMarkerDiffX()) - thresh;
+				//cout << getMarkerDiffX() - thresh;
+				///distY = getMarkerDiffY();
+				//distZ = getMarkerDiffZ();
+				//numSteps = 50;
+				currentStep = 0;
+				stepX = distX / 50;
+				//stepY = distY / 50;
+				//stepZ = distZ / 50;
+			}
 		}
+	}
+
+	if (key == 54){
+		frustrum += 0.1;
+	}
+
+	if (key == 55){
+		frustrum -= 0.1;
+	}
+
+	if (key == 56){
+		frustrum = 2;
 	}
 
 	if (key == 32){ //'6' Key{
 		Mode3D = !Mode3D;
 	}
 
-	if (key == 54){ //'6' Key{
+	/*if (key == 54){ //'6' Key{
 		if (robotsDrawn.size() >= 2) {
 			cout << "Key 6" << endl;
 			robotMode2 = 1;
@@ -655,7 +674,7 @@ void keyboard(unsigned char key, int x, int y)
 			stepY = distY / 50;
 			stepZ = distZ / 50;
 		}
-	}
+	}*/
 
 	//Memory Leak Issue
 	if (key == 32){ //'Space' Key{
@@ -718,9 +737,12 @@ static float getAngleBetweenRobots() {
 
 void reshape(int w, int h)
 {
-	if (!Menu->checkScreenSize(w, h))
+	if (!Menu->checkScreenSize(w, h)){
 		return glutReshapeWindow(Menu->getResolutionX(), Menu->getResolutionY());
-
+	}
 	width = w;
 	height = h;
+
+
+	//glViewport(0,0,width,height)
 }

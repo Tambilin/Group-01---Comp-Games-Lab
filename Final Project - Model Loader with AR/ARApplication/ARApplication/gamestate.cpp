@@ -151,7 +151,7 @@ bool gamestate::cardActivated(int player, int cardID){
 		else if (c.type == 2 || c.type == 3){ //UPDGRADE
 			cout << "Upgrade card!" << endl;
 				cout << "Stat Change!" << endl;
-				hero.hp += c.attack;
+				hero.hp += c.hp;
 				hero.attack += c.attack;
 				hero.defence += c.defence;
 				hero.evasion += c.evasion;

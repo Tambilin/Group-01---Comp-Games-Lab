@@ -328,8 +328,9 @@ void menutextures::screenSizeMenu(int item)
 			resolutionY = 480;
 			break;
         }
+		//glutReshapeWindow(640, 480);
 		glutPositionWindow(100,100);
-
+		glViewport(0, 0, resolutionX, resolutionY);
 
         glutPostRedisplay();
         return;

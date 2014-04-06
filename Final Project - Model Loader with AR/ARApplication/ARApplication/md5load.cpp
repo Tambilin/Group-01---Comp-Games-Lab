@@ -1082,7 +1082,7 @@ void md5load::Animate (const struct md5_anim_t *anim, struct anim_info_t *animIn
   animInfo->last_time += dt;
 
   //Print out frame data
-  cout << maxFrames << " : " << animInfo->curr_frame << endl;
+  //cout << maxFrames << " : " << animInfo->curr_frame << endl;
 
   /* move to next frame */
   if (animInfo->last_time >= animInfo->max_time)
