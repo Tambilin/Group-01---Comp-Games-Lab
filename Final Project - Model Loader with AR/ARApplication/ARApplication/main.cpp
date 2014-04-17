@@ -80,14 +80,13 @@ bool winner = false;
 particles * fireworks[particles::FIREWORKS_COUNT];
 
 //Class Objects
-md5load RobotP1;
-md5load RobotP2;
-md5load Alien;
+md5load Dice;
+md5load Coin;
 
 menutextures * Menu = new menutextures();
 objload * Wings = new objload();
 objload * objModel = new objload();
-soundeffect * t = new soundeffect();
+//soundeffect * t = new soundeffect();
 
 static void   init(void);
 static void   cleanup(void);
@@ -132,6 +131,9 @@ static void mainLoop(void)
     int             marker_num;
     int             i, j, k;
 
+	frustrum = gamestate::frustrum3D;
+	Mode3D = gamestate::activate3D;
+
     /* grab a video frame */
     if( (dataPtr = (ARUint8 *)arVideoGetImage()) == NULL ) {
         arUtilSleep(2);
@@ -154,7 +156,12 @@ static void mainLoop(void)
 		glColorMask(true, true, true, true);
 	}
 	else {
+		glPushMatrix();
+		glPushAttrib(GL_CURRENT_BIT);
+		//glPixelZoom(1.5, 1.5);
 		argDispImage(dataPtr, 0, 0);
+		glPopAttrib();
+		glPopMatrix();
 	}
 
 	/* detect the markers in the video frame */
@@ -219,6 +226,7 @@ static void mainLoop(void)
 		glColorMask(true, true, true, true);
 	}
 	else {
+		frustrum = 0;
 		draw(object, objectnum);
 	}
 
@@ -234,6 +242,7 @@ static void init( void )
 	ARParam  wparam;
 
 	/* open the video path */
+	//arVideoOpen("inputDevice=WDM_CAP,flipH,flipV,showDlg");
 	if (arVideoOpen(vconf) < 0) exit(0);
 	/* find the size of the window */
 	if (arVideoInqSize(&width, &height) < 0) exit(0);
@@ -244,6 +253,8 @@ static void init( void )
 		printf("Camera parameter load error !!\n");
 		exit(0);
 	}
+	//width = width/2;
+	//height = height/2;
 	arParamChangeSize(&wparam, width, height, &cparam);
 	arInitCparam(&cparam);
 	printf("*** Camera Parameter ***\n");
@@ -255,6 +266,9 @@ static void init( void )
 
 	/* open the graphics window */
 	argInit(&cparam, 1.0, 0, 0, 0, 0);
+
+	glutReshapeWindow(641, 481);
+	//glViewport(0, 0, width, height);
 }
 
 /* cleanup function called when program exits */
@@ -269,6 +283,8 @@ static int draw(ObjectData_T *object, int objectnum)
 {
 	int     i;
 	double  gl_para[16];
+
+	gamestate::updateDeltaTime();
 
 	/*One Off Initialise Functions*/
 	if (!loadOpenGL){
@@ -386,7 +402,7 @@ static int draw(ObjectData_T *object, int objectnum)
 	/// 2D Menu Rendering ///
 	argDrawMode2D();
 
-	if (winner){
+	if (gamestate::winner > 0){
 	glPushAttrib(GL_CURRENT_BIT);
 	glPushMatrix();
 	glDisable(GL_TEXTURE_2D);
@@ -507,9 +523,12 @@ static int draw_object(int obj_id, double gl_para[16])
 			cout << "Detected New Card!" << endl;
 			gamestate::lastPlayedID = obj_id + 1;
 			gamestate::confirmed = true;
-			t->play(1);
+			gamestate::t->cleanup(1);
+			gamestate::t->createSound("../Assets/Sounds/Entrance.wav", 1);
+			gamestate::t->play(1);
 		}
 	}
+
 
 	//Draw robots
 	if (Menu->getMode() > 2) {
@@ -520,10 +539,35 @@ static int draw_object(int obj_id, double gl_para[16])
 	else {
 		gamestate::cardlist[obj_id + 1].drawModel(); //Hovering Robots
 	}
+
+	if (Menu->getMode() == 3) {
+		if (gamestate::heroStats.first.id == obj_id + 1 && gamestate::phase == 1 || gamestate::heroStats.second.id == obj_id + 1 && gamestate::phase == 2) {
+			Dice.draw(0, 0, 350, 1.2, movement, 1, 1, 1); //Draw Model
+		}
+	}
 	return 0;
 }
 
 void updateRobots(){
+	//cout << gamestate::deltaTime << endl;
+	int numsteps = 1.5 * gamestate::deltaTime/md5load::animSpeed;
+	if (gamestate::attacking == 1){
+		//numsteps = (gamestate::cardlist[gamestate::heroStats.first.id].model.getTotalFrames() / 2)*
+		robotMode1 = 1;
+		distX = abs(getMarkerDiffX()) - thresh;
+		currentStep = 0;
+		stepX = distX / (numsteps);
+		gamestate::attacking = 0;
+	}
+	else if (gamestate::attacking == 2){
+		robotMode2 = 1;
+		distX = abs(getMarkerDiffX()) - thresh;
+		currentStep = 0;
+		stepX = distX / (numsteps);
+		gamestate::attacking = 0;
+	}
+
+
 	//Update robots positions
 	if (robotsDrawn.size() >= 2) {
 		if (robotMode1 == 0) {
@@ -533,46 +577,112 @@ void updateRobots(){
 				currentStep = 0;
 				gamestate::cardlist[gamestate::heroStats.first.id].model.animationFinished = false;
 				gamestate::cardlist[gamestate::heroStats.first.id].model.temporaryAnimation = true;
-				stepX = distX / (gamestate::cardlist[gamestate::heroStats.first.id].model.getTotalFrames()/2);
+				//stepX = distX / numsteps;//(gamestate::cardlist[gamestate::heroStats.first.id].model.getTotalFrames()/2);
 				gamestate::cardlist[gamestate::heroStats.first.id].performAnimation(gamestate::cardlist[gamestate::heroStats.first.id].animationWalk);
 				gamestate::cardlist[gamestate::heroStats.first.id].model.setCurrentFrame(20);
+				gamestate::t->cleanup(1);
+				gamestate::t->createSound("../Assets/Sounds/Walk.wav", 1);
+				gamestate::t->play(1);
 			}
 			currentStep ++;
-			if (currentStep >= gamestate::cardlist[gamestate::heroStats.first.id].model.getTotalFrames()/2) {
+			if (currentStep >= numsteps){//gamestate::cardlist[gamestate::heroStats.first.id].model.getTotalFrames() / 2) {
 				gamestate::cardlist[gamestate::heroStats.first.id].performAnimation();
 				robotMode1 = 3;
+			}
+			if (currentStep % (int)(gamestate::deltaTime*0.4) == 0){
+				gamestate::t->play(1);
 			}
 		}
 		else if (robotMode1 == 2) {
 			currentStep--;
 			if (currentStep <= 0) {
+				gamestate::cardlist[gamestate::heroStats.first.id].model.animationFinished = true;
+				gamestate::cardlist[gamestate::heroStats.first.id].model.setCurrentFrame(gamestate::cardlist[gamestate::heroStats.first.id].model.getTotalFrames() - md5load::animSpeed);
 				robotMode1 = 0;
+				if (gamestate::winner > 0){
+					Menu->setMode(5);
+				}
+			}
+			if (currentStep % (int)(gamestate::deltaTime*0.4) == 0){
+				gamestate::t->play(1);
 			}
 		}
 		else {
-			if (gamestate::cardlist[gamestate::heroStats.first.id].model.getCurrentFrame() >= gamestate::cardlist[gamestate::heroStats.first.id].model.getTotalFrames()) {
+			if (gamestate::cardlist[gamestate::heroStats.first.id].model.getCurrentFrame() == (int)(gamestate::cardlist[gamestate::heroStats.first.id].model.getTotalFrames() / 2)){
+				gamestate::t->cleanup(1);
+				gamestate::t->createSound("../Assets/Sounds/Sword.wav", 1);
+				gamestate::t->play(1);
+			}
+			if (gamestate::cardlist[gamestate::heroStats.first.id].model.getCurrentFrame() >= gamestate::cardlist[gamestate::heroStats.first.id].model.getTotalFrames()-md5load::animSpeed) {
+				gamestate::cardlist[gamestate::heroStats.first.id].model.animationFinished = false;
+				gamestate::cardlist[gamestate::heroStats.first.id].model.temporaryAnimation = true;
 				gamestate::cardlist[gamestate::heroStats.first.id].performAnimation(gamestate::cardlist[gamestate::heroStats.first.id].animationWalk);
-				gamestate::cardlist[gamestate::heroStats.first.id].model.setCurrentFrame(gamestate::cardlist[gamestate::heroStats.first.id].model.getTotalFrames() / 2);
+				gamestate::cardlist[gamestate::heroStats.first.id].model.setCurrentFrame(20);
+				gamestate::cardAttack();
+				gamestate::t->cleanup(1);
+				gamestate::t->createSound("../Assets/Sounds/Walk.wav", 1);
 				robotMode1 = 2;
 			}
 		}
 
+
 		if (robotMode2 == 0) {
 		}
 		else if (robotMode2 == 1) {
+			if (currentStep == 0) {
+				currentStep = 0;
+				gamestate::cardlist[gamestate::heroStats.second.id].model.animationFinished = false;
+				gamestate::cardlist[gamestate::heroStats.second.id].model.temporaryAnimation = true;
+				//stepX = distX / numsteps;//(gamestate::cardlist[gamestate::heroStats.second.id].model.getTotalFrames() / 2);
+				gamestate::cardlist[gamestate::heroStats.second.id].performAnimation(gamestate::cardlist[gamestate::heroStats.second.id].animationWalk);
+				gamestate::cardlist[gamestate::heroStats.second.id].model.setCurrentFrame(20);
+
+				gamestate::t->cleanup(1);
+				gamestate::t->createSound("../Assets/Sounds/Walk.wav", 1);
+				gamestate::t->play(1);
+			}
 			currentStep++;
-			if (currentStep >= numSteps) {
+			if (currentStep >= numsteps){//gamestate::cardlist[gamestate::heroStats.second.id].model.getTotalFrames() / 2) {
+				gamestate::cardlist[gamestate::heroStats.second.id].performAnimation();
 				robotMode2 = 3;
+			}
+			else {
+				if (currentStep % (int)(gamestate::deltaTime*0.4) == 0){
+					gamestate::t->play(1);
+				}
 			}
 		}
 		else if (robotMode2 == 2) {
 			currentStep--;
 			if (currentStep <= 0) {
+				gamestate::cardlist[gamestate::heroStats.second.id].model.animationFinished = true;
+				gamestate::cardlist[gamestate::heroStats.second.id].model.setCurrentFrame(gamestate::cardlist[gamestate::heroStats.second.id].model.getTotalFrames() - md5load::animSpeed);
 				robotMode2 = 0;
+				if (gamestate::winner > 0){
+					Menu->setMode(5);
+				}
+			}
+			if (currentStep % (int)(gamestate::deltaTime*0.4) == 0){
+				gamestate::t->play(1);
 			}
 		}
 		else {
-			robotMode2 = 2;
+			if (gamestate::cardlist[gamestate::heroStats.second.id].model.getCurrentFrame() == (int)(gamestate::cardlist[gamestate::heroStats.second.id].model.getTotalFrames() / 2)){
+				gamestate::t->cleanup(1);
+				gamestate::t->createSound("../Assets/Sounds/Sword.wav", 1);
+				gamestate::t->play(1);
+			}
+
+			if (gamestate::cardlist[gamestate::heroStats.second.id].model.getCurrentFrame() >= gamestate::cardlist[gamestate::heroStats.second.id].model.getTotalFrames() - md5load::animSpeed) {
+				gamestate::cardlist[gamestate::heroStats.second.id].model.animationFinished = false;
+				gamestate::cardlist[gamestate::heroStats.second.id].model.temporaryAnimation = true;
+				gamestate::cardlist[gamestate::heroStats.second.id].performAnimation(gamestate::cardlist[gamestate::heroStats.second.id].animationWalk);
+				gamestate::cardlist[gamestate::heroStats.second.id].model.setCurrentFrame(20);
+				gamestate::cardAttack();
+				gamestate::t->cleanup(1);
+				gamestate::t->createSound("../Assets/Sounds/Walk.wav", 1);
+				robotMode2 = 2;
+			}
 		}
 	}
 }
@@ -583,16 +693,18 @@ void loadData(){
 	Wings->InitGL();
 	Wings->LoadModel("../Assets/Models/coin.obj");
 	objModel->LoadModel("../Assets/Models/dice.obj");
+	Coin.init("../Assets/MD5s/Coin/Coin.md5mesh", NULL, "../Assets/Textures/DiceCount.png");
+	Dice.init("../Assets/MD5s/Dice/Dice.md5mesh", NULL, "../Assets/Textures/0.jpg");
 	//Load Menus
 	Menu->load();
 	Menu->setResolutionX(width);
 	Menu->setResolutionY(height);
 	//Load Sounds
-	t->createSound("../Assets/Sounds/Entrance.wav", 1);
-	t->createSound("../Assets/Sounds/Ambient2.wav", 2);
-	t->createSound("../Assets/Sounds/Upgrade.wav", 3);
+	gamestate::t->createSound("../Assets/Sounds/Entrance.wav", 1);
+	gamestate::t->createSound("../Assets/Sounds/Music.wav", 2);
+	gamestate::t->createSound("../Assets/Sounds/Upgrade.wav", 3);
 	//Play Ambient Sounds
-	t->toggleBackgroundSound(2, true);
+	gamestate::t->toggleBackgroundSound(2, true);
 	//Initialise Glut Functionality
 	glutReshapeFunc(reshape);
 	glutKeyboardFunc(keyboard);
@@ -601,6 +713,11 @@ void loadData(){
 	for (int i = 0; i < particles::FIREWORKS_COUNT; i++){
 		fireworks[i] = new particles(width, height);
 	}
+
+	Menu->setResolutionX(640);
+	Menu->setResolutionY(480);
+	glutReshapeWindow(640, 480);
+	glViewport(0, 0, width, height);
 
 	loadOpenGL = true;
 }
@@ -638,11 +755,15 @@ void keyboard(unsigned char key, int x, int y)
 				//distZ = getMarkerDiffZ();
 				//numSteps = 50;
 				currentStep = 0;
-				stepX = distX / 50;
+				stepX = distX / (50 * gamestate::deltaTime);
 				//stepY = distY / 50;
 				//stepZ = distZ / 50;
 			}
 		}
+	}
+
+	if (key == 112){
+		Menu->options = !Menu->options;
 	}
 
 	if (key == 54){
@@ -659,6 +780,7 @@ void keyboard(unsigned char key, int x, int y)
 
 	if (key == 32){ //'6' Key{
 		Mode3D = !Mode3D;
+		gamestate::t->toggleBackgroundSound(2, false);
 	}
 
 	/*if (key == 54){ //'6' Key{
@@ -678,27 +800,28 @@ void keyboard(unsigned char key, int x, int y)
 
 	//Memory Leak Issue
 	if (key == 32){ //'Space' Key{
-		t->cleanup(1);
-		t->createSound("../Assets/Sounds/Dodge.wav", 1);
-		t->play(1);
+		gamestate::t->cleanup(1);
+		gamestate::t->createSound("../Assets/Sounds/Dodge.wav", 1);
+		gamestate::t->play(1);
 	}
 	if (key == 46){ //'.' Key{
-		t->createSound("../Assets/Sounds/Sword.wav", 1);
-		t->play(1);
+		gamestate::t->createSound("../Assets/Sounds/Sword.wav", 1);
+		gamestate::t->play(1);
 		winner = !winner;
 		cout << winner << endl;
 	}
 	if (key == 47){ //'/' Key{
-		t->createSound("../Assets/Sounds/Upgrade.wav", 1);
-		t->play(1);
+		gamestate::t->cleanup(1);
+		gamestate::t->createSound("../Assets/Sounds/Upgrade.wav", 1);
+		gamestate::t->play(1);
 	}
 	if (key == 77){ //'N' Key{
-		t->createSound("../Assets/Sounds/Entrance.wav", 1);
-		t->play(1);
+		gamestate::t->createSound("../Assets/Sounds/Entrance.wav", 1);
+		gamestate::t->play(1);
 	}
 	if (key == 78){ //'M' Key{
-		t->createSound("../Assets/Sounds/Sound.wav", 1);
-		t->play(1);
+		gamestate::t->createSound("../Assets/Sounds/Sound.wav", 1);
+		gamestate::t->play(1);
 	}
 }
 
@@ -737,12 +860,31 @@ static float getAngleBetweenRobots() {
 
 void reshape(int w, int h)
 {
+
+	ARParam  wparam;
+	//argCleanup();
+	/* open the video path */
+	//arVideoOpen("inputDevice=WDM_CAP,flipH,flipV,showDlg");
+	//if (arVideoOpen(vconf) < 0) exit(0);
+	/* find the size of the window */
+	//if (arVideoInqSize(&width, &height) < 0) exit(0);
+	//printf("Image size (x,y) = (%d,%d)\n", width, height);
+
+	/* set the initial camera parameters */
+	////if (arParamLoad(cparam_name, 1, &wparam) < 0) {
+	//	printf("Camera parameter load error !!\n");
+	//	exit(0);
+	//}
+	//width = width/2;
+	//height = height/2;
+	arParamChangeSize(&wparam, Menu->getResolutionX(), Menu->getResolutionY(), &cparam);
+	//glutFullScreen();
 	if (!Menu->checkScreenSize(w, h)){
 		return glutReshapeWindow(Menu->getResolutionX(), Menu->getResolutionY());
 	}
+	//glViewport()
+
 	width = w;
 	height = h;
 
-
-	//glViewport(0,0,width,height)
 }

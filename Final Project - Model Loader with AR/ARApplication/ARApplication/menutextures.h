@@ -36,7 +36,11 @@ private:
 	bool confirm;
 	bool attackedThisTurn;
 	int cardTex;
+	bool music;
+	static int screenID;
+
 public:
+	bool options;
 	menutextures(void);
 	void load(void);
 	void setConfirm(bool t);

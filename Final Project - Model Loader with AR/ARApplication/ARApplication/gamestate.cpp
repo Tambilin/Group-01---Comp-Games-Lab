@@ -4,7 +4,7 @@ int gamestate::turnID = 1;
 bool gamestate::firstSecond = false;
 std::pair<int, int> gamestate::manaPoints = std::make_pair(0, 0);
 std::pair<int, int> gamestate::deckSize = std::make_pair(30, 30);
-std::pair<int, int> gamestate::handSize = std::make_pair(0, 0);
+std::pair<int, int> gamestate::handSize = std::make_pair(3, 3);
 std::pair<card, card> gamestate::heroStats;
 std::pair<card, card> gamestate::weapons;
 std::unordered_map< int, card > gamestate::cardlist;
@@ -12,6 +12,12 @@ int gamestate::phase = 1;
 int gamestate::lastPlayedID = -1;
 int gamestate::winner = 0;
 bool gamestate::confirmed = false;
+int gamestate::attacking = 0;
+bool gamestate::activate3D = false;
+double gamestate::frustrum3D = 2.0;
+int gamestate::oldTimeSinceStart = 0;
+int gamestate::deltaTime = 0;
+soundeffect * gamestate::t = new soundeffect();
 float gamestate::mech1Position[6] = { 0, 0, 0, 0, 0, 0 };
 float gamestate::mech2Position[6] = { 0, 0, 0, 0, 0, 0 };
 
@@ -163,8 +169,13 @@ bool gamestate::cardActivated(int player, int cardID){
 
 				hero.cost -= c.cost;
 		}
-		else if (c.type == 4){ //DOWNGRADE
-
+		else if (c.type == 4){ //DRAW CARDS
+			if (phase == 1){
+				handSize.first += c.draw;
+			}
+			else {
+				handSize.second += c.draw;
+			}
 		}
 		else if (c.type == 5){ //STATUS/ADMIN CARDS
 
@@ -176,10 +187,23 @@ bool gamestate::cardActivated(int player, int cardID){
 	if (player == 1){
 		heroStats.first = hero;
 		manaPoints.first = hero.cost;
+		cardlist[heroStats.first.id].model.animationFinished = false;
+		cardlist[heroStats.first.id].model.temporaryAnimation = true;
+		cardlist[heroStats.first.id].performAnimation();
+		cardlist[heroStats.first.id].performAnimation(cardlist[heroStats.first.id].animationUpgrade);
+		gamestate::t->cleanup(1);
+		t->createSound("../Assets/Sounds/Upgrade.wav", 1);
+		t->play(1);
 	}
 	else {
 		heroStats.second = hero;
 		manaPoints.second = hero.cost;
+		cardlist[heroStats.second.id].model.animationFinished = false;
+		cardlist[heroStats.second.id].model.temporaryAnimation = true;
+		cardlist[heroStats.second.id].performAnimation(cardlist[heroStats.second.id].animationUpgrade);
+		gamestate::t->cleanup(1);
+		t->createSound("../Assets/Sounds/Upgrade.wav", 1);
+		t->play(1);
 	}
 	return true;
 }
@@ -188,9 +212,9 @@ bool gamestate::cardActivated(int player, int cardID){
 
 void gamestate::cardAttack(){
 	if (phase == 1){
-		cardlist[heroStats.first.id].model.animationFinished = false;
-		cardlist[heroStats.first.id].model.temporaryAnimation = true;
-		cardlist[heroStats.first.id].performAnimation();
+		//cardlist[heroStats.first.id].model.animationFinished = false;
+		//cardlist[heroStats.first.id].model.temporaryAnimation = true;
+		//cardlist[heroStats.first.id].performAnimation();
 		//heroStats.first.performAnimation();
 		int attack = heroStats.first.attack;
 		if (weapons.first.id != 4){
@@ -199,9 +223,9 @@ void gamestate::cardAttack(){
 		if (attack <= 0){
 			attack = 0;
 		}
-		if ((heroStats.second.evasion + weapons.second.evasion) <= 0 || weapons.first.id == 5){
+		if ((heroStats.second.evasion) <= 0 || weapons.first.id == 5){
 			heroStats.second.hp -= attack;
-			if (heroStats.second.hp == 0){
+			if (heroStats.second.hp <= 0){
 				winner = 1;
 			}
 		}
@@ -210,9 +234,9 @@ void gamestate::cardAttack(){
 		}
 	}
 	else {
-		cardlist[heroStats.second.id].model.animationFinished = false;
-		cardlist[heroStats.second.id].model.temporaryAnimation = true;
-		cardlist[heroStats.second.id].performAnimation();
+		//cardlist[heroStats.second.id].model.animationFinished = false;
+		//cardlist[heroStats.second.id].model.temporaryAnimation = true;
+		//cardlist[heroStats.second.id].performAnimation();
 		int attack = heroStats.second.attack;
 		if (weapons.second.id != 4){
 			attack -= heroStats.first.defence;
@@ -220,9 +244,9 @@ void gamestate::cardAttack(){
 		if (attack <= 0){
 			attack = 0;
 		}
-		if ((heroStats.first.evasion + weapons.first.evasion) <= 0 || weapons.second.id == 5){
+		if ((heroStats.first.evasion) <= 0 || weapons.second.id == 5){
 			heroStats.first.hp -= attack;
-			if (heroStats.first.hp == 0){
+			if (heroStats.first.hp <= 0){
 				winner = 2;
 			}
 		}
@@ -359,6 +383,12 @@ void gamestate::loadWeapon(){
 		}
 
 	}
+}
+
+void gamestate::updateDeltaTime(){
+	int timeSinceStart = glutGet(GLUT_ELAPSED_TIME);
+	deltaTime = timeSinceStart - oldTimeSinceStart;
+	oldTimeSinceStart = timeSinceStart;
 }
 
 

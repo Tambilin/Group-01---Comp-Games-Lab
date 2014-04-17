@@ -6,10 +6,13 @@
 #include <unordered_map>
 #include "card.h"
 #include "menutextures.h"
+#include "soundeffect.h"
 using namespace std;
 
 class gamestate
 {
+private:
+	static int oldTimeSinceStart;
 public:
 	static int turnID;
 	static bool firstSecond;
@@ -22,10 +25,15 @@ public:
 	static int phase;
 	static int lastPlayedID;
 	static int winner;
+	static int deltaTime;
 	static bool confirmed;
+	static int attacking;
 	// declaration of players positions array
 	static float mech1Position[6];
 	static float mech2Position[6];
+	static soundeffect * t;
+	static double frustrum3D;
+	static bool activate3D;
 
 	static void setHero(int player, int cardid);
 	static void init();
@@ -38,5 +46,6 @@ public:
 	static void cardAttack();
 	static void loadWeapon();
 	static bool checkCard(int mode, int id);
+	static void updateDeltaTime();
 };
 

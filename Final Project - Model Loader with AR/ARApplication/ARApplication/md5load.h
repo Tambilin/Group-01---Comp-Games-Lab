@@ -146,6 +146,7 @@ class md5load
 
 
 	public:
+		static float animSpeed;
         md5load(void);           //constructor
         ~md5load(void);          //destructor
         void Run(ifstream &theCardFile);

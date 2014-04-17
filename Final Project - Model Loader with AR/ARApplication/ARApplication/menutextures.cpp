@@ -2,6 +2,7 @@
 
 int menutextures::resolutionX = 640;
 int menutextures::resolutionY = 480; 
+int menutextures::screenID = 0;
 
 // This holds all the information for the font that we are going to create.
 freetype_mod::font_data * our_font;
@@ -17,8 +18,10 @@ menutextures::menutextures(void)
 	previousMode = 0;
 	confirm = false;
 	attackedThisTurn = false;
+	options = false;
 	cardTex = -2;
 	alpha = 5;
+	music = true;
 	rollSize = 1;
 	our_font16.init("../Assets/Fonts/BuxtonSketch.TTF", 16);					    //Build the freetype font
 	our_font32.init("../Assets/Fonts/BuxtonSketch.TTF", 32);					    //Build the freetype font
@@ -77,7 +80,7 @@ void menutextures::render(int width, int height){
 
   //Define Variables
   int offset = 0;
-  int res = 1+resolutionX/1280;
+  int res = 1+resolutionX/1380;
   int total = 0;
   int size = rolls.size();
 
@@ -90,6 +93,7 @@ void menutextures::render(int width, int height){
 	  our_font = &our_font32;
 	  our_subfont = &our_font16;
   }
+
 
   //Widescreen mode
   if(widescreen == false)
@@ -163,9 +167,24 @@ void menutextures::render(int width, int height){
 		  glPopAttrib();
 		  glPopMatrix();
 	  }
-	  alpha = alpha - 0.1;
+	  alpha = alpha - 0.0033*gamestate::deltaTime;
 	  }
 	  ////////////////////////////////////////
+	  break;
+  case 5: //Turn screen
+	  glPushAttrib(GL_CURRENT_BIT);
+	  glPushMatrix();
+	  if (gamestate::phase == 1){
+		  glColor4f(1.0, 0.0, 0.0, 1.0);
+	  }
+	  else {
+		  glColor4f(0.0, 0.0, 1.0, 1.0);
+	  }
+	  glRasterPos2f(width / 2 - 160 * res, height - height / 3 / res);
+	  freetype_mod::print(*our_font, "Player %1.0f has won the game!", (float)gamestate::winner);	// Print GL Text To The Screen
+	  glPopMatrix();
+	  glPopAttrib();
+	  drawQuad(8, width - (128 * res), height - (64 * res), width - 10, height - 10); //Roll
 	  break;
   default:
 	  drawQuad(3 + offset, 0, 0, width, height); //Menu background
@@ -186,9 +205,14 @@ void menutextures::render(int width, int height){
 	  drawQuad(9, 0, 0, (128 * res), (256 * res));
 	  drawQuad(9, width - (128 * res), 0, width, (256 * res));
 
+	  drawQuad(17, (18*res), (255 * res), (110 * res), (255 * res)+(80*res));
+	  drawQuad(17, width - (18 * res) - (90 * res), (255 * res), width - (18 * res), (255 * res) + (80 * res));
+
 	  glPushMatrix();//P1
 	  glPushAttrib(GL_CURRENT_BIT);
 	  glColor3f(0.0, 0.0, 0.0);
+	  glRasterPos2f(54 * res, 266 * res);
+	  freetype_mod::print(*our_font, "%3.0f", (float)gamestate::handSize.first);	// Print GL Text To The Screen
 	  glRasterPos2f(54 * res, 46 * res);
 	  freetype_mod::print(*our_font, "%3.0f", (float)gamestate::heroStats.first.evasion);	// Print GL Text To The Screen
 	  glRasterPos2f(54 * res, 86 * res);
@@ -209,6 +233,8 @@ void menutextures::render(int width, int height){
 	  glPushMatrix();//P2
 	  glPushAttrib(GL_CURRENT_BIT);
 	  glColor3f(0.0, 0.0, 0.0);
+	  glRasterPos2f(width - 70 * res, 266 * res);
+	  freetype_mod::print(*our_font, "%3.0f", (float)gamestate::handSize.second);	// Print GL Text To The Screen
 	  glRasterPos2f(width - 70 * res, 46 * res);
 	  freetype_mod::print(*our_font, "%3.0f", (float)gamestate::heroStats.second.evasion);	// Print GL Text To The Screen
 	  glRasterPos2f(width - 70 * res, 86 * res);
@@ -233,6 +259,45 @@ void menutextures::render(int width, int height){
 	  freetype_mod::print(*our_font, "+%3.0f", (float)total);	// Print GL Text To The Screen
 	  glPopMatrix();
 	  glPopAttrib();
+  }
+
+  if (options){
+	  int boxH = 64 * res;
+	  int boxW = 128 * res;
+	  drawQuad(2, 0, height - (boxH * 5) - 10, boxW * 2 + 10, height); //Menu background
+	  drawQuad(18, 10, height - (boxH), (boxW * 2), height - 10); //ReStart
+	  drawQuad(18, 10, height - (boxH * 2), (boxW * 2), height - 10 - (boxH)); //Option A  3D On /sensa
+	  drawQuad(18, 10, height - (boxH * 3), (boxW * 2), height - 10 - (boxH * 2)); //Option A  3D On /sensa
+	  drawQuad(18, 10, height - (boxH * 4), (boxW * 2), height - 10 - (boxH * 3)); //Option A  3D On /sensa
+	  drawQuad(10, 40 * res, height - (boxH * 5), (boxH * 2), height - 10 - (boxH * 4)); //Option A  3D On /sensa
+
+	  glPushMatrix();//P2
+	  glPushAttrib(GL_CURRENT_BIT);
+	  glColor4f(0.0, 0.0, 0.0, 1.0);
+
+	  glRasterPos2f((50 * res), height - (64 * res * 5) + 19 * res);
+	  freetype_mod::print(*our_subfont, "Exit Game");	// Print GL Text To The Screen
+	  glRasterPos2f((50 * res), height - (64 * res * 4) + 19 * res);
+	  freetype_mod::print(*our_subfont, "Animation Speed: %1.1f", (float)md5load::animSpeed);	// Print GL Text To The Screen
+	  glRasterPos2f((50 * res), height - (64 * res * 3) + 19 * res);
+	  if (screenID != 4){
+		freetype_mod::print(*our_subfont, "Window: %4i x %4i", resolutionX, resolutionY);	// Print GL Text To The Screen
+	  }	else {
+	  freetype_mod::print(*our_subfont, "Window: Fullscreen Mode", resolutionX, resolutionY);	// Print GL Text To The Screen
+      }
+	  if (gamestate::activate3D){
+		  glRasterPos2f((50 * res), height - (64 * res * 2) + 19 * res);
+		  freetype_mod::print(*our_subfont, "3D Activated: On");	// Print GL Text To The Screen
+	  }
+	  else {
+		  glRasterPos2f((50 * res), height - (64 * res * 2) + 19 * res);
+		  freetype_mod::print(*our_subfont, "3D Activated: Off");	// Print GL Text To The Screen
+	  }
+	  glRasterPos2f((50 * res), height - (64 * res * 1) + 19 * res);
+	  freetype_mod::print(*our_subfont, "Anaglyph 3D: %1.1f", (float)gamestate::frustrum3D);	// Print GL Text To The Screen
+
+	  glPopAttrib();
+	  glPopMatrix();
   }
 
   //Selection screen when new card is played, overrides other modes.
@@ -295,6 +360,7 @@ void menutextures::drawQuad(int textureID, int minX, int minY, int maxX, int max
 // Menu handling function definition
 void menutextures::screenSizeMenu(int item)
 {
+		screenID = item;
         switch (item)
         {
         case 0:
@@ -313,15 +379,12 @@ void menutextures::screenSizeMenu(int item)
 			resolutionY = 720;
 			break;
         case 3:
-			glutReshapeWindow(1600, 1200); 
-			resolutionX = 1600;
-			resolutionY = 1200;
-			break;
-        case 4:
 			glutReshapeWindow(1920, 1080);   
 			resolutionX = 1920;
 			resolutionY = 1080;
 			break;
+		case 4:
+			glutFullScreen();
         default:
             glutReshapeWindow(640, 480); 
 			resolutionX = 640;
@@ -342,106 +405,179 @@ void menutextures::setConfirm(bool t){
 
 //Check mouse button input interaction with GUI elements
 void menutextures::checkButtonClick(int x, int y, int width, int height){
-	  int res = 1 + resolutionX / 1280;
-	  if (confirm && mode != 0){
-		  if (x > width - (128 * res) &&
-			  y > 10 &&
-			  x < width - 10 &&
-			  y < (64 * res)){
-			  cout << "gamestate::lastPlayedID:" << gamestate::lastPlayedID << endl;
-			  if (mode == 1){
-				  gamestate::heroStats.first = gamestate::cardlist[(gamestate::lastPlayedID)];
-				  mode++;
-				  confirm = false;
-			  } else if (mode == 2){
-				  gamestate::heroStats.second = gamestate::cardlist[(gamestate::lastPlayedID)];
-				  mode++;
-				  confirm = false;
-			  } else if (mode == 4){
-				  gamestate::cardActivated(gamestate::phase, (gamestate::lastPlayedID));
-				  confirm = false;
-			  }
-			  gamestate::confirmed = false;
-		  }
-		  else if (x > width - (128 * res) &&
-			  y > 10 + (64 * res) &&
-			  x < width - 10 &&
-			  y < (64 * res * 2)){ //Options)
-			  gamestate::lastPlayedID = -1;
-			  confirm = false;
-			  gamestate::confirmed = false;
-		  }
-	  }
-	  else {
-		  if (x > width - (128 * res) &&
-			  y > 10 &&
-			  x < width - 10 &&
-			  y < (64 * res)){ //Start Bo
-			  if (this->mode != 1 && this->mode != 2){
-				  if (this->mode == 5){
-					  /*if (previousMode = 1){
-						  gamestate::heroStats.first = gamestate::cardlist[(gamestate::lastPlayedID)];
-						  }
-						  else if (previousMode = 2){
-						  gamestate::heroStats.second = gamestate::cardlist[(gamestate::lastPlayedID)];
-						  }
-						  previousMode = previousMode+1;*/
-					  mode = previousMode;
-				  }
+	int res = 1 + resolutionX / 1380;
+	if (gamestate::phase == 1 && gamestate::cardlist[gamestate::heroStats.first.id].model.temporaryAnimation == false
+		|| gamestate::phase == 2 && gamestate::cardlist[gamestate::heroStats.second.id].model.temporaryAnimation == false){
+		if (confirm && mode != 0){
+			if (x > width - (128 * res) &&
+				y > 10 &&
+				x < width - 10 &&
+				y < (64 * res)){
+				cout << "gamestate::lastPlayedID:" << gamestate::lastPlayedID << endl;
+				if (mode == 1){
+					gamestate::heroStats.first = gamestate::cardlist[(gamestate::lastPlayedID)];
+					mode++;
+					confirm = false;
+				}
+				else if (mode == 2){
+					gamestate::heroStats.second = gamestate::cardlist[(gamestate::lastPlayedID)];
+					mode++;
+					confirm = false;
+				}
+				else if (mode == 4){
+					if (gamestate::phase == 1){
+						gamestate::handSize.first--;
+					}
+					else {
+						gamestate::handSize.second--;
+					}
+					gamestate::cardActivated(gamestate::phase, (gamestate::lastPlayedID));
+					confirm = false;
+				}
+				gamestate::confirmed = false;
+			}
+			else if (x > width - (128 * res) &&
+				y > 10 + (64 * res) &&
+				x < width - 10 &&
+				y < (64 * res * 2)){ //Options)
+					gamestate::lastPlayedID = -1;
+					confirm = false;
+					gamestate::confirmed = false;
+				
+			}
+		}
+		else {
+			if (x > width - (128 * res) &&
+				y > 10 &&
+				x < width - 10 &&
+				y < (64 * res)){ //Start Bo
+				if (this->mode != 1 && this->mode != 2){
+					if (this->mode == 5){
+						/*if (previousMode = 1){
+							gamestate::heroStats.first = gamestate::cardlist[(gamestate::lastPlayedID)];
+							}
+							else if (previousMode = 2){
+							gamestate::heroStats.second = gamestate::cardlist[(gamestate::lastPlayedID)];
+							}
+							previousMode = previousMode+1;*/
+						mode = previousMode;
+					}
 
-				  if (this->mode == 3){ //Calculate Roll Data
-					  srand(time(NULL));
-					  int a = rand() % 2;
-					  rolls.push_back(a);
-					  for (int i = 0; i < ((int)gamestate::turnID-1) / 2; i++){
-						  if (i < 11){
-							  int temp = rand() % 2;
-							  rolls.push_back(temp);
-							  a += temp;
-						  }
-					  }
-					  if (gamestate::turnID % 2 == 0){
-						  gamestate::manaPoints.second += a;
-					  }
-					  else {
-						  gamestate::manaPoints.first += a;
-						  if (rollSize < 12)
-							  rollSize++;
-					  }
-				  }
+					if (this->mode == 3){ //Calculate Roll Data
+						srand(time(NULL));
+						int a = rand() % 2;
+						rolls.push_back(a);
+						for (int i = 0; i < ((int)gamestate::turnID - 1) / 2; i++){
+							if (i < 11){
+								int temp = rand() % 2;
+								rolls.push_back(temp);
+								a += temp;
+							}
+						}
+						if (gamestate::turnID % 2 == 0){
+							gamestate::manaPoints.second += a;
+							gamestate::handSize.second++;
+						}
+						else {
+							gamestate::manaPoints.first += a;
+							gamestate::handSize.first++;
+							if (rollSize < 12)
+								rollSize++;
+						}
+					}
 
-				  this->mode++;
-				  if (this->mode > 4){ //Reset turn data
-					  gamestate::turnID++;
-					  attackedThisTurn = false;
-					  rolls.clear();
-					  alpha = 1.5;
-					  if (gamestate::phase == 2){
-						  gamestate::phase = 1;
-					  }
-					  else {
-						  gamestate::phase = 2;
-					  }
-					  this->mode = 3;
-				  }
-			  }
-		  }
-		  else if (x > width - (128 * res) &&
-			  y > 10 + (64 * res) &&
-			  x < width - 10 &&
-			  y < (64 * res * 2)){ 
-			  if (this->mode == 4 && attackedThisTurn == false){ //Perform attack action
-				  if (gamestate::phase == 1 && gamestate::cardlist[gamestate::heroStats.first.id].model.temporaryAnimation == false
-					  || gamestate::phase == 2 && gamestate::cardlist[gamestate::heroStats.second.id].model.temporaryAnimation == false){
-					  gamestate::cardAttack();
-					  attackedThisTurn = true;
-					  if (gamestate::winner > 0){
-						  this->mode = 0;
-					  }
-				  }
-			  }
-		  }
-	  }
+					this->mode++;
+					if (this->mode > 4){ //Reset turn data
+						gamestate::turnID++;
+						attackedThisTurn = false;
+						rolls.clear();
+						alpha = 1.5;
+						if (gamestate::phase == 2){
+							gamestate::phase = 1;
+						}
+						else {
+							gamestate::phase = 2;
+						}
+						this->mode = 3;
+					}
+				}
+			}
+			else if (x > width - (128 * res) &&
+				y > 10 + (64 * res) &&
+				x < width - 10 &&
+				y < (64 * res * 2)){
+				if (mode == 0){
+					options = !options;
+				}
+
+				if (this->mode == 4 && attackedThisTurn == false){ //Perform attack action
+					if (gamestate::phase == 1 && gamestate::cardlist[gamestate::heroStats.first.id].model.temporaryAnimation == false
+						|| gamestate::phase == 2 && gamestate::cardlist[gamestate::heroStats.second.id].model.temporaryAnimation == false){
+						gamestate::attacking = gamestate::phase;
+						attackedThisTurn = true;
+						
+					}
+				}
+			}
+		}
+	}
+
+	if (options){
+		int boxH = 64 * res;
+		//int boxW = 128 * res;
+		//drawQuad(2 + offset, 0, height - (boxH * 5) - 10, boxW * 2 + 10, height); //Menu background
+		//drawQuad(18, 10, height - (boxH), (boxW * 2), height - 10); //ReStart
+		//drawQuad(18, 10, height - (boxH * 2), (boxW * 2), height - 10 - (boxH)); //Option A  3D On /sensa
+		//drawQuad(18, 10, height - (boxH * 3), (boxW * 2), height - 10 - (boxH * 2)); //Option A  3D On /sensa
+		//drawQuad(18, 10, height - (boxH * 4), (boxW * 2), height - 10 - (boxH * 3)); //Option A  3D On /sensa
+		//drawQuad(10, 40 * res, height - (boxH * 5), (boxH * 2), height - 10 - (boxH * 4)); //Option A  3D On /sensa
+
+		if (x > 17 && x < 127 * res){
+			if (y > 17 && y < boxH){
+				gamestate::frustrum3D -= 0.1;
+			}else if (y > boxH && y < boxH * 2){
+				gamestate::activate3D = !gamestate::activate3D;
+			}
+			else if (y > boxH * 2 && y < boxH * 3){
+				//Window
+				if (screenID > 0){
+					screenID--;
+					screenSizeMenu(screenID);
+				}
+			}
+			else if (y > boxH * 3 && y < boxH * 4){
+				if (md5load::animSpeed > 1){
+					md5load::animSpeed -= 0.1;
+				}
+			}
+			else if (y > boxH * 4 && y < boxH * 5){
+				exit(0);
+			}
+
+		}
+		else {
+			if (x > 127*res && x < 254 * res){
+				if (y > 17 && y < boxH){
+					gamestate::frustrum3D+= 0.1;
+				}
+				else if (y > boxH && y < boxH * 2){
+					gamestate::activate3D = !gamestate::activate3D;
+				}
+				else if (y > boxH * 2 && y < boxH * 3){
+					if (screenID < 4){
+						screenID++;
+						screenSizeMenu(screenID);
+					}
+				}
+				else if (y > boxH * 3 && y < boxH * 4){
+					md5load::animSpeed += 0.1;
+				}
+
+			}
+		}
+
+		cout << x << " " << y << endl;
+	}
 }
 
 bool menutextures::checkScreenSize(int w, int h){
@@ -459,7 +595,7 @@ bool menutextures::checkScreenSize(int w, int h){
 void menutextures::load(void){
 	menuTex[0] = loadTexture("../Assets/Textures/Border_4-3.png");
 	menuTex[1] = loadTexture("../Assets/Textures/Border_16-9.png");
-	menuTex[2] = loadTexture("../Assets/Textures/Transparent.png");
+	menuTex[2] = loadTexture("../Assets/Textures/Transparent2.png");
 	menuTex[3] = loadTexture("../Assets/Textures/Menu_4-3.png");
 	menuTex[4] = loadTexture("../Assets/Textures/Menu_16-9.png");
 	menuTex[5] = loadTexture("../Assets/Textures/Start.png");
@@ -473,6 +609,8 @@ void menutextures::load(void){
 	menuTex[13] = loadTexture("../Assets/Textures/Confirm.png");
 	menuTex[14] = loadTexture("../Assets/Textures/Cancel.png");
 	menuTex[16] = loadTexture("../Assets/Textures/Attack.png");
+	menuTex[17] = loadTexture("../Assets/Textures/Hand.png");
+	menuTex[18] = loadTexture("../Assets/Textures/Optionsbar.png");
 
 	// Create a menu
 	glutCreateMenu(&menutextures::screenSizeMenu);
@@ -481,8 +619,8 @@ void menutextures::load(void){
         glutAddMenuEntry("640 × 480 (VGA) 4:3", 0);
         glutAddMenuEntry("800 x 600 (SVGA) 4:3 ", 1);
 		glutAddMenuEntry("1280 x 720 (720p) 16:9 ", 2);
-        glutAddMenuEntry("1600 x 1200 (UXGA) 4:3 ", 3);
-        glutAddMenuEntry("1920 x 1080 (1080p) 16:9", 4);
+        glutAddMenuEntry("1920 x 1080 (1080p) 16:9", 3);
+		glutAddMenuEntry("Fullscreen", 4);
 
         // Associate a mouse button with menu
         glutAttachMenu(GLUT_RIGHT_BUTTON);

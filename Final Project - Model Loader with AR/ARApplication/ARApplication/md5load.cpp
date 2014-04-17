@@ -1,6 +1,8 @@
 #include "md5load.h"
 //Created and modified from the source at http://danielbeard.wordpress.com/2009/06/20/doom-md5-model-loader/
 
+float md5load::animSpeed = 1.0f;
+
 ////////////////////////////////////////////////////////////
 // Construction/Destruction
 ////////////////////////////////////////////////////////////
@@ -8,7 +10,6 @@ md5load::md5load()
 {
 		//variable initialisations
 		animated = 0;
-
 		skeleton = NULL;
 
 		/* vertex array related stuff */
@@ -743,7 +744,7 @@ void md5load::draw (float x, float y, float z, float scale, float a, float rot1,
 
 
   last_time = curent_time;
-  curent_time = (double)glutGet(GLUT_ELAPSED_TIME) / 1; // 2000000.0; //#Change Number to alter speed
+  curent_time = (double)glutGet(GLUT_ELAPSED_TIME); // 2000000.0; //#Change Number to alter speed
 
 
   //glLoadIdentity ();
@@ -781,7 +782,7 @@ void md5load::draw (float x, float y, float z, float scale, float a, float rot1,
   if (animated)
     {
  //     /* Calculate current and next frames */
-      Animate (&md5anim, &animInfo, curent_time - last_time);
+      Animate (&md5anim, &animInfo, (curent_time - last_time));
 
  //     /* Interpolate skeletons between two frames */
       InterpolateSkeletons (md5anim.skelFrames[animInfo.curr_frame],
@@ -1087,8 +1088,8 @@ void md5load::Animate (const struct md5_anim_t *anim, struct anim_info_t *animIn
   /* move to next frame */
   if (animInfo->last_time >= animInfo->max_time)
     {
-      animInfo->curr_frame++;
-      animInfo->next_frame++;
+      animInfo->curr_frame+=animSpeed;
+      animInfo->next_frame+=animSpeed;
       animInfo->last_time = 0.0;
 
 	  if (animInfo->curr_frame > maxFrames){
