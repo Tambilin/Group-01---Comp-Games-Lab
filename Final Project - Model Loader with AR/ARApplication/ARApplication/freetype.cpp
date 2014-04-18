@@ -2,23 +2,8 @@
 	A quick and simple opengl font library that uses GNU freetype2, written
 	and distributed as part of a tutorial for nehe.gamedev.net.
 	Sven Olsen, 2003
-
-	Update (02/04) - I've hacked this version of the tutorial code to use 
-	glDrawPixels instead of textured polygons.  
 	
-	Rotating and scaling text is now harder (you might be 
-	able to do some scaling with glPixelZoom, but you'd need to actually alter the glyph
-	bitmaps directly to achieve a rotation).
-
-	It's also worth noting that in this implementation your text is not going to respond
-	nicely with gl's picking functions.
-
-	On the plus side, the new print function behaves just like the old lesson13 glPrintf,
-	which could be a real benifit for people trying to convert oldler code.
-	The library's implementation has also been simplified by the fact that we are no longer
-	messing around with display lists or matrices.  I've also gotten a report that
-	the displaylist's texture's can get messed up by the use of multitexturing, and
-	this implentation should dodge those sorts of problems.
+	All code seen below is from an external source.
 */
 
 
