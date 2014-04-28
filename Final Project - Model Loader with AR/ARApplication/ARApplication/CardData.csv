@@ -31,8 +31,4 @@ c,26,Evasive Skill Boost,9,2,0,0,0,2,0,0,Provides evasive power
 c,27,Scrapyard,2,4,0,0,0,0,0,1,Draw an extra card.
 c,28,Mod Shop,4,4,0,0,0,0,0,2,Draw two cards.
 c,29,Parts Dealer,6,4,0,0,0,0,0,3,Draw three cards.
-c,30,Randomiser,3,4,0,0,0,0,0,0,Gain a point in a random stat
-a,31,Reset Card,0,5,0,0,0,0,0,0,Used to place the same card twice. Resets current card selection.
-a,33,Attack Card,0,5,0,0,0,0,0,0,Used to initialise an attack during your turn.
-a,35,Confirm Card,0,5,0,0,0,0,0,0,Used to confirm activation of a card.
-a,36,End Turn Card,0,5,0,0,0,0,0,0,Used to end your turn.
+c,30,Reset,0,5,0,0,0,0,0,0,Reset Card

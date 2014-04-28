@@ -1,16 +1,22 @@
+/***********************************************************
+	Class for menu buttons actions and menu rendering
+	- Thomas Linstead 4759265
+************************************************************/
+
 #pragma once
-#include <iostream>
+#include <iostream>     /* cout debugging */
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
 #include "gamestate.h"
 using namespace std;
 
+//OpenGL Libraries
 #include "GLEW/glew.h"
 #include <GL/gl.h>
 #include <GL/glut.h>
 using namespace std;
 
-//texture loading
+//Texture loading libraries 
 #include "IL/il.h"
 #include "IL/ilu.h"
 #include "IL/ilut.h"
@@ -18,13 +24,13 @@ using namespace std;
 #pragma comment(lib, "ILU.lib")
 #pragma comment(lib, "ILUT.lib")
 
-#include "freetype.h"		// Header for our little font library.
+#include "freetype.h"		// Header for font library.
 
 class menutextures
 {
 private:
 	GLuint loadTexture(char *fileName);
-	GLuint menuTex[256];//Max 256 Textures
+	GLuint menuTex[256];   //Max 256 Textures
 	static int resolutionX; 
 	static int resolutionY; 
 	int mode;

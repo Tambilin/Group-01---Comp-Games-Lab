@@ -1,3 +1,4 @@
+//This class was extending code from http://www.dhpoware.com/demos/glObjViewer.html and not fully produced by ourselves.
 #include "objload.h"
 
 objload::objload(){

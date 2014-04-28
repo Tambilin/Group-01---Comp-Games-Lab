@@ -1,6 +1,6 @@
-#pragma once
-//#include "GLEW/glew.h"
+//This class was extending code from http://www.dhpoware.com/demos/glObjViewer.html and not fully produced by ourselves.
 
+#pragma once
 #include <cstdlib>
 #include <iostream>
 #include "model_obj.h"

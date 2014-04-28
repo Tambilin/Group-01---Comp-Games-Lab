@@ -1,15 +1,7 @@
-﻿Build started 18/04/2014 15:55:24.
-     1>Project "C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\ARApplication\ARApplication.vcxproj" on node 2 (Rebuild target(s)).
+﻿Build started 28/04/2014 19:51:18.
+     1>Project "C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\ARApplication\ARApplication.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Programs\VS 2013\VC\bin\CL.exe /c /I"C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\ARApplication\\include" /IC:\Windows\SysWOW64 /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt bitmap.cpp card.cpp freetype.cpp gamestate.cpp md5load.cpp menutextures.cpp model_obj.cpp objload.cpp main.cpp particles.cpp soundeffect.cpp
-         bitmap.cpp
-         card.cpp
-         freetype.cpp
-     1>freetype.cpp(32): warning C4244: '=' : conversion from 'unsigned int' to 'float', possible loss of data
-     1>freetype.cpp(71): warning C4244: 'argument' : conversion from 'int' to 'GLfloat', possible loss of data
-     1>freetype.cpp(73): warning C4244: 'argument' : conversion from 'int' to 'GLfloat', possible loss of data
-     1>freetype.cpp(94): warning C4996: 'vsprintf': This function or variable may be unsafe. Consider using vsprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(356) : see declaration of 'vsprintf'
+         C:\Programs\VS 2013\VC\bin\CL.exe /c /I"C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\ARApplication\\include" /IC:\Windows\SysWOW64 /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt gamestate.cpp main.cpp menutextures.cpp
          gamestate.cpp
      1>gamestate.cpp(48): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  C:\Programs\VS 2013\VC\include\stdio.h(356) : see declaration of 'sprintf'
@@ -21,174 +13,6 @@
                  C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
      1>gamestate.cpp(80): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-         md5load.cpp
-     1>md5load.cpp(256): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(211) : see declaration of 'fopen'
-     1>md5load.cpp(268): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(278): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(287): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(309): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(347): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(359): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(371): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(381): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(399): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(408): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(444): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(211) : see declaration of 'fopen'
-     1>md5load.cpp(456): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(466): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(477): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(496): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(502): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(519): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(533): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(547): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(554): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>md5load.cpp(558): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>md5load.cpp(655): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\string.h(112) : see declaration of 'strcpy'
-     1>md5load.cpp(921): warning C4101: 'nm' : unreferenced local variable
-     1>md5load.cpp(956): warning C4018: '<' : signed/unsigned mismatch
-         menutextures.cpp
-     1>menutextures.cpp(317): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(356) : see declaration of 'sprintf'
-     1>menutextures.cpp(318): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\string.h(118) : see declaration of 'strcat'
-     1>menutextures.cpp(319): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\string.h(118) : see declaration of 'strcat'
-         model_obj.cpp
-     1>model_obj.cpp(164): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(211) : see declaration of 'fopen'
-     1>model_obj.cpp(808): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(813): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(817): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>model_obj.cpp(818): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(819): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(822): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(825): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>model_obj.cpp(827): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(828): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(831): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(834): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>model_obj.cpp(836): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(837): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(840): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(845): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(846): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(849): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(856): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>model_obj.cpp(935): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(944): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(948): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>model_obj.cpp(949): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(950): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(966): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(978): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>model_obj.cpp(980): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(981): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(1002): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(1016): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>model_obj.cpp(1018): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(1019): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(1035): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(1049): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>model_obj.cpp(1050): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(1051): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(1061): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(1074): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>model_obj.cpp(1087): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(1095): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(1102): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(1120): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(211) : see declaration of 'fopen'
-     1>model_obj.cpp(1131): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(1138): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>model_obj.cpp(1154): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(1159): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(1173): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(1181): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(1189): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(1203): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(1214): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(1218): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(230) : see declaration of 'fscanf'
-     1>model_obj.cpp(1233): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>model_obj.cpp(1239): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-     1>model_obj.cpp(1250): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-         objload.cpp
          main.cpp
      1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\object.c(43): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  C:\Programs\VS 2013\VC\include\stdio.h(211) : see declaration of 'fopen'
@@ -202,10 +26,13 @@
                  C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
      1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\object.c(80): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  C:\Programs\VS 2013\VC\include\stdio.h(304) : see declaration of 'sscanf'
-         particles.cpp
-         soundeffect.cpp
-     1>soundeffect.cpp(17): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 C:\Programs\VS 2013\VC\include\stdio.h(211) : see declaration of 'fopen'
+         menutextures.cpp
+     1>menutextures.cpp(319): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Programs\VS 2013\VC\include\stdio.h(356) : see declaration of 'sprintf'
+     1>menutextures.cpp(320): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Programs\VS 2013\VC\include\string.h(118) : see declaration of 'strcat'
+     1>menutextures.cpp(321): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Programs\VS 2013\VC\include\string.h(118) : see declaration of 'strcat'
        Link:
          C:\Programs\VS 2013\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\Release\ARApplication.exe" /NOLOGO libARd.lib libARgsubd.lib libARvideod.lib freetype.lib OpenAL32.lib alut.lib opengl32.lib glu32.lib glut32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\Release\ARApplication.pdb" /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\Release\ARApplication.lib" /MACHINE:X86 /SAFESEH Release\bitmap.obj
          Release\card.obj
@@ -254,8 +81,8 @@
      1>libARd.lib(vTridiag.obj) : warning LNK4099: PDB 'vc110.pdb' was not found with 'libARd.lib(vTridiag.obj)' or at 'C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\Release\vc110.pdb'; linking object as if no debug info
      1>libARgsubd.lib(gsub.obj) : warning LNK4099: PDB 'vc110.pdb' was not found with 'libARgsubd.lib(gsub.obj)' or at 'C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\Release\vc110.pdb'; linking object as if no debug info
          ARApplication.vcxproj -> C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\Release\ARApplication.exe
-     1>Done Building Project "C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\ARApplication\ARApplication.vcxproj" (Rebuild target(s)).
+     1>Done Building Project "C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\ARApplication\ARApplication.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:14.81
+Time Elapsed 00:00:08.62
