@@ -8,6 +8,7 @@
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
 #include "gamestate.h"
+#include "aiturn.h"
 using namespace std;
 
 //OpenGL Libraries

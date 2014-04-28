@@ -2,6 +2,8 @@
 
 int gamestate::turnID = 1;
 bool gamestate::firstSecond = false;
+int	gamestate::numPlayers = 1;
+int gamestate::difficulty = 0;
 std::pair<int, int> gamestate::manaPoints = std::make_pair(0, 0);
 std::pair<int, int> gamestate::deckSize = std::make_pair(30, 30);
 std::pair<int, int> gamestate::handSize = std::make_pair(3, 3);
@@ -154,7 +156,7 @@ bool gamestate::cardActivated(int player, int cardID){
 				hero.cost -= c.cost;
 				loadWeapon();
 		}
-		else if (c.type == 2 || c.type == 3){ //UPDGRADE
+		else if (c.type == 2 || c.type == 3){ //UPGRADE
 			cout << "Upgrade card!" << endl;
 				cout << "Stat Change!" << endl;
 				hero.hp += c.hp;
@@ -175,6 +177,9 @@ bool gamestate::cardActivated(int player, int cardID){
 			}
 			else {
 				handSize.second += c.draw;
+				if (gamestate::numPlayers == 2) {
+					aiturn::drawCard(c.draw);
+				}
 			}
 		}
 		else if (c.type == 5){ //STATUS/ADMIN CARDS
@@ -207,8 +212,6 @@ bool gamestate::cardActivated(int player, int cardID){
 	}
 	return true;
 }
-
-
 
 void gamestate::cardAttack(){
 	if (phase == 1){
@@ -390,7 +393,6 @@ void gamestate::updateDeltaTime(){
 	deltaTime = timeSinceStart - oldTimeSinceStart;
 	oldTimeSinceStart = timeSinceStart;
 }
-
 
 bool gamestate::checkCard(int mode, int id){
 	if (mode == 0 || mode == 3){
