@@ -16,6 +16,8 @@ private:
 public:
 	static int turnID;
 	static bool firstSecond;
+	static int numPlayers;
+	static int difficulty;
 	static std::pair<int, int> manaPoints;
 	static std::pair<int, int> deckSize;
 	static std::pair<int, int> handSize;

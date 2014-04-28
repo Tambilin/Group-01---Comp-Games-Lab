@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="aiturn.cpp" />
     <ClCompile Include="bitmap.cpp" />
     <ClCompile Include="card.cpp" />
     <ClCompile Include="freetype.cpp" />
@@ -24,6 +25,7 @@
     <ClCompile Include="soundeffect.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="aiturn.h" />
     <ClInclude Include="bitmap.h" />
     <ClInclude Include="card.h" />
     <ClInclude Include="freetype.h" />

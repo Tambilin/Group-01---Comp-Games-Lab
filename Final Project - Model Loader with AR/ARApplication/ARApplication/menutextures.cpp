@@ -416,7 +416,13 @@ void menutextures::checkButtonClick(int x, int y, int width, int height){
 				cout << "gamestate::lastPlayedID:" << gamestate::lastPlayedID << endl;
 				if (mode == 1){
 					gamestate::heroStats.first = gamestate::cardlist[(gamestate::lastPlayedID)];
-					mode++;
+					if (gamestate::numPlayers == 2) {
+						mode++;
+					}
+					else {
+						mode += 2;
+						aiturn::init();
+					}
 					confirm = false;
 				}
 				else if (mode == 2){

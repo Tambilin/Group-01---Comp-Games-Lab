@@ -23,6 +23,7 @@
 #include "objload.h"
 #include "soundeffect.h"
 #include "vmath.h"
+#include "aiturn.h"
 
 #include "object.c"
 
@@ -74,8 +75,11 @@ int				currentStep = 0;
 int				mech1Position[6];
 int				mech2Position[6];
 double          frustrum = 2.0;
-bool Mode3D = false;
-bool winner = false;
+bool			Mode3D = false;
+bool			winner = false;
+bool			updatingBots = false;
+bool			attackingBots = false;
+bool			aiPlayedCard = false;
 
 particles * fireworks[particles::FIREWORKS_COUNT];
 
@@ -352,25 +356,35 @@ static int draw(ObjectData_T *object, int objectnum)
 			}
 		}
 		else if (i+1 == gamestate::heroStats.second.id){
-			//cout << "Setup second Mech" << endl;
-			argConvGlpara(object[i].trans, gl_para);
-			mech2Position[0] = gl_para[12];//X Position
-			mech2Position[1] = gl_para[13];//Y Position
-			mech2Position[2] = gl_para[14];//Z Position
-			if (gl_para[0] != 0.0f || gl_para[1] != 0.0f) {
-				const float alignment_x = atan2(-gl_para[1], gl_para[0]);
-				float c2;
-				if (0 != cosf(alignment_x)) {
-					c2 = gl_para[0] / cosf(alignment_x);
+			if (gamestate::numPlayers == 2) {
+				//cout << "Setup second Mech" << endl;
+				argConvGlpara(object[i].trans, gl_para);
+				mech2Position[0] = gl_para[12];//X Position
+				mech2Position[1] = gl_para[13];//Y Position
+				mech2Position[2] = gl_para[14];//Z Position
+				if (gl_para[0] != 0.0f || gl_para[1] != 0.0f) {
+					const float alignment_x = atan2(-gl_para[1], gl_para[0]);
+					float c2;
+					if (0 != cosf(alignment_x)) {
+						c2 = gl_para[0] / cosf(alignment_x);
+					}
+					else {
+						c2 = gl_para[1] / -sinf(alignment_x);
+					}
+					const float alignment_y = atan2(gl_para[2], c2);
+					const float alignment_z = atan2(-gl_para[6], gl_para[10]);
+					mech2Position[3] = alignment_x*57.2957795;//X Rotation (Degrees)
+					mech2Position[4] = alignment_y*57.2957795;//Y Rotation (Degrees)
+					mech2Position[5] = alignment_z*57.2957795;//Z Rotation (Degrees)
 				}
-				else {
-					c2 = gl_para[1] / -sinf(alignment_x);
+			}
+			else {
+				//Set AI mech position
+				for (int i = 0; i < 6; i++) {
+					mech2Position[i] = mech1Position[i];
+					
 				}
-				const float alignment_y = atan2(gl_para[2], c2);
-				const float alignment_z = atan2(-gl_para[6], gl_para[10]);
-				mech2Position[3] = alignment_x*57.2957795;//X Rotation (Degrees)
-				mech2Position[4] = alignment_y*57.2957795;//Y Rotation (Degrees)
-				mech2Position[5] = alignment_z*57.2957795;//Z Rotation (Degrees)
+				mech2Position[1] += 20;
 			}
 		}
 		robotsDrawn.push_back(i);
@@ -387,9 +401,21 @@ static int draw(ObjectData_T *object, int objectnum)
 	for (i = 0; i < objectnum; i++) {
 		if (object[i].visible == 0) continue;
 		glPushMatrix();
-		argConvGlpara(object[i].trans, gl_para);
-		draw_object(object[i].id, gl_para);
+			argConvGlpara(object[i].trans, gl_para);
+			draw_object(object[i].id, gl_para);
 		glPopMatrix();
+	}
+	if (gamestate::numPlayers == 1 && Menu->getMode() > 2) {
+		int thisID = gamestate::heroStats.second.id;
+		glPushMatrix();
+			argConvGlpara(object[gamestate::heroStats.first.id-1].trans, gl_para);
+			Matrix4d mat = Matrix4d(gl_para);
+			Matrix4d trans = Matrix4d();
+			trans = mat.createTranslation(0, 20, 0, 1);
+			//gl_para = mat*trans;
+			draw_object(object[thisID-1].id, gl_para);
+		glPopMatrix();
+		cout << "ddfkjdfs" << endl;
 	}
 
 	glDisableClientState(GL_NORMAL_ARRAY);
@@ -403,53 +429,53 @@ static int draw(ObjectData_T *object, int objectnum)
 	argDrawMode2D();
 
 	if (gamestate::winner > 0){
-	glPushAttrib(GL_CURRENT_BIT);
-	glPushMatrix();
-	glDisable(GL_TEXTURE_2D);
-	glEnable(GL_BLEND);
-	glDisable(GL_DEPTH_TEST);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glPushAttrib(GL_CURRENT_BIT);
+		glPushMatrix();
+		glDisable(GL_TEXTURE_2D);
+		glEnable(GL_BLEND);
+		glDisable(GL_DEPTH_TEST);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	// Draw fireworks
-	for (int loop = 0; loop < particles::FIREWORKS_COUNT; loop++)
-	{
-		for (int particleLoop = 0; particleLoop < particles::FIREWORK_PARTS; particleLoop++)
+		// Draw fireworks
+		for (int loop = 0; loop < particles::FIREWORKS_COUNT; loop++)
 		{
+			for (int particleLoop = 0; particleLoop < particles::FIREWORK_PARTS; particleLoop++)
+			{
 
-			// Set the point size of the firework particles (this needs to be called BEFORE opening the glBegin(GL_POINTS) section!)
-			glPointSize(fireworks[loop]->particleSize);
-			glBegin(GL_POINTS);
+				// Set the point size of the firework particles (this needs to be called BEFORE opening the glBegin(GL_POINTS) section!)
+				glPointSize(fireworks[loop]->particleSize);
+				glBegin(GL_POINTS);
 
-			// Set colour to yellow on way up, then whatever colour firework should be when exploded
+				// Set colour to yellow on way up, then whatever colour firework should be when exploded
+				if (fireworks[loop]->exploded == false)
+				{
+					glColor4f(1.0f, 1.0f, 0.0f, 0.5f);
+				}
+				else
+				{
+					glColor4f(fireworks[loop]->r, fireworks[loop]->g, fireworks[loop]->b, fireworks[loop]->a);
+				}
+
+				// Draw the point
+				glVertex2f(fireworks[loop]->x[particleLoop], fireworks[loop]->y[particleLoop]);
+				glEnd();
+			}
+
+			// Move the firework appropriately depending on its explosion state
 			if (fireworks[loop]->exploded == false)
 			{
-				glColor4f(1.0f, 1.0f, 0.0f, 0.5f);
+				fireworks[loop]->move();
 			}
 			else
 			{
-				glColor4f(fireworks[loop]->r, fireworks[loop]->g, fireworks[loop]->b, fireworks[loop]->a);
+				fireworks[loop]->explode();
 			}
-
-			// Draw the point
-			glVertex2f(fireworks[loop]->x[particleLoop], fireworks[loop]->y[particleLoop]);
-			glEnd();
 		}
-
-		// Move the firework appropriately depending on its explosion state
-		if (fireworks[loop]->exploded == false)
-		{
-			fireworks[loop]->move();
-		}
-		else
-		{
-			fireworks[loop]->explode();
-		}
-	}
-	glDisable(GL_BLEND);
-	glEnable(GL_TEXTURE_2D);
-	glPopMatrix();
-	glPopAttrib();
-	glColor4f(0.2f, 0.2f, 0.2f, 1.0f);
+		glDisable(GL_BLEND);
+		glEnable(GL_TEXTURE_2D);
+		glPopMatrix();
+		glPopAttrib();
+		glColor4f(0.2f, 0.2f, 0.2f, 1.0f);
 	}
 	else {
 		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
@@ -548,7 +574,28 @@ static int draw_object(int obj_id, double gl_para[16])
 	return 0;
 }
 
-void updateRobots(){
+void updateRobots() {
+	//AI player
+	if (Menu->getMode() == 4 && gamestate::phase == 2 && gamestate::numPlayers == 1 && !updatingBots) {
+		updatingBots = true;
+		aiturn::drawCard(1);
+		int bestCard = aiturn::chooseCard(gamestate::difficulty);
+		if (bestCard != -1) {
+			aiPlayedCard = true;
+			gamestate::cardActivated(gamestate::phase, bestCard);
+			gamestate::handSize.second--;
+			gamestate::cardActivated(2, bestCard);
+		}
+		else {
+			aiPlayedCard = false;
+		}
+	}
+	if (Menu->getMode() == 4 && gamestate::phase == 2 && gamestate::numPlayers == 1 && !attackingBots) {
+		if (gamestate::cardlist[gamestate::heroStats.second.id].model.animationFinished && gamestate::cardlist[gamestate::heroStats.second.id].model.temporaryAnimation || !aiPlayedCard) {
+			attackingBots = true;
+			gamestate::attacking = gamestate::phase;
+		}
+	}
 	//cout << gamestate::deltaTime << endl;
 	int numsteps = 1.5 * gamestate::deltaTime/md5load::animSpeed;
 	if (gamestate::attacking == 1){
@@ -658,6 +705,19 @@ void updateRobots(){
 				gamestate::cardlist[gamestate::heroStats.second.id].model.animationFinished = true;
 				gamestate::cardlist[gamestate::heroStats.second.id].model.setCurrentFrame(gamestate::cardlist[gamestate::heroStats.second.id].model.getTotalFrames() - md5load::animSpeed);
 				robotMode2 = 0;
+				if (gamestate::phase == 2 && gamestate::numPlayers == 1) {
+					updatingBots = false;
+					attackingBots = false;
+					aiPlayedCard = false;
+					gamestate::turnID++;
+					if (gamestate::phase == 2){
+						gamestate::phase = 1;
+					}
+					else {
+						gamestate::phase = 2;
+					}
+					Menu->setMode(3);
+				}
 				if (gamestate::winner > 0){
 					Menu->setMode(5);
 				}
@@ -855,7 +915,7 @@ static float getMarkerDiffZ() {
 }
 
 static float getAngleBetweenRobots() {
-	return (atan2(getMarkerDiffX(), getMarkerDiffZ()) * 180 / PI);
+	return atan2(getMarkerDiffX(), getMarkerDiffZ()) * 180 / PI;
 }
 
 void reshape(int w, int h)
