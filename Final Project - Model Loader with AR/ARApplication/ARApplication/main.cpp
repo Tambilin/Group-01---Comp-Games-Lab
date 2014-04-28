@@ -90,7 +90,6 @@ md5load Coin;
 menutextures * Menu = new menutextures();
 objload * Wings = new objload();
 objload * objModel = new objload();
-//soundeffect * t = new soundeffect();
 
 static void   init(void);
 static void   cleanup(void);
@@ -148,7 +147,7 @@ static void mainLoop(void)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     argDrawMode2D();
-	//argDispHalfImage(dataPtr, 0, 0);
+
 	if (Mode3D){
 		glColorMask(true, false, false, false);
 		glTranslatef(-frustrum*4, 0, 0);
@@ -184,8 +183,6 @@ static void mainLoop(void)
 			if (object[i].id == marker_info[j].id) {
 
 				/* you've found a pattern */
-				//printf("Found pattern: %d ",patt_id);
-				//glColor3f(0.0, 1.0, 0.0);
 				argDrawSquare(marker_info[j].vertex, 0, 0);
 
 				if (k == -1) k = j;
@@ -236,8 +233,6 @@ static void mainLoop(void)
 
 	//Swap buffers
 	argSwapBuffers();
-	//glutSwapBuffers();
-	//glutPostRedisplay();
 }
 
 static void init( void )
@@ -257,8 +252,7 @@ static void init( void )
 		printf("Camera parameter load error !!\n");
 		exit(0);
 	}
-	//width = width/2;
-	//height = height/2;
+
 	arParamChangeSize(&wparam, width, height, &cparam);
 	arInitCparam(&cparam);
 	printf("*** Camera Parameter ***\n");
@@ -301,26 +295,9 @@ static int draw(ObjectData_T *object, int objectnum)
 
 	//Clear Depth Buffer
     glClearDepth( 1.0 );
-    glClear(GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LEQUAL);
-	//glEnable(GL_LIGHTING);
-
-	/* Setup Lighting */
-	/*GLfloat light_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
-	GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
-	GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-	GLfloat light_position[] = { 25.0, 25.0, 50.0, 0.0 };
-
-	glLightfv(GL_LIGHT1, GL_AMBIENT, light_ambient);
-	glLightfv(GL_LIGHT1, GL_DIFFUSE, light_diffuse);
-	glLightfv(GL_LIGHT1, GL_SPECULAR, light_specular);
-	glLightfv(GL_LIGHT1, GL_POSITION, light_position);
-
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT1);*/
 	glClear(GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_TEXTURE_2D);
 
 	/// Rendering Section ///
@@ -545,7 +522,9 @@ static int draw_object(int obj_id, double gl_para[16])
 	//Check for new detected card
 	if ((!gamestate::confirmed) && gamestate::lastPlayedID != obj_id + 1 && gamestate::heroStats.first.id != obj_id + 1 && gamestate::heroStats.second.id != obj_id + 1){
 		if (gamestate::checkCard(Menu->getMode(), obj_id + 1)){
-			Menu->setConfirm(true);
+			if (obj_id + 1 != 30){
+				Menu->setConfirm(true);
+			}
 			cout << "Detected New Card!" << endl;
 			gamestate::lastPlayedID = obj_id + 1;
 			gamestate::confirmed = true;
@@ -784,104 +763,16 @@ void loadData(){
 
 void keyboard(unsigned char key, int x, int y)
 {
-	/* Escape */
-	if (key == 27)
+	if (key == 27){ //Exit - Escape
 		exit(0);
-	if (Menu->getMode() > 2){
-		if (key == 48){ //'0' Key{
-			gamestate::cardlist[gamestate::heroStats.first.id].model.loadModel("../Assets/MD5s/Alpha/Alpha_Mesh.md5mesh");
-			gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/MD5s/Alpha/Animations/Alpha_Defence1.md5anim");
-			gamestate::cardlist[gamestate::heroStats.first.id].model.useModelShaderTextures("../Assets/MD5s/Alpha/Textures/");
-		}
-		if (key == 49){ //'1' Key{
-			gamestate::cardlist[gamestate::heroStats.first.id].model.loadModel("../Assets/MD5s/Delta/Delta_Mesh.md5mesh");
-			gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/MD5s/Delta/Animations/Delta_Gun.md5anim");
-			gamestate::cardlist[gamestate::heroStats.first.id].model.useModelShaderTextures("../Assets/MD5s/Delta/Textures/");
-		}
-		if (key == 50){ //'2' Key{
-			gamestate::cardlist[gamestate::heroStats.first.id].model.loadModel("../Assets/MD5s/Epsilon/Epsilon_Mesh_Gun.md5mesh");
-			gamestate::cardlist[gamestate::heroStats.first.id].model.loadAnimation("../Assets/MD5s/Epsilon/Animations/Epsilon_Gun.md5anim");
-			gamestate::cardlist[gamestate::heroStats.first.id].model.useModelShaderTextures("../Assets/MD5s/Epsilon/Textures/");
-		}
-	}
-	if (Menu->getMode() > 3){
-		if (key == 53){ //'5' Key{
-			if (robotsDrawn.size() >= 2) {
-				cout << "Key 5" << endl;
-				robotMode1 = 1;
-				distX = abs(getMarkerDiffX()) - thresh;
-				//cout << getMarkerDiffX() - thresh;
-				///distY = getMarkerDiffY();
-				//distZ = getMarkerDiffZ();
-				//numSteps = 50;
-				currentStep = 0;
-				stepX = distX / (50 * gamestate::deltaTime);
-				//stepY = distY / 50;
-				//stepZ = distZ / 50;
-			}
-		}
 	}
 
-	if (key == 112){
+	if (key == 112){ //Options Menu - P
 		Menu->options = !Menu->options;
 	}
 
-	if (key == 54){
-		frustrum += 0.1;
-	}
-
-	if (key == 55){
-		frustrum -= 0.1;
-	}
-
-	if (key == 56){
-		frustrum = 2;
-	}
-
-	if (key == 32){ //'6' Key{
-		Mode3D = !Mode3D;
-		gamestate::t->toggleBackgroundSound(2, false);
-	}
-
-	/*if (key == 54){ //'6' Key{
-		if (robotsDrawn.size() >= 2) {
-			cout << "Key 6" << endl;
-			robotMode2 = 1;
-			distX = abs(getMarkerDiffX()) - thresh;
-			distY = getMarkerDiffZ();
-			distZ = getMarkerDiffY();
-			numSteps = 50;
-			currentStep = 0;
-			stepX = distX / 50;
-			stepY = distY / 50;
-			stepZ = distZ / 50;
-		}
-	}*/
-
-	//Memory Leak Issue
-	if (key == 32){ //'Space' Key{
-		gamestate::t->cleanup(1);
-		gamestate::t->createSound("../Assets/Sounds/Dodge.wav", 1);
-		gamestate::t->play(1);
-	}
-	if (key == 46){ //'.' Key{
-		gamestate::t->createSound("../Assets/Sounds/Sword.wav", 1);
-		gamestate::t->play(1);
-		winner = !winner;
-		cout << winner << endl;
-	}
-	if (key == 47){ //'/' Key{
-		gamestate::t->cleanup(1);
-		gamestate::t->createSound("../Assets/Sounds/Upgrade.wav", 1);
-		gamestate::t->play(1);
-	}
-	if (key == 77){ //'N' Key{
-		gamestate::t->createSound("../Assets/Sounds/Entrance.wav", 1);
-		gamestate::t->play(1);
-	}
-	if (key == 78){ //'M' Key{
-		gamestate::t->createSound("../Assets/Sounds/Sound.wav", 1);
-		gamestate::t->play(1);
+	if (key == 32){ //Activate 3D - Space
+		gamestate::activate3D = !gamestate::activate3D;
 	}
 }
 
@@ -900,17 +791,14 @@ void mouse(int button, int state, int x, int y)
 }
 
 static float getMarkerDiffX() {
-	//return object[m2].marker_center[0] - object[m1].marker_center[0];// -(object[m1].marker_width * 2) - (object[m2].marker_width * 2);
 	return mech2Position[0] - mech1Position[0];
 }
 
 static float getMarkerDiffY() {
-	//return object[m2].marker_center[1] - object[m1].marker_center[1];// - (object[m1].marker_width * 2) - (object[m2].marker_width * 2);
 	return mech2Position[1] - mech1Position[1];
 }
 
 static float getMarkerDiffZ() {
-	//return object[m2].marker_center[2] - object[m2].marker_center[2];// - (object[m1].marker_width * 2) - (object[m2].marker_width * 2);
 	return mech2Position[2] - mech1Position[2];
 }
 
@@ -922,29 +810,11 @@ void reshape(int w, int h)
 {
 
 	ARParam  wparam;
-	//argCleanup();
-	/* open the video path */
-	//arVideoOpen("inputDevice=WDM_CAP,flipH,flipV,showDlg");
-	//if (arVideoOpen(vconf) < 0) exit(0);
-	/* find the size of the window */
-	//if (arVideoInqSize(&width, &height) < 0) exit(0);
-	//printf("Image size (x,y) = (%d,%d)\n", width, height);
-
-	/* set the initial camera parameters */
-	////if (arParamLoad(cparam_name, 1, &wparam) < 0) {
-	//	printf("Camera parameter load error !!\n");
-	//	exit(0);
-	//}
-	//width = width/2;
-	//height = height/2;
 	arParamChangeSize(&wparam, Menu->getResolutionX(), Menu->getResolutionY(), &cparam);
-	//glutFullScreen();
+
 	if (!Menu->checkScreenSize(w, h)){
 		return glutReshapeWindow(Menu->getResolutionX(), Menu->getResolutionY());
 	}
-	//glViewport()
-
 	width = w;
 	height = h;
-
 }

@@ -23,9 +23,9 @@ menutextures::menutextures(void)
 	alpha = 5;
 	music = true;
 	rollSize = 1;
-	our_font16.init("../Assets/Fonts/BuxtonSketch.TTF", 16);					    //Build the freetype font
-	our_font32.init("../Assets/Fonts/BuxtonSketch.TTF", 32);					    //Build the freetype font
-	our_font64.init("../Assets/Fonts/BuxtonSketch.TTF", 64);					    //Build the freetype font
+	our_font16.init("../Assets/Fonts/BuxtonSketch.TTF", 16);					    //Build the freetype size 16
+	our_font32.init("../Assets/Fonts/BuxtonSketch.TTF", 32);					    //Build the freetype size 32
+	our_font64.init("../Assets/Fonts/BuxtonSketch.TTF", 64);					    //Build the freetype size 64
 }
 
 
@@ -171,7 +171,7 @@ void menutextures::render(int width, int height){
 	  }
 	  ////////////////////////////////////////
 	  break;
-  case 5: //Turn screen
+  case 5: //Victory screen
 	  glPushAttrib(GL_CURRENT_BIT);
 	  glPushMatrix();
 	  if (gamestate::phase == 1){
@@ -191,7 +191,7 @@ void menutextures::render(int width, int height){
 	  break; 
   }
 
-  // Draw player stats
+  //Draw player stats
   if (mode != 0){
 	  drawQuad(10, 2, height - 64, 256, height-2); //TitleBar
 	  glPushMatrix();//P1
@@ -251,6 +251,7 @@ void menutextures::render(int width, int height){
 	  glPopMatrix();
   }
 
+  //Draw text of dice results
   if (mode == 4){ //Dice results
 	  glPushAttrib(GL_CURRENT_BIT);
 	  glPushMatrix();
@@ -261,15 +262,16 @@ void menutextures::render(int width, int height){
 	  glPopAttrib();
   }
 
+  //Draw Options screen
   if (options){
 	  int boxH = 64 * res;
 	  int boxW = 128 * res;
-	  drawQuad(2, 0, height - (boxH * 5) - 10, boxW * 2 + 10, height); //Menu background
-	  drawQuad(18, 10, height - (boxH), (boxW * 2), height - 10); //ReStart
-	  drawQuad(18, 10, height - (boxH * 2), (boxW * 2), height - 10 - (boxH)); //Option A  3D On /sensa
-	  drawQuad(18, 10, height - (boxH * 3), (boxW * 2), height - 10 - (boxH * 2)); //Option A  3D On /sensa
-	  drawQuad(18, 10, height - (boxH * 4), (boxW * 2), height - 10 - (boxH * 3)); //Option A  3D On /sensa
-	  drawQuad(10, 40 * res, height - (boxH * 5), (boxH * 2), height - 10 - (boxH * 4)); //Option A  3D On /sensa
+	  drawQuad(2, 0, height - (boxH * 5) - 10, boxW * 2 + 10, height); //Transparent background
+	  drawQuad(18, 10, height - (boxH), (boxW * 2), height - 10); //Option A
+	  drawQuad(18, 10, height - (boxH * 2), (boxW * 2), height - 10 - (boxH)); //Option B
+	  drawQuad(18, 10, height - (boxH * 3), (boxW * 2), height - 10 - (boxH * 2)); //Option C
+	  drawQuad(18, 10, height - (boxH * 4), (boxW * 2), height - 10 - (boxH * 3)); //Option D
+	  drawQuad(10, 40 * res, height - (boxH * 5), (boxH * 2), height - 10 - (boxH * 4)); //Option E
 
 	  glPushMatrix();//P2
 	  glPushAttrib(GL_CURRENT_BIT);
@@ -317,7 +319,6 @@ void menutextures::render(int width, int height){
 	  sprintf(number, "%d", gamestate::lastPlayedID);
 	  strcat(directory, number);
 	  strcat(directory, filetype);
-	  //cout << directory << endl;
 	  if (cardTex != gamestate::lastPlayedID){
 		  menuTex[15] = loadTexture(directory);
 		  cardTex = gamestate::lastPlayedID;
@@ -414,7 +415,7 @@ void menutextures::checkButtonClick(int x, int y, int width, int height){
 				x < width - 10 &&
 				y < (64 * res)){
 				cout << "gamestate::lastPlayedID:" << gamestate::lastPlayedID << endl;
-				if (mode == 1){
+				if (mode == 1){ //Activate Mech 1
 					gamestate::heroStats.first = gamestate::cardlist[(gamestate::lastPlayedID)];
 					if (gamestate::numPlayers == 2) {
 						mode++;
@@ -425,12 +426,12 @@ void menutextures::checkButtonClick(int x, int y, int width, int height){
 					}
 					confirm = false;
 				}
-				else if (mode == 2){
+				else if (mode == 2){ //Activate Mech 2
 					gamestate::heroStats.second = gamestate::cardlist[(gamestate::lastPlayedID)];
 					mode++;
 					confirm = false;
 				}
-				else if (mode == 4){
+				else if (mode == 4){ //Activate Card
 					if (gamestate::phase == 1){
 						gamestate::handSize.first--;
 					}
@@ -445,7 +446,7 @@ void menutextures::checkButtonClick(int x, int y, int width, int height){
 			else if (x > width - (128 * res) &&
 				y > 10 + (64 * res) &&
 				x < width - 10 &&
-				y < (64 * res * 2)){ //Options)
+				y < (64 * res * 2)){ //Cancel Place Card
 					gamestate::lastPlayedID = -1;
 					confirm = false;
 					gamestate::confirmed = false;
@@ -456,16 +457,9 @@ void menutextures::checkButtonClick(int x, int y, int width, int height){
 			if (x > width - (128 * res) &&
 				y > 10 &&
 				x < width - 10 &&
-				y < (64 * res)){ //Start Bo
+				y < (64 * res)){ 
 				if (this->mode != 1 && this->mode != 2){
 					if (this->mode == 5){
-						/*if (previousMode = 1){
-							gamestate::heroStats.first = gamestate::cardlist[(gamestate::lastPlayedID)];
-							}
-							else if (previousMode = 2){
-							gamestate::heroStats.second = gamestate::cardlist[(gamestate::lastPlayedID)];
-							}
-							previousMode = previousMode+1;*/
 						mode = previousMode;
 					}
 
@@ -493,7 +487,7 @@ void menutextures::checkButtonClick(int x, int y, int width, int height){
 					}
 
 					this->mode++;
-					if (this->mode > 4){ //Reset turn data
+					if (this->mode > 4){ //Switch Turn
 						gamestate::turnID++;
 						attackedThisTurn = false;
 						rolls.clear();
@@ -512,11 +506,11 @@ void menutextures::checkButtonClick(int x, int y, int width, int height){
 				y > 10 + (64 * res) &&
 				x < width - 10 &&
 				y < (64 * res * 2)){
-				if (mode == 0){
+				if (mode == 0){ //Options Button on Main Menu
 					options = !options;
 				}
 
-				if (this->mode == 4 && attackedThisTurn == false){ //Perform attack action
+				if (this->mode == 4 && attackedThisTurn == false){ //Attack Button
 					if (gamestate::phase == 1 && gamestate::cardlist[gamestate::heroStats.first.id].model.temporaryAnimation == false
 						|| gamestate::phase == 2 && gamestate::cardlist[gamestate::heroStats.second.id].model.temporaryAnimation == false){
 						gamestate::attacking = gamestate::phase;
@@ -528,15 +522,9 @@ void menutextures::checkButtonClick(int x, int y, int width, int height){
 		}
 	}
 
+	//Check for clicks on Options Menu
 	if (options){
 		int boxH = 64 * res;
-		//int boxW = 128 * res;
-		//drawQuad(2 + offset, 0, height - (boxH * 5) - 10, boxW * 2 + 10, height); //Menu background
-		//drawQuad(18, 10, height - (boxH), (boxW * 2), height - 10); //ReStart
-		//drawQuad(18, 10, height - (boxH * 2), (boxW * 2), height - 10 - (boxH)); //Option A  3D On /sensa
-		//drawQuad(18, 10, height - (boxH * 3), (boxW * 2), height - 10 - (boxH * 2)); //Option A  3D On /sensa
-		//drawQuad(18, 10, height - (boxH * 4), (boxW * 2), height - 10 - (boxH * 3)); //Option A  3D On /sensa
-		//drawQuad(10, 40 * res, height - (boxH * 5), (boxH * 2), height - 10 - (boxH * 4)); //Option A  3D On /sensa
 
 		if (x > 17 && x < 127 * res){
 			if (y > 17 && y < boxH){
