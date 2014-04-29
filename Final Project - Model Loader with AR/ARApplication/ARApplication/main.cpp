@@ -81,6 +81,7 @@ bool			updatingBots = false;
 bool			attackingBots = false;
 bool			aiPlayedCard = false;
 
+
 particles * fireworks[particles::FIREWORKS_COUNT];
 
 //Class Objects
@@ -246,6 +247,9 @@ static void init( void )
 	/* find the size of the window */
 	if (arVideoInqSize(&width, &height) < 0) exit(0);
 	printf("Image size (x,y) = (%d,%d)\n", width, height);
+	menutextures::cameraX = width;
+	menutextures::cameraY = height;
+
 
 	/* set the initial camera parameters */
 	if (arParamLoad(cparam_name, 1, &wparam) < 0) {
@@ -265,7 +269,11 @@ static void init( void )
 	/* open the graphics window */
 	argInit(&cparam, 1.0, 0, 0, 0, 0);
 
-	glutReshapeWindow(641, 481);
+	//
+	glutReshapeWindow(50, 20);
+	//glutPositionWindow(100, 100);
+	//Menu->setResolutionX(640);
+	//Menu->setResolutionY(480);
 	//glViewport(0, 0, width, height);
 }
 
@@ -388,11 +396,11 @@ static int draw(ObjectData_T *object, int objectnum)
 			argConvGlpara(object[gamestate::heroStats.first.id-1].trans, gl_para);
 			Matrix4d mat = Matrix4d(gl_para);
 			Matrix4d trans = Matrix4d();
-			trans = mat.createTranslation(0, 20, 0, 1);
-			//gl_para = mat*trans;
-			draw_object(object[thisID-1].id, gl_para);
+			trans = mat.createTranslation(0, 400, 0, 1);
+			Matrix4d t = mat*trans;
+			draw_object(object[thisID-1].id, t.data);
 		glPopMatrix();
-		cout << "ddfkjdfs" << endl;
+		//cout << "ddfkjdfs" << endl;
 	}
 
 	glDisableClientState(GL_NORMAL_ARRAY);
@@ -472,7 +480,7 @@ static int draw(ObjectData_T *object, int objectnum)
 
 	//Update Rotations
 	if (movement < 720)
-		movement = movement + 1;
+		movement = movement + md5load::animSpeed;
 	else
 		movement = 0;
 
@@ -520,14 +528,14 @@ static int draw_object(int obj_id, double gl_para[16])
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightZeroColor);
 
 	//Check for new detected card
-	if ((!gamestate::confirmed) && gamestate::lastPlayedID != obj_id + 1 && gamestate::heroStats.first.id != obj_id + 1 && gamestate::heroStats.second.id != obj_id + 1){
+	if ((gamestate::winner < 1)&&(!gamestate::confirmed) && gamestate::lastPlayedID != obj_id + 1 && gamestate::heroStats.first.id != obj_id + 1 && gamestate::heroStats.second.id != obj_id + 1){
 		if (gamestate::checkCard(Menu->getMode(), obj_id + 1)){
 			if (obj_id + 1 != 30){
 				Menu->setConfirm(true);
+				gamestate::confirmed = true;
 			}
 			cout << "Detected New Card!" << endl;
 			gamestate::lastPlayedID = obj_id + 1;
-			gamestate::confirmed = true;
 			gamestate::t->cleanup(1);
 			gamestate::t->createSound("../Assets/Sounds/Entrance.wav", 1);
 			gamestate::t->play(1);
@@ -756,6 +764,7 @@ void loadData(){
 	Menu->setResolutionX(640);
 	Menu->setResolutionY(480);
 	glutReshapeWindow(640, 480);
+	glutPositionWindow(100, 100);
 	glViewport(0, 0, width, height);
 
 	loadOpenGL = true;
@@ -782,7 +791,7 @@ void mouse(int button, int state, int x, int y)
 	// If button1 pressed, mark this state so we know in motion function.
 	if (button == GLUT_LEFT_BUTTON)
 	{
-		cout << "CLICK" << endl;
+		//cout << "CLICK" << endl;
 		leftButtonDown = (state == GLUT_DOWN) ? TRUE : FALSE;
 		if (leftButtonDown == true){
 			Menu->checkButtonClick(x, y, width, height);
@@ -808,11 +817,10 @@ static float getAngleBetweenRobots() {
 
 void reshape(int w, int h)
 {
-
 	ARParam  wparam;
 	arParamChangeSize(&wparam, Menu->getResolutionX(), Menu->getResolutionY(), &cparam);
-
-	if (!Menu->checkScreenSize(w, h)){
+	
+	if (!Menu->checkScreenSize(w, h) && menutextures::screenID != 4){
 		return glutReshapeWindow(Menu->getResolutionX(), Menu->getResolutionY());
 	}
 	width = w;

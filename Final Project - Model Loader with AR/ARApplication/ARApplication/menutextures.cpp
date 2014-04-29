@@ -2,6 +2,8 @@
 
 int menutextures::resolutionX = 640;
 int menutextures::resolutionY = 480; 
+int menutextures::cameraX = 0;
+int menutextures::cameraY = 0; 
 int menutextures::screenID = 0;
 
 // This holds all the information for the font that we are going to create.
@@ -140,11 +142,12 @@ void menutextures::render(int width, int height){
 	  freetype_mod::print(*our_font, "Player %1.0f - Draw a card.", (float)gamestate::phase);	// Print GL Text To The Screen
 	  glPopMatrix();
 	  glPopAttrib();
+	  if (gamestate::winner < 1)
 	  drawQuad(8, width - (128 * res), height - (64 * res), width - 10, height - 10); //Roll
 	  break;
   case 4: //Turn screen
-		  if (gamestate::phase == 1 && gamestate::cardlist[gamestate::heroStats.first.id].model.temporaryAnimation == false
-			  || gamestate::phase == 2 && gamestate::cardlist[gamestate::heroStats.second.id].model.temporaryAnimation == false){
+		  if ((gamestate::phase == 1 && gamestate::cardlist[gamestate::heroStats.first.id].model.temporaryAnimation == false
+			  || gamestate::phase == 2 && gamestate::cardlist[gamestate::heroStats.second.id].model.temporaryAnimation == false)&& gamestate::winner == 0){
 			  drawQuad(7, width - (128 * res), height - (64 * res), width - 10, height - 10); //Next turn
 			  if (!attackedThisTurn){
 				  drawQuad(16, width - (128 * res), height - (64 * res * 2), width - 10, height - 10 - (64 * res)); //Attack
@@ -193,12 +196,13 @@ void menutextures::render(int width, int height){
 
   //Draw player stats
   if (mode != 0){
-	  drawQuad(10, 2, height - 64, 256, height-2); //TitleBar
+	  drawQuad(10, 2*res, height - 64*res, 256*res, height-2*res); //TitleBar
+	  drawQuad(19, 256*res, height - 64*res, 256*res+64*res, height - 2*res); //OptionsButton
 	  glPushMatrix();//P1
 	  glPushAttrib(GL_CURRENT_BIT);
 	  glColor3f(0.0, 0.0, 0.0);
-	  glRasterPos2f(32, height-48);
-	  freetype_mod::print(our_font16, "Turn %2.0f - Player %1.0f's Turn", (float)gamestate::turnID, (float)gamestate::phase);	// Print GL Text To The Screen
+	  glRasterPos2f(32*res, height-48*res);
+	  freetype_mod::print(*our_subfont, "Turn %2.0f - Player %1.0f's Turn", (float)gamestate::turnID, (float)gamestate::phase);	// Print GL Text To The Screen
 	  glPopAttrib();
 	  glPopMatrix();
 
@@ -285,7 +289,7 @@ void menutextures::render(int width, int height){
 	  if (screenID != 4){
 		freetype_mod::print(*our_subfont, "Window: %4i x %4i", resolutionX, resolutionY);	// Print GL Text To The Screen
 	  }	else {
-	  freetype_mod::print(*our_subfont, "Window: Fullscreen Mode", resolutionX, resolutionY);	// Print GL Text To The Screen
+	  freetype_mod::print(*our_subfont, "Window: Fullscreen", resolutionX, resolutionY);	// Print GL Text To The Screen
       }
 	  if (gamestate::activate3D){
 		  glRasterPos2f((50 * res), height - (64 * res * 2) + 19 * res);
@@ -303,12 +307,12 @@ void menutextures::render(int width, int height){
   }
 
   //Selection screen when new card is played, overrides other modes.
-  if (confirm){
+  if (confirm && gamestate::winner == 0){
 	  glPushAttrib(GL_CURRENT_BIT);
 	  glPushMatrix();
 	  glColor4f(1.0, 1.0, 0.0, 1.0);
-	  glRasterPos2f(width - 360 * res, height - (46*res));
-	  freetype_mod::print(*our_subfont, "Do you want to use this card?");	// Print GL Text To The Screen
+	  glRasterPos2f(width - 260 * res, height - (46*res));
+	  freetype_mod::print(*our_subfont, "Play this card?");	// Print GL Text To The Screen
 	  glPopMatrix();
 	  glPopAttrib();
 	  drawQuad(13, width - (128 * res), height - (64 * res), width - 10, height - 10); //Confirm
@@ -392,6 +396,15 @@ void menutextures::screenSizeMenu(int item)
 			resolutionY = 480;
 			break;
         }
+
+		//Stop resizing issues, clamp.
+		if (resolutionX > cameraX || resolutionY > cameraY){
+			glutReshapeWindow(cameraX, cameraY);
+			resolutionX = cameraX;
+			resolutionY = cameraY;
+			screenID = screenID - 1;
+		}
+
 		//glutReshapeWindow(640, 480);
 		glutPositionWindow(100,100);
 		glViewport(0, 0, resolutionX, resolutionY);
@@ -467,7 +480,7 @@ void menutextures::checkButtonClick(int x, int y, int width, int height){
 						srand(time(NULL));
 						int a = rand() % 2;
 						rolls.push_back(a);
-						for (int i = 0; i < ((int)gamestate::turnID - 1) / 2; i++){
+						for (int i = 0; i < ((int)gamestate::turnID+6 - 1) / 2; i++){
 							if (i < 11){
 								int temp = rand() % 2;
 								rolls.push_back(temp);
@@ -547,7 +560,6 @@ void menutextures::checkButtonClick(int x, int y, int width, int height){
 			else if (y > boxH * 4 && y < boxH * 5){
 				exit(0);
 			}
-
 		}
 		else {
 			if (x > 127*res && x < 254 * res){
@@ -566,11 +578,18 @@ void menutextures::checkButtonClick(int x, int y, int width, int height){
 				else if (y > boxH * 3 && y < boxH * 4){
 					md5load::animSpeed += 0.1;
 				}
-
 			}
 		}
 
 		cout << x << " " << y << endl;
+	}
+	
+	if (mode > 0){ //Options Button.
+		if (x > 256 * res && x < 256 * res + 64 * res){
+			if (y > 2 * res && y < 64 * res){
+				options = !options;
+			}
+		}
 	}
 }
 
@@ -605,6 +624,7 @@ void menutextures::load(void){
 	menuTex[16] = loadTexture("../Assets/Textures/Attack.png");
 	menuTex[17] = loadTexture("../Assets/Textures/Hand.png");
 	menuTex[18] = loadTexture("../Assets/Textures/Optionsbar.png");
+	menuTex[19] = loadTexture("../Assets/Textures/Cog.png");
 
 	// Create a menu
 	glutCreateMenu(&menutextures::screenSizeMenu);
@@ -617,7 +637,7 @@ void menutextures::load(void){
 		glutAddMenuEntry("Fullscreen", 4);
 
         // Associate a mouse button with menu
-        glutAttachMenu(GLUT_RIGHT_BUTTON);
+       // glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 
 void menutextures::text(void *font, const char *fmt, int x, int y, float r, float g, float b){

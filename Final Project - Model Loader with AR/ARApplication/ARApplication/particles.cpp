@@ -62,9 +62,9 @@ void particles::move()
 		// Once the firework is ready to launch start moving the particles
 		if (framesStart <= 0)
 		{
-			x[l] += xSpeed[l];
-			y[l] += ySpeed[l];
-			ySpeed[l] += particles::GRAVITY;
+			x[l] += xSpeed[l]*md5load::animSpeed;
+			y[l] += ySpeed[l]*md5load::animSpeed;
+			ySpeed[l] += particles::GRAVITY*md5load::animSpeed;
 		}
 	}
 	framesStart--;
@@ -90,11 +90,11 @@ void particles::explode()
 		xSpeed[i] *= 0.99;
 
 		// Move the particle
-		x[i] += xSpeed[i];
-		y[i] += ySpeed[i];
+		x[i] += xSpeed[i]*md5load::animSpeed;
+		y[i] += ySpeed[i]*md5load::animSpeed;
 
 		// Apply gravity to the particle's speed
-		ySpeed[i] += particles::GRAVITY;
+		ySpeed[i] += particles::GRAVITY*md5load::animSpeed;
 	}
 
 	// Fade out the particles (alpha is stored per firework, not per particle)

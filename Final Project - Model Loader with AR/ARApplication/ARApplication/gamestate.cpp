@@ -2,7 +2,7 @@
 
 int gamestate::turnID = 1;
 bool gamestate::firstSecond = false;
-int	gamestate::numPlayers = 1;
+int	gamestate::numPlayers = 2;
 int gamestate::difficulty = 0;
 std::pair<int, int> gamestate::manaPoints = std::make_pair(0, 0);
 std::pair<int, int> gamestate::deckSize = std::make_pair(30, 30);
@@ -181,6 +181,7 @@ bool gamestate::cardActivated(int player, int cardID){
 					aiturn::drawCard(c.draw);
 				}
 			}
+			hero.cost -= c.cost;
 		}
 		else if (c.type == 5){ //STATUS/ADMIN CARDS
 

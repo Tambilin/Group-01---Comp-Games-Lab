@@ -33,7 +33,7 @@ private:
 	GLuint loadTexture(char *fileName);
 	GLuint menuTex[256];   //Max 256 Textures
 	static int resolutionX; 
-	static int resolutionY; 
+	static int resolutionY;
 	int mode;
 	int previousMode;
 	bool widescreen; 
@@ -44,10 +44,13 @@ private:
 	bool attackedThisTurn;
 	int cardTex;
 	bool music;
-	static int screenID;
 
 public:
 	bool options;
+	static int screenID;
+	static int cameraX;
+	static int cameraY;
+
 	menutextures(void);
 	void load(void);
 	void setConfirm(bool t);

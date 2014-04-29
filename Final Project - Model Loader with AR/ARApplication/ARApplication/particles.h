@@ -3,7 +3,7 @@
 #include <iostream>
 #include <ctime>
 #include <time.h>		// Needed to use random numbers
-
+#include "md5load.h";
 #include "GLEW/glew.h"
 #include <GL/gl.h>
 #include <GL/glut.h>
