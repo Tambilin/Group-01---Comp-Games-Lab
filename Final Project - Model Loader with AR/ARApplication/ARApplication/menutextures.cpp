@@ -110,6 +110,7 @@ void menutextures::render(int width, int height){
 	  drawQuad(3 + offset, 0, 0, width, height); //Menu background
 	  drawQuad(5, width - (128 * res), height - (64 * res), width - 10, height - 10); //Start
 	  drawQuad(6, width - (128 * res), height - (64 * res * 2), width - 10, height - 10 - (64 * res)); //Options
+	  drawQuad(19+gamestate::numPlayers, width - (128 * res), height - (64 * res * 3), width - 10, height - 10 - (128 * res)); //Gamemode
 	  break;
   case 1: //Player 1 Select Data
 	  glPushAttrib(GL_CURRENT_BIT);
@@ -196,6 +197,7 @@ void menutextures::render(int width, int height){
 
   //Draw player stats
   if (mode != 0){
+	  drawQuad(offset, 0, 0, width, height); //Menu background
 	  drawQuad(10, 2*res, height - 64*res, 256*res, height-2*res); //TitleBar
 	  drawQuad(19, 256*res, height - 64*res, 256*res+64*res, height - 2*res); //OptionsButton
 	  glPushMatrix();//P1
@@ -470,7 +472,7 @@ void menutextures::checkButtonClick(int x, int y, int width, int height){
 			if (x > width - (128 * res) &&
 				y > 10 &&
 				x < width - 10 &&
-				y < (64 * res)){ 
+				y < (64 * res)){
 				if (this->mode != 1 && this->mode != 2){
 					if (this->mode == 5){
 						mode = previousMode;
@@ -480,7 +482,7 @@ void menutextures::checkButtonClick(int x, int y, int width, int height){
 						srand(time(NULL));
 						int a = rand() % 2;
 						rolls.push_back(a);
-						for (int i = 0; i < ((int)gamestate::turnID+6 - 1) / 2; i++){
+						for (int i = 0; i < ((int)gamestate::turnID + 6 - 1) / 2; i++){
 							if (i < 11){
 								int temp = rand() % 2;
 								rolls.push_back(temp);
@@ -528,10 +530,23 @@ void menutextures::checkButtonClick(int x, int y, int width, int height){
 						|| gamestate::phase == 2 && gamestate::cardlist[gamestate::heroStats.second.id].model.temporaryAnimation == false){
 						gamestate::attacking = gamestate::phase;
 						attackedThisTurn = true;
-						
+
 					}
 				}
 			}
+			else if (x > width - (128 * res) &&
+				y > 10 + (128 * res) &&
+				x < width - 10 &&
+				y < (128 * res * 2)){
+				if (mode == 0){ //Options Button on Main Menu
+					if (gamestate::numPlayers == 1){
+						gamestate::numPlayers = 2;
+					}
+					else {
+						gamestate::numPlayers = 1;
+					}
+				}
+		    }
 		}
 	}
 
@@ -625,6 +640,8 @@ void menutextures::load(void){
 	menuTex[17] = loadTexture("../Assets/Textures/Hand.png");
 	menuTex[18] = loadTexture("../Assets/Textures/Optionsbar.png");
 	menuTex[19] = loadTexture("../Assets/Textures/Cog.png");
+	menuTex[20] = loadTexture("../Assets/Textures/Single.png");
+	menuTex[21] = loadTexture("../Assets/Textures/Multi.png");
 
 	// Create a menu
 	glutCreateMenu(&menutextures::screenSizeMenu);
