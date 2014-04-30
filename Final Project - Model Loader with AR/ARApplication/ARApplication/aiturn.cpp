@@ -10,9 +10,9 @@ void aiturn::init() {
 	gamestate::heroStats.second = gamestate::cardlist[botID];
 
 	//Initialise deck
-	for (int i = 4; i < sizeof(gamestate::cardlist); i++) {
-		if (gamestate::cardlist[i].type != 5) {
-			cardsAvailable.push_back(i);
+	for (int i = 0; i < sizeof(gamestate::cardlist); i++) {
+		if (gamestate::cardlist[i].type != 5 && gamestate::cardlist[i].type != 1) {
+			cardsAvailable.push_back(gamestate::cardlist.at(i).id);
 		}
 	}
 
@@ -35,9 +35,10 @@ int aiturn::chooseRobot() {
 void aiturn::drawCard(int numToDraw) {
 	for (int i = 0; i < numToDraw; i++) {
 		if (!cardsAvailable.empty()) {
-			int thisCard = rand() % (cardsAvailable.size() + 1);
+			int index = rand() % cardsAvailable.size();
+			int thisCard = cardsAvailable[index];
 			cardsInHand.push_back(thisCard);
-			cardsAvailable.erase(cardsAvailable.begin() + (thisCard - 1));
+			cardsAvailable.erase(cardsAvailable.begin() + index);
 		}
 	}
 }
@@ -62,7 +63,8 @@ int aiturn::chooseCard(int difficulty) {
 			}
 		}
 		if (!playableCards.empty()) {
-			bestCard = playableCards[rand() % playableCards.size()-1];
+			//bestCard = playableCards[rand() % playableCards.size()-1];
+			bestCard = playableCards[0];
 		}
 	}
 	//Hard
@@ -167,8 +169,15 @@ int aiturn::chooseCard(int difficulty) {
 	}
 
 	//Return card with highest score
+	//if (bestCard != -1) {
+	//		cardsInHand.erase(cardsInHand.begin() + bestCard);
+	//}
 	if (bestCard != -1) {
-		cardsInHand.erase(cardsInHand.begin() + (bestCard - 1));
+		for (unsigned i = 0; i < cardsInHand.size(); ++i){
+			if (bestCard == cardsInHand[i]){
+				cardsInHand.erase(cardsInHand.begin() + i);
+			}
+		}
 	}
 	cout << "bestcard " << bestCard << endl;
 	return bestCard;

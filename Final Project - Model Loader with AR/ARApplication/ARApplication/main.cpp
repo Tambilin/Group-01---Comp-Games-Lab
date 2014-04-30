@@ -606,8 +606,8 @@ void updateRobots() {
 			aiPlayedCard = false;
 		}
 	}
-	if (gamestate::phase == 2 && gamestate::numPlayers == 1 && bestCard != -1) {
-		Menu->showAIcard(bestCard+1);
+	if (gamestate::phase == 2 && gamestate::numPlayers == 1 && bestCard > 3) {
+		Menu->showAIcard(bestCard);
 	}
 	if (Menu->getMode() == 4 && gamestate::phase == 2 && gamestate::numPlayers == 1 && !attackingBots) {
 		if (gamestate::cardlist[gamestate::heroStats.second.id].model.animationFinished && gamestate::cardlist[gamestate::heroStats.second.id].model.temporaryAnimation || !aiPlayedCard) {
