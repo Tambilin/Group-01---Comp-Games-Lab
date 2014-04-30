@@ -73,6 +73,7 @@ int				numSteps = 0;
 int				currentStep = 0;
 // declaration of players positions array
 int				mech1Position[6];
+int				lastMech1Position[6];
 int				mech2Position[6];
 double          frustrum = 2.0;
 bool			Mode3D = false;
@@ -80,6 +81,7 @@ bool			winner = false;
 bool			updatingBots = false;
 bool			attackingBots = false;
 bool			aiPlayedCard = false;
+int				bestCard = -1;
 
 
 particles * fireworks[particles::FIREWORKS_COUNT];
@@ -321,9 +323,12 @@ static int draw(ObjectData_T *object, int objectnum)
 		if (i+1 == gamestate::heroStats.first.id){
 			//cout << "Setup first Mech" << endl;
 			argConvGlpara(object[i].trans, gl_para);
-			mech1Position[0] = gl_para[12];//X Position
-			mech1Position[1] = gl_para[13];//Y Position
-			mech1Position[2] = gl_para[14];//Z Position
+			mech1Position[0] = gl_para[12]; //X Position
+			mech1Position[1] = gl_para[13]; //Y Position
+			mech1Position[2] = gl_para[14]; //Z Position
+			lastMech1Position[0] = mech1Position[0];
+			lastMech1Position[1] = mech1Position[1];
+			lastMech1Position[2] = mech1Position[2];
 			if (gl_para[0] != 0.0f || gl_para[1] != 0.0f) {
 				const float alignment_x = atan2(-gl_para[1], gl_para[0]);
 				float c2;
@@ -338,6 +343,10 @@ static int draw(ObjectData_T *object, int objectnum)
 				mech1Position[3] = alignment_x*57.2957795;//X Rotation (Degrees)
 				mech1Position[4] = alignment_y*57.2957795;//Y Rotation (Degrees)
 				mech1Position[5] = alignment_z*57.2957795;//Z Rotation (Degrees)
+				lastMech1Position[3] = mech1Position[3];
+				lastMech1Position[4] = mech1Position[4];
+				lastMech1Position[5] = mech1Position[5];
+				//cout << "xrot = " << mech1Position[3] << endl;
 			}
 		}
 		else if (i+1 == gamestate::heroStats.second.id){
@@ -363,14 +372,14 @@ static int draw(ObjectData_T *object, int objectnum)
 					mech2Position[5] = alignment_z*57.2957795;//Z Rotation (Degrees)
 				}
 			}
-			else {
+			//else {
 				//Set AI mech position
-				for (int i = 0; i < 6; i++) {
-					mech2Position[i] = mech1Position[i];
-					
-				}
-				mech2Position[1] += 20;
-			}
+				//for (int i = 0; i < 6; i++) {
+				//	mech2Position[i] = mech1Position[i];
+				//	
+				//}
+				//mech2Position[1] += 20;
+			//}
 		}
 		robotsDrawn.push_back(i);
 	}
@@ -396,11 +405,25 @@ static int draw(ObjectData_T *object, int objectnum)
 			argConvGlpara(object[gamestate::heroStats.first.id-1].trans, gl_para);
 			Matrix4d mat = Matrix4d(gl_para);
 			Matrix4d trans = Matrix4d();
-			trans = mat.createTranslation(0, 400, 0, 1);
+			if (mech1Position[3] >= 90 || mech1Position[3] <= -90) {
+				trans = mat.createTranslation(mech1Position[0] * 2, 0, 0, 1);
+			}
+			else {
+				trans = mat.createTranslation(mech1Position[0] * -2, 0, 0, 1);
+			}
+			
 			Matrix4d t = mat*trans;
+			//Set AI mech position
+			mech2Position[0] = t.data[12];
+			mech2Position[1] = t.data[13];
+			mech2Position[2] = t.data[14];
+			mech2Position[3] = lastMech1Position[3];
+			mech2Position[4] = lastMech1Position[4];
+			mech2Position[5] = lastMech1Position[5];
+			//Draw AI mech
 			draw_object(object[thisID-1].id, t.data);
 		glPopMatrix();
-		//cout << "ddfkjdfs" << endl;
+		robotsDrawn.push_back(gamestate::heroStats.second.id - 1);
 	}
 
 	glDisableClientState(GL_NORMAL_ARRAY);
@@ -506,7 +529,7 @@ static int draw_object(int obj_id, double gl_para[16])
 	if (gamestate::heroStats.first.id == obj_id + 1) {
 		rot = mat.createRotationAroundAxis(0, 0, getAngleBetweenRobots() + 180 + mech1Position[3]);
 	}
-	else {
+	else if (gamestate::heroStats.second.id == obj_id + 1){
 		rot = mat.createRotationAroundAxis(0, 0, getAngleBetweenRobots() + mech2Position[3]);
 	}
 	Matrix4d trans = Matrix4d();
@@ -566,16 +589,18 @@ void updateRobots() {
 	if (Menu->getMode() == 4 && gamestate::phase == 2 && gamestate::numPlayers == 1 && !updatingBots) {
 		updatingBots = true;
 		aiturn::drawCard(1);
-		int bestCard = aiturn::chooseCard(gamestate::difficulty);
+		bestCard = aiturn::chooseCard(gamestate::difficulty);
 		if (bestCard != -1) {
-			aiPlayedCard = true;
+			aiPlayedCard = false;
 			gamestate::cardActivated(gamestate::phase, bestCard);
 			gamestate::handSize.second--;
-			gamestate::cardActivated(2, bestCard);
 		}
 		else {
 			aiPlayedCard = false;
 		}
+	}
+	if (gamestate::phase == 2 && gamestate::numPlayers == 1 && bestCard != -1) {
+		Menu->showAIcard(bestCard+1);
 	}
 	if (Menu->getMode() == 4 && gamestate::phase == 2 && gamestate::numPlayers == 1 && !attackingBots) {
 		if (gamestate::cardlist[gamestate::heroStats.second.id].model.animationFinished && gamestate::cardlist[gamestate::heroStats.second.id].model.temporaryAnimation || !aiPlayedCard) {
@@ -696,6 +721,7 @@ void updateRobots() {
 					updatingBots = false;
 					attackingBots = false;
 					aiPlayedCard = false;
+					bestCard = -1;
 					gamestate::turnID++;
 					if (gamestate::phase == 2){
 						gamestate::phase = 1;

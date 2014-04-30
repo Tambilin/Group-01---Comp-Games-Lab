@@ -43,6 +43,7 @@ private:
 	bool confirm;
 	bool attackedThisTurn;
 	int cardTex;
+	int AIcardTex;
 	bool music;
 
 public:
@@ -67,6 +68,8 @@ public:
 	static void setResolutionY(int y);
 	static void _cdecl screenSizeMenu(int item);
 	void drawQuad(int textureID, int minX, int minY, int maxX, int maxY);
+	void showAIcard(int cardID);
+
 	menutextures(char * filePath);
 	~menutextures(void);
 };

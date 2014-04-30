@@ -6,7 +6,7 @@ int aiturn::botID;
 
 void aiturn::init() {
 	//Select robot
-	botID = 2;
+	botID = chooseRobot();
 	gamestate::heroStats.second = gamestate::cardlist[botID];
 
 	//Initialise deck
@@ -21,7 +21,15 @@ void aiturn::init() {
 }
 
 int aiturn::chooseRobot() {
-	return rand() % 3 + 1;
+	int bot;
+	bool found = false;
+	while (!found) {
+		bot = rand() % 3 + 1;
+		if (bot != gamestate::heroStats.first.id) {
+			found = true;
+		}
+	}
+	return bot;
 }
 
 void aiturn::drawCard(int numToDraw) {
@@ -54,7 +62,7 @@ int aiturn::chooseCard(int difficulty) {
 			}
 		}
 		if (!playableCards.empty()) {
-			return rand() % (playableCards.size() + 1);
+			bestCard = playableCards[rand() % playableCards.size()-1];
 		}
 	}
 	//Hard
@@ -69,7 +77,17 @@ int aiturn::chooseCard(int difficulty) {
 						score += thisCard.cost;
 					}
 					if (thisCard.hp != 0) {
-						score += thisCard.hp / 4;
+						if (gamestate::heroStats.second.hp + thisCard.hp > 0) {
+							if (gamestate::heroStats.second.hp + thisCard.hp < (gamestate::heroStats.second.hp / 2)) {
+								score += thisCard.hp;
+							}
+							else {
+								score += thisCard.hp / 4;
+							}
+						}
+						else {
+							score -= 50;
+						}
 					}
 					if (thisCard.attack != 0) {
 						score += thisCard.attack;
@@ -87,7 +105,17 @@ int aiturn::chooseCard(int difficulty) {
 						score += thisCard.cost;
 					}
 					if (thisCard.hp != 0) {
-						score += thisCard.hp / 2;
+						if (gamestate::heroStats.second.hp + thisCard.hp > 0) {
+							if (gamestate::heroStats.second.hp + thisCard.hp < (gamestate::heroStats.second.hp / 2)) {
+								score += thisCard.hp;
+							}
+							else {
+								score += thisCard.hp / 2;
+							}
+						}
+						else {
+							score -= 50;
+						}
 					}
 					if (thisCard.attack != 0) {
 						score += thisCard.attack / 2;
@@ -105,7 +133,17 @@ int aiturn::chooseCard(int difficulty) {
 						score += thisCard.cost;
 					}
 					if (thisCard.hp != 0) {
-						score += thisCard.hp / 3;
+						if (gamestate::heroStats.second.hp + thisCard.hp > 0) {
+							if (gamestate::heroStats.second.hp + thisCard.hp < (gamestate::heroStats.second.hp / 2)) {
+								score += thisCard.hp;
+							}
+							else {
+								score += thisCard.hp / 3;
+							}
+						}
+						else {
+							score -= 50;
+						}
 					}
 					if (thisCard.attack != 0) {
 						score += thisCard.attack / 1.5;
@@ -129,5 +167,9 @@ int aiturn::chooseCard(int difficulty) {
 	}
 
 	//Return card with highest score
+	if (bestCard != -1) {
+		cardsInHand.erase(cardsInHand.begin() + (bestCard - 1));
+	}
+	cout << "bestcard " << bestCard << endl;
 	return bestCard;
 }

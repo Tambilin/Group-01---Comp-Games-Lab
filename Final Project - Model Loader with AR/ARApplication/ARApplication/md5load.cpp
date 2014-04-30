@@ -1,7 +1,7 @@
 #include "md5load.h"
 //Created and modified from the source at http://danielbeard.wordpress.com/2009/06/20/doom-md5-model-loader/
 
-float md5load::animSpeed = 1.0f;
+float md5load::animSpeed = 8.0f;
 
 ////////////////////////////////////////////////////////////
 // Construction/Destruction

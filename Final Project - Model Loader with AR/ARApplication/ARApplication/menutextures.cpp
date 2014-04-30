@@ -22,6 +22,7 @@ menutextures::menutextures(void)
 	attackedThisTurn = false;
 	options = false;
 	cardTex = -2;
+	AIcardTex = -2;
 	alpha = 5;
 	music = true;
 	rollSize = 1;
@@ -130,29 +131,68 @@ void menutextures::render(int width, int height){
 	  glPopAttrib();
 	  break;
   case 3: //Roll dice screen
-	  glPushAttrib(GL_CURRENT_BIT);
-	  glPushMatrix();
-	  if (gamestate::phase == 1){
-		  glColor4f(1.0, 0.0, 0.0, 1.0);
+	  if (gamestate::numPlayers == 2) {
+		  glPushAttrib(GL_CURRENT_BIT);
+		  glPushMatrix();
+		  if (gamestate::phase == 1){
+			  glColor4f(1.0, 0.0, 0.0, 1.0);
+		  }
+		  else {
+			  glColor4f(0.0, 0.0, 1.0, 1.0);
+		  }
+		  glRasterPos2f(width / 2 - 160 * res, height - height / 3 / res);
+		  freetype_mod::print(*our_font, "Player %1.0f - Draw a card.", (float)gamestate::phase);	// Print GL Text To The Screen
+		  glPopMatrix();
+		  glPopAttrib();
+		  if (gamestate::winner < 1)
+			  drawQuad(8, width - (128 * res), height - (64 * res), width - 10, height - 10); //Roll
+		  break;
 	  }
 	  else {
-		  glColor4f(0.0, 0.0, 1.0, 1.0);
+		  if (gamestate::phase == 1) {
+			  glPushAttrib(GL_CURRENT_BIT);
+			  glPushMatrix();
+				  glColor4f(1.0, 0.0, 0.0, 1.0);
+				  glRasterPos2f(width / 2 - 160 * res, height - height / 3 / res);
+				  freetype_mod::print(*our_font, "Player 1 - Draw a card.");	// Print GL Text To The Screen
+			  glPopMatrix();
+			  glPopAttrib();
+			  if (gamestate::winner < 1)
+				  drawQuad(8, width - (128 * res), height - (64 * res), width - 10, height - 10); //Roll
+			  break;
+		  }
+		  else {
+			  if (gamestate::winner < 1) {
+				  mode++;
+			  }
+			  break;
+		  }
 	  }
-	  glRasterPos2f(width / 2 - 160 * res, height - height / 3 / res);
-	  freetype_mod::print(*our_font, "Player %1.0f - Draw a card.", (float)gamestate::phase);	// Print GL Text To The Screen
-	  glPopMatrix();
-	  glPopAttrib();
-	  if (gamestate::winner < 1)
-	  drawQuad(8, width - (128 * res), height - (64 * res), width - 10, height - 10); //Roll
-	  break;
   case 4: //Turn screen
+	  if (gamestate::numPlayers == 2) {
 		  if ((gamestate::phase == 1 && gamestate::cardlist[gamestate::heroStats.first.id].model.temporaryAnimation == false
-			  || gamestate::phase == 2 && gamestate::cardlist[gamestate::heroStats.second.id].model.temporaryAnimation == false)&& gamestate::winner == 0){
+			  || gamestate::phase == 2 && gamestate::cardlist[gamestate::heroStats.second.id].model.temporaryAnimation == false) && gamestate::winner == 0){
 			  drawQuad(7, width - (128 * res), height - (64 * res), width - 10, height - 10); //Next turn
 			  if (!attackedThisTurn){
 				  drawQuad(16, width - (128 * res), height - (64 * res * 2), width - 10, height - 10 - (64 * res)); //Attack
 			  }
 		  }
+	  }
+	  else {
+		  if (gamestate::phase == 1 && gamestate::cardlist[gamestate::heroStats.first.id].model.temporaryAnimation == false && gamestate::winner == 0) {
+			  drawQuad(7, width - (128 * res), height - (64 * res), width - 10, height - 10); //Next turn
+			  if (!attackedThisTurn){
+				  drawQuad(16, width - (128 * res), height - (64 * res * 2), width - 10, height - 10 - (64 * res)); //Attack
+			  }
+		  }
+		  else if (gamestate::phase == 2 && gamestate::cardlist[gamestate::heroStats.second.id].model.temporaryAnimation == false && gamestate::winner == 0) {
+			  if (!attackedThisTurn) {
+				  //Attack
+				  attackedThisTurn = true;
+				  //Return to player turn
+			  }
+		  }
+	  }
 	  ///////////DICE ROLLS RESULTS///////////////////
 	  if (size > 12){
 		  size = 12;
@@ -510,6 +550,28 @@ void menutextures::checkButtonClick(int x, int y, int width, int height){
 						}
 						else {
 							gamestate::phase = 2;
+							if (gamestate::numPlayers == 1) {
+								srand(time(NULL));
+								int a = rand() % 2;
+								rolls.push_back(a);
+								for (int i = 0; i < ((int)gamestate::turnID + 6 - 1) / 2; i++){
+									if (i < 11){
+										int temp = rand() % 2;
+										rolls.push_back(temp);
+										a += temp;
+									}
+								}
+								if (gamestate::turnID % 2 == 0){
+									gamestate::manaPoints.second += a;
+									gamestate::handSize.second++;
+								}
+								else {
+									gamestate::manaPoints.first += a;
+									gamestate::handSize.first++;
+									if (rollSize < 12)
+										rollSize++;
+								}
+							}
 						}
 						this->mode = 3;
 					}
@@ -668,4 +730,20 @@ void menutextures::setResolutionX(int x){
 
 void menutextures::setResolutionY(int y){
 	resolutionY = y;
+}
+
+void menutextures::showAIcard(int cardID) {
+	char directory[50] = "../Assets/Textures/Cards/";
+	char number[5] = "";
+	char filetype[5] = ".png";
+	sprintf(number, "%d", cardID);
+	strcat(directory, number);
+	strcat(directory, filetype);
+	cout << "cardID = " << cardID << endl;
+	if (AIcardTex != cardID){
+		menuTex[15] = loadTexture(directory);
+		AIcardTex = cardID;
+	}
+	int difference = (((resolutionY / 2) - (20))*0.72) / 2;
+	drawQuad(15, resolutionX / 2 - difference, 20, resolutionX / 2 + difference, resolutionY / 2);
 }

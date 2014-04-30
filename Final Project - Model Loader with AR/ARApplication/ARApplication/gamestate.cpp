@@ -2,7 +2,7 @@
 
 int gamestate::turnID = 1;
 bool gamestate::firstSecond = false;
-int	gamestate::numPlayers = 2;
+int	gamestate::numPlayers = 1;
 int gamestate::difficulty = 0;
 std::pair<int, int> gamestate::manaPoints = std::make_pair(0, 0);
 std::pair<int, int> gamestate::deckSize = std::make_pair(30, 30);
