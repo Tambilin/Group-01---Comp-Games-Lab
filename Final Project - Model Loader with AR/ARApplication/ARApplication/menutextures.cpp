@@ -197,7 +197,9 @@ void menutextures::render(int width, int height){
 
   //Draw player stats
   if (mode != 0){
-	  drawQuad(offset, 0, 0, width, height); //Menu background
+	  if (!gamestate::activate3D){
+		  drawQuad(offset, 0, 0, width, height); //Menu background
+	  }
 	  drawQuad(10, 2*res, height - 64*res, 256*res, height-2*res); //TitleBar
 	  drawQuad(19, 256*res, height - 64*res, 256*res+64*res, height - 2*res); //OptionsButton
 	  glPushMatrix();//P1
@@ -421,14 +423,21 @@ void menutextures::setConfirm(bool t){
 
 //Check mouse button input interaction with GUI elements
 void menutextures::checkButtonClick(int x, int y, int width, int height){
+	int H = 0;
+	if (height > cameraY){
+		H = height - cameraY;
+	}
+	if (width > cameraX){
+		width = cameraX;
+	}
 	int res = 1 + resolutionX / 1380;
 	if (gamestate::phase == 1 && gamestate::cardlist[gamestate::heroStats.first.id].model.temporaryAnimation == false
 		|| gamestate::phase == 2 && gamestate::cardlist[gamestate::heroStats.second.id].model.temporaryAnimation == false){
 		if (confirm && mode != 0){
 			if (x > width - (128 * res) &&
-				y > 10 &&
+				y > 10+H &&
 				x < width - 10 &&
-				y < (64 * res)){
+				y < (64 * res)+H){
 				cout << "gamestate::lastPlayedID:" << gamestate::lastPlayedID << endl;
 				if (mode == 1){ //Activate Mech 1
 					gamestate::heroStats.first = gamestate::cardlist[(gamestate::lastPlayedID)];
@@ -459,9 +468,9 @@ void menutextures::checkButtonClick(int x, int y, int width, int height){
 				gamestate::confirmed = false;
 			}
 			else if (x > width - (128 * res) &&
-				y > 10 + (64 * res) &&
+				y > 10 + (64 * res) + H &&
 				x < width - 10 &&
-				y < (64 * res * 2)){ //Cancel Place Card
+				y < (64 * res * 2) + H){ //Cancel Place Card
 					gamestate::lastPlayedID = -1;
 					confirm = false;
 					gamestate::confirmed = false;
@@ -470,9 +479,9 @@ void menutextures::checkButtonClick(int x, int y, int width, int height){
 		}
 		else {
 			if (x > width - (128 * res) &&
-				y > 10 &&
+				y > 10 + H &&
 				x < width - 10 &&
-				y < (64 * res)){
+				y < (64 * res) + H){
 				if (this->mode != 1 && this->mode != 2){
 					if (this->mode == 5){
 						mode = previousMode;
@@ -518,9 +527,9 @@ void menutextures::checkButtonClick(int x, int y, int width, int height){
 				}
 			}
 			else if (x > width - (128 * res) &&
-				y > 10 + (64 * res) &&
+				y > 10 + (64 * res) + H &&
 				x < width - 10 &&
-				y < (64 * res * 2)){
+				y < (64 * res * 2) + H){
 				if (mode == 0){ //Options Button on Main Menu
 					options = !options;
 				}
@@ -535,9 +544,9 @@ void menutextures::checkButtonClick(int x, int y, int width, int height){
 				}
 			}
 			else if (x > width - (128 * res) &&
-				y > 10 + (128 * res) &&
+				y > 10 + (128 * res) + H &&
 				x < width - 10 &&
-				y < (128 * res * 2)){
+				y < (128 * res * 2) + H){
 				if (mode == 0){ //Options Button on Main Menu
 					if (gamestate::numPlayers == 1){
 						gamestate::numPlayers = 2;
@@ -555,42 +564,43 @@ void menutextures::checkButtonClick(int x, int y, int width, int height){
 		int boxH = 64 * res;
 
 		if (x > 17 && x < 127 * res){
-			if (y > 17 && y < boxH){
+			if (y > 17 + H && y < boxH + H){
 				gamestate::frustrum3D -= 0.1;
-			}else if (y > boxH && y < boxH * 2){
+			}
+			else if (y > boxH + H && y < boxH * 2 + H){
 				gamestate::activate3D = !gamestate::activate3D;
 			}
-			else if (y > boxH * 2 && y < boxH * 3){
+			else if (y > boxH * 2 + H && y < boxH * 3 + H){
 				//Window
 				if (screenID > 0){
 					screenID--;
 					screenSizeMenu(screenID);
 				}
 			}
-			else if (y > boxH * 3 && y < boxH * 4){
+			else if (y > boxH * 3 + H && y < boxH * 4 + H){
 				if (md5load::animSpeed > 1){
 					md5load::animSpeed -= 0.1;
 				}
 			}
-			else if (y > boxH * 4 && y < boxH * 5){
+			else if (y > boxH * 4 + H && y < boxH * 5 + H){
 				exit(0);
 			}
 		}
 		else {
 			if (x > 127*res && x < 254 * res){
-				if (y > 17 && y < boxH){
+				if (y > 17 + H && y < boxH + H){
 					gamestate::frustrum3D+= 0.1;
 				}
-				else if (y > boxH && y < boxH * 2){
+				else if (y > boxH + H && y < boxH * 2 + H){
 					gamestate::activate3D = !gamestate::activate3D;
 				}
-				else if (y > boxH * 2 && y < boxH * 3){
+				else if (y > boxH * 2 + H && y < boxH * 3 + H){
 					if (screenID < 4){
 						screenID++;
 						screenSizeMenu(screenID);
 					}
 				}
-				else if (y > boxH * 3 && y < boxH * 4){
+				else if (y > boxH * 3 + H && y < boxH * 4 + H){
 					md5load::animSpeed += 0.1;
 				}
 			}
@@ -601,7 +611,7 @@ void menutextures::checkButtonClick(int x, int y, int width, int height){
 	
 	if (mode > 0){ //Options Button.
 		if (x > 256 * res && x < 256 * res + 64 * res){
-			if (y > 2 * res && y < 64 * res){
+			if (y > 2 * res + H && y < 64 * res + H){
 				options = !options;
 			}
 		}
@@ -654,7 +664,7 @@ void menutextures::load(void){
 		glutAddMenuEntry("Fullscreen", 4);
 
         // Associate a mouse button with menu
-       // glutAttachMenu(GLUT_RIGHT_BUTTON);
+        //glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 
 void menutextures::text(void *font, const char *fmt, int x, int y, float r, float g, float b){

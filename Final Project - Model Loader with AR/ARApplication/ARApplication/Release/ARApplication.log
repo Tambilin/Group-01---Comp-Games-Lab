@@ -1,13 +1,13 @@
-﻿Build started 30/04/2014 15:58:41.
+﻿Build started 30/04/2014 19:06:06.
      1>Project "C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\ARApplication\ARApplication.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Programs\VS 2013\VC\bin\CL.exe /c /I"C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\ARApplication\\include" /IC:\Windows\SysWOW64 /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt menutextures.cpp
          menutextures.cpp
-     1>menutextures.cpp(325): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>menutextures.cpp(327): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  C:\Programs\VS 2013\VC\include\stdio.h(356) : see declaration of 'sprintf'
-     1>menutextures.cpp(326): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>menutextures.cpp(328): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  C:\Programs\VS 2013\VC\include\string.h(118) : see declaration of 'strcat'
-     1>menutextures.cpp(327): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>menutextures.cpp(329): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  C:\Programs\VS 2013\VC\include\string.h(118) : see declaration of 'strcat'
        Link:
          C:\Programs\VS 2013\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\Release\ARApplication.exe" /NOLOGO libARd.lib libARgsubd.lib libARvideod.lib freetype.lib OpenAL32.lib alut.lib opengl32.lib glu32.lib glut32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\Release\ARApplication.pdb" /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\Release\ARApplication.lib" /MACHINE:X86 /SAFESEH Release\aiturn.obj
@@ -62,4 +62,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:03.16
+Time Elapsed 00:00:03.29

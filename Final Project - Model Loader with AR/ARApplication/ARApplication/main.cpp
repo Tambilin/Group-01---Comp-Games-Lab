@@ -145,6 +145,7 @@ static void mainLoop(void)
     }
     if( count2 == 0 ) arUtilTimerReset();
     count2++;
+	glClearColor(0, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     argDrawMode2D();
@@ -469,7 +470,13 @@ static int draw(ObjectData_T *object, int objectnum)
 	//Render Menus
 	glPushMatrix();
 	glTranslatef(frustrum, 0, 0);
-	Menu->render(width, height);
+	int w1 = width;
+	int h1 = height;
+	if (h1 > Menu->cameraY)
+		h1 = Menu->cameraY;
+	if (w1 > Menu->cameraX)
+		w1 = Menu->cameraX;
+	Menu->render(w1, h1);
 	glPopMatrix();
 
 
