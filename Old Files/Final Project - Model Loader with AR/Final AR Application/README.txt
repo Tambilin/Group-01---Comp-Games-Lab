@@ -1,0 +1,1 @@
+It is only setup to compile in Release mode. To compile in debug mode, include and library setting will need to be copied over. -Thomas Linstead

@@ -1,0 +1,34 @@
+#,1,2,3,4,5,6,7,8,9,10,11
+s,640,480,,,,,,,,,
+#,ID,Card Name,Cost,Type,HP,Attack,Defence,Evasion,Element,Draw,Description
+c,0,Unselected,0,0,0,0,0,0,0,0,Default
+c,1,Alpha Prime,0,0,50,2,0,0,0,0,Mech robot 
+c,2,Delta Tank,0,0,50,1,1,0,0,0,Mech robot 
+c,3,Epsilon Zero,0,0,50,1,0,2,0,0,Mech robot 
+c,4,Broadsword,6,1,0,5,0,0,0,0,Two handed broadsword. Not affected by armour. (Replaces any other sword)
+c,5,Dual Swords,6,1,0,2,0,0,0,0,Dual Swords. Not Affected by Evasion. (Replaces any other sword)
+c,6,Gladius,4,1,0,2,0,0,0,0,Short One Handed Sword. Can be used with Shield. (Replaces any other sword)
+c,7,Wings of Evasion,8,1,0,0,0,3,0,0,Provides Two Evasion Attempts where Damage can be evaded.
+c,8,Power Chip,2,2,0,1,0,0,0,0,Provides additional attack power.
+c,9,Power Chip MKII,5,2,0,3,0,0,0,0,Provides additional attack power.
+c,10,Shielding Chip,3,2,0,0,1,0,0,0,Description
+c,11,Overclocked Shield,7,2,0,0,3,0,0,0,Description
+c,12,Speed Core Z,5,2,0,0,0,1,0,0,Description
+c,13,Extra Weight,7,3,0,2,2,-3,0,0,Description
+c,14,Forward Convertor,3,3,-5,5,0,0,0,0,Description
+c,15,Backwards Convertor,3,3,10,-5,0,0,0,0,Convert attacking resources into extra health.
+c,16,Slot Machine,-2,3,-5,0,0,0,0,0,Convert health into dice points.
+c,17,X-Booster Circuit,10,3,0,8,-1,-1,0,0,Large boost to attack with minor loss to others.
+c,18,Y-Booster Circuit,10,3,0,-1,5,-1,0,0,Large boost to defence with minor loss to others.
+c,19,Z-Booster Circuit,10,3,0,-1,-1,3,0,0,Large boost to evasion with minor loss to others.
+c,20,Steel Plating,8,2,0,2,2,0,0,0,Improves attack and defence potential.
+c,21,Multimeter,5,2,0,1,1,1,0,0,Small bonus to all attributes.
+c,22,Repair Canister,4,2,2,0,0,0,0,0,Gain additional health
+c,23,Repair Kit,8,2,5,0,0,0,0,0,Gain additional health
+c,24,Offence Skill Boost  ,4,2,0,2,0,0,0,0,Provides attack power
+c,25,Defence Skill Boost,6,2,0,0,2,0,0,0,Provides defence power
+c,26,Evasive Skill Boost,9,2,0,0,0,2,0,0,Provides evasive power
+c,27,Scrapyard,2,4,0,0,0,0,0,1,Draw an extra card.
+c,28,Mod Shop,4,4,0,0,0,0,0,2,Draw two cards.
+c,29,Parts Dealer,6,4,0,0,0,0,0,3,Draw three cards.
+c,30,Reset,0,5,0,0,0,0,0,0,Reset Card

@@ -1,0 +1,202 @@
+﻿Build started 20/03/2014 18:41:11.
+     1>Project "C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\ARApplication\ARApplication.vcxproj" on node 2 (Rebuild target(s)).
+     1>ClCompile:
+         C:\Programs\VS 2013\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt bitmap.cpp card.cpp freetype.cpp gamestate.cpp md5load.cpp menutextures.cpp model_obj.cpp objload.cpp main.cpp soundeffect.cpp
+         soundeffect.cpp
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\soundeffect.cpp(17): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(211) : see declaration of 'fopen'
+         main.cpp
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\main.cpp(14): fatal error C1083: Cannot open include file: 'AR/gsub.h': No such file or directory
+         objload.cpp
+         model_obj.cpp
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(164): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(211) : see declaration of 'fopen'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(808): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(813): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(817): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(304) : see declaration of 'sscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(818): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(819): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(822): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(825): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(304) : see declaration of 'sscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(827): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(828): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(831): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(834): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(304) : see declaration of 'sscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(836): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(837): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(840): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(845): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(846): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(849): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(856): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(304) : see declaration of 'sscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(935): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(944): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(948): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(304) : see declaration of 'sscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(949): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(950): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(966): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(978): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(304) : see declaration of 'sscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(980): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(981): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(1002): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(1016): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(304) : see declaration of 'sscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(1018): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(1019): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(1035): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(1049): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(304) : see declaration of 'sscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(1050): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(1051): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(1061): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(1074): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(304) : see declaration of 'sscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(1087): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(1095): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(1102): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(1120): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(211) : see declaration of 'fopen'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(1131): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(1138): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(304) : see declaration of 'sscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(1154): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(1159): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(1173): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(1181): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(1189): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(1203): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(1214): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(1218): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(1233): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(304) : see declaration of 'sscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(1239): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(304) : see declaration of 'sscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\model_obj.cpp(1250): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(304) : see declaration of 'sscanf'
+         menutextures.cpp
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\menutextures.cpp(238): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(356) : see declaration of 'sprintf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\menutextures.cpp(239): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\string.h(118) : see declaration of 'strcat'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\menutextures.cpp(240): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\string.h(118) : see declaration of 'strcat'
+         md5load.cpp
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\md5load.cpp(250): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(211) : see declaration of 'fopen'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\md5load.cpp(262): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(304) : see declaration of 'sscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\md5load.cpp(272): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(304) : see declaration of 'sscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\md5load.cpp(281): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(304) : see declaration of 'sscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\md5load.cpp(303): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(304) : see declaration of 'sscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\md5load.cpp(341): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(304) : see declaration of 'sscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\md5load.cpp(353): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(304) : see declaration of 'sscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\md5load.cpp(365): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(304) : see declaration of 'sscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\md5load.cpp(375): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(304) : see declaration of 'sscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\md5load.cpp(393): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(304) : see declaration of 'sscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\md5load.cpp(402): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(304) : see declaration of 'sscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\md5load.cpp(438): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(211) : see declaration of 'fopen'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\md5load.cpp(450): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(304) : see declaration of 'sscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\md5load.cpp(460): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(304) : see declaration of 'sscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\md5load.cpp(471): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(304) : see declaration of 'sscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\md5load.cpp(490): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(304) : see declaration of 'sscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\md5load.cpp(496): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(304) : see declaration of 'sscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\md5load.cpp(513): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(304) : see declaration of 'sscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\md5load.cpp(527): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(304) : see declaration of 'sscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\md5load.cpp(541): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(304) : see declaration of 'sscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\md5load.cpp(548): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(304) : see declaration of 'sscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\md5load.cpp(552): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\md5load.cpp(649): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\string.h(112) : see declaration of 'strcpy'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\md5load.cpp(909): warning C4101: 'nm' : unreferenced local variable
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\md5load.cpp(944): warning C4018: '<' : signed/unsigned mismatch
+         gamestate.cpp
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\gamestate.cpp(49): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(356) : see declaration of 'sprintf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\gamestate.cpp(50): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(211) : see declaration of 'fopen'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\gamestate.cpp(64): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\gamestate.cpp(71): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\gamestate.cpp(81): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(230) : see declaration of 'fscanf'
+         freetype.cpp
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\freetype.cpp(32): warning C4244: '=' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\freetype.cpp(71): warning C4244: 'argument' : conversion from 'int' to 'GLfloat', possible loss of data
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\freetype.cpp(73): warning C4244: 'argument' : conversion from 'int' to 'GLfloat', possible loss of data
+     1>c:\source repository\sourcetree\comp games lab\final project - model loader with ar\arapplication\arapplication\freetype.cpp(94): warning C4996: 'vsprintf': This function or variable may be unsafe. Consider using vsprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programs\vs 2013\vc\include\stdio.h(356) : see declaration of 'vsprintf'
+         card.cpp
+         bitmap.cpp
+         Generating Code...
+     1>Done Building Project "C:\Source Repository\SourceTree\Comp Games Lab\Final Project - Model Loader with AR\ARApplication\ARApplication\ARApplication.vcxproj" (Rebuild target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:07.17
